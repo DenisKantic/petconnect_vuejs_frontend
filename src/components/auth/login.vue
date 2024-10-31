@@ -27,6 +27,8 @@
       <v-btn @click="submit" style="width: 100%; height:3rem; margin-top:1rem; background-color: lightblue" outlined>Login</v-btn>
 
       <div>Don't have an account? Create here</div>
+
+      <div class="mt-4"><RouterLink to="/">Go back to the home page</RouterLink></div>
     </v-form>
         </v-container>
         <v-img

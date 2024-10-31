@@ -10,6 +10,7 @@ declare module 'vue' {
     copy: typeof import('./src/components/auth/login copy.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     Login: typeof import('./src/components/auth/login.vue')['default']
+    Main_navigation: typeof import('./src/components/main_navigation.vue')['default']
     Register: typeof import('./src/components/auth/register.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

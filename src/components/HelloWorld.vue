@@ -1,4 +1,6 @@
 <template>
+  <v-app>
+  <Navbar />
   <v-container class="fill-height">
     <v-responsive
       class="align-centerfill-height mx-auto"
@@ -150,8 +152,11 @@
       </v-row>
     </v-responsive>
   </v-container>
+  </v-app>
 </template>
 
 <script setup lang="ts">
+import Navbar from './main_navigation.vue';
+
   //
 </script>
