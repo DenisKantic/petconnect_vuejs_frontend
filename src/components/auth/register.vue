@@ -14,6 +14,15 @@
                 variant="outlined"
       ></v-text-field>
 
+
+      <v-text-field
+        v-model="name"
+        label="Name"
+        :rules="[rules.required]"
+        required
+        variant="outlined"
+      ></v-text-field>
+
       <v-text-field
         v-model="name"
         label="Password"
@@ -22,11 +31,17 @@
                 variant="outlined"
       ></v-text-field>
 
-     <div>Forgot the password?</div>
+      <v-text-field
+        v-model="name"
+        label="Confirm Password"
+        :rules="[rules.required]"
+        required
+                variant="outlined"
+      ></v-text-field>
 
-      <v-btn @click="submit" style="width: 100%; height:3rem; margin-top:1rem; background-color: lightblue" outlined>Login</v-btn>
+      <v-btn @click="submit" style="width: 100%; height:3rem; margin-top:1rem; background-color: lightblue" outlined>Registruj se</v-btn>
 
-      <div>Don't have an account? Create here</div>
+      <div>Already have an account? Login here</div>
     </v-form>
         </v-container>
         <v-img
