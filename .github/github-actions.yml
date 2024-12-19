@@ -1,0 +1,47 @@
+name: Create and Merge PR (Auth to Dev)
+
+on:
+  push:
+    branches:
+      - auth 
+
+jobs:
+  create-and-merge-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Set up Git
+        uses: actions/setup-git@v3
+
+      - name: Configure Git user
+        run: |
+          git config --global user.name "Your Name"
+          git config --global user.email "your.email@example.com"
+
+      - name: Check if PR already exists
+        id: pr_check
+        run: |
+          PR_EXISTS=$(gh pr list --state open --base dev --head auth --json url --jq ".[0].url")
+          echo "PR_EXISTS=$PR_EXISTS" >> $GITHUB_ENV
+          if [ -z "$PR_EXISTS" ]; then
+            echo "No open PR found, proceeding to create a new one"
+          else
+            echo "PR already exists: $PR_EXISTS"
+          fi
+
+      - name: Create Pull Request (auth to dev)
+        if: env.PR_EXISTS == ''
+        run: |
+          gh pr create --base dev --head auth --title "Merge auth into dev" --body "This PR merges the auth branch into dev."
+          echo "Pull Request created successfully."
+
+      - name: Merge Pull Request (auth to dev)
+        if: env.PR_EXISTS == ''
+        run: |
+          echo "Merging Pull Request from auth to dev"
+          gh pr merge --approve --auto --delete-branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
