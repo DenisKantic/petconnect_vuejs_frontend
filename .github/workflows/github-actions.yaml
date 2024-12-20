@@ -3,7 +3,7 @@ name: Create and Merge PR (Auth to Dev)
 on:
   push:
     branches:
-      - auth 
+      - auth  
 
 jobs:
   create-and-merge-pr:
@@ -12,14 +12,6 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v3
-
-      - name: Set up Git
-        uses: actions/setup-git@v3
-
-      - name: Configure Git user
-        run: |
-          git config --global user.name "Your Name"
-          git config --global user.email "your.email@example.com"
 
       - name: Check if PR already exists
         id: pr_check
@@ -44,4 +36,4 @@ jobs:
           echo "Merging Pull Request from auth to dev"
           gh pr merge --approve --auto --delete-branch
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
