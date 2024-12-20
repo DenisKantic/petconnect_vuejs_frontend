@@ -1,14 +1,13 @@
 <template>
-    <Register />
+  <Register />
 </template>
 
-
 <script>
-import Register from '@/components/auth/register.vue';
+import Register from "@/components/auth/register.vue";
 
 export default {
-    components:{
-        Register
-    }
-}
+  components: {
+    Register,
+  },
+};
 </script>
