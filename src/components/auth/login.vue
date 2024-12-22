@@ -39,9 +39,10 @@
           :type="show_password ? 'text' : 'password'"
           variant="outlined"
           class="mb-5 mt-2"
-        ><v-icon id="eye-icon" @click="toggle_password">{{
+          ><v-icon id="eye-icon" @click="toggle_password">{{
             show_password ? "mdi-eye" : "mdi-eye-off"
-          }}</v-icon></v-text-field>
+          }}</v-icon></v-text-field
+        >
 
         <span class="text-decoration-underline text-subtitle-2"
           >Zaboravili ste lozinku?</span
@@ -61,7 +62,7 @@
           >Prijavi se</v-btn
         >
 
-        {{ error_msg }} <br>
+        {{ error_msg }} <br />
 
         <span
           >Nemaš kreiran nalog?
@@ -87,9 +88,7 @@
   </div>
 </template>
 
-
 <script>
-
 export default {
   data() {
     return {
@@ -119,19 +118,18 @@ export default {
       this.show_password = !this.show_password;
     },
     submit() {
-      this.error_msg = '';
-      if (!this.$refs.form.validate()) {
-        return "Molimo popunite sva polja"
-      }
-      if(this.password === ""){
-        this.error_msg = "Niste upisali šifru"
-        console.log("SIFRA ERROR")
-        return
-      } 
       this.error_msg = "";
-      alert("form submited")
-      this.$refs.form.reset()
-
+      if (!this.$refs.form.validate()) {
+        return "Molimo popunite sva polja";
+      }
+      if (this.password === "") {
+        this.error_msg = "Niste upisali šifru";
+        console.log("SIFRA ERROR");
+        return;
+      }
+      this.error_msg = "";
+      alert("form submited");
+      this.$refs.form.reset();
     },
   },
 

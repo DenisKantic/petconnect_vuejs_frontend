@@ -19,9 +19,7 @@
       class="d-flex align-center flex-column justify-center"
       style="height: 100vh; background-color: white"
     >
-      <span class="text-start text-h4 pb-5"
-        >Registruj se</span
-      >
+      <span class="text-start text-h4 pb-5">Registruj se</span>
       <br />
 
       <v-form ref="form" v-model="valid" lazy-validation style="width: 60%">
@@ -183,15 +181,15 @@ export default {
       this.show_check_pass = !this.show_check_pass;
     },
     submit() {
-      this.error_msg = '';
+      this.error_msg = "";
       if (!this.$refs.form.validate()) {
         return "Molimo popunite sva polja";
       } else if (!this.is_checked) {
         this.error_msg = "Morate prihvatiti uslove korištenja";
         return;
-      } else if(this.password === ""){
-        this.error_msg = "Niste upisali šifru"
-        return
+      } else if (this.password === "") {
+        this.error_msg = "Niste upisali šifru";
+        return;
       } else if (this.password !== this.confirm_password) {
         this.error_msg = "Šifre se ne poklapaju";
         return;
@@ -205,7 +203,7 @@ export default {
       this.error_msg = "";
 
       alert("Form submitted successfully");
-      this.$refs.form.reset()
+      this.$refs.form.reset();
     },
   },
   mounted() {
@@ -217,7 +215,7 @@ export default {
 </script>
 
 <style scoped>
-.text-h4{
+.text-h4 {
   width: 60%;
 }
 #eye-icon {
@@ -244,7 +242,7 @@ label {
     width: 90% !important;
   }
 
-  .text-h4{
+  .text-h4 {
     width: 90% !important;
   }
 }
