@@ -26,6 +26,11 @@ const routes = [
     },
     component: () => import("@/views/auth/register.vue"),
   },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "not-found",
+    component: () => import("@/views/not_found.vue"),
+  },
 ];
 const router = createRouter({
   history: createWebHistory(),
