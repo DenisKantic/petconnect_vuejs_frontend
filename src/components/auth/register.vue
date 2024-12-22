@@ -16,10 +16,15 @@
     style="display: grid; grid-template-columns: 1fr 1fr; height: 100vh"
   >
     <v-container
-      class="d-flex align-center justify-center"
+      class="d-flex align-center flex-column justify-center"
       style="height: 100vh; background-color: white"
     >
-      <v-form ref="form" v-model="valid" lazy-validation style="width: 50%">
+      <span class="text-start text-h4 pb-5"
+        >Registruj se</span
+      >
+      <br />
+
+      <v-form ref="form" v-model="valid" lazy-validation style="width: 60%">
         <label>Email</label>
         <v-text-field
           outlined
@@ -34,34 +39,44 @@
         <v-text-field
           class="my-2"
           v-model="name"
-          :rules="[rules.name]"
+          :rules="[rules.required, rules.name]"
           required
           variant="outlined"
         ></v-text-field>
 
         <label>Šifra</label>
         <v-text-field
-          :append-icon="show_password ? 'mdi-eye-off' : 'mdi-eye'"
           class="my-2"
+          maxlength="25"
           v-model="password"
           :rules="[rules.required, rules.password]"
           required
-          type="password"
+          appearance="outlined"
+          :type="show_password ? 'text' : 'password'"
           variant="outlined"
-        ></v-text-field>
+          ><v-icon id="eye-icon" @click="toggle_password">{{
+            show_password ? "mdi-eye" : "mdi-eye-off"
+          }}</v-icon>
+        </v-text-field>
 
-        <label>Potvrdite Vašu šifru</label>
+        <label>Potvrdite šifru</label>
         <v-text-field
           class="my-2"
-          type="password"
+          maxlength="25"
+          :type="show_check_pass ? 'text' : 'password'"
           v-model="confirm_password"
           :rules="[rules.required, rules.confirm_password]"
           required
+          appearance="outlined"
           variant="outlined"
-        ></v-text-field>
+          ><v-icon id="eye-icon" @click="toggle_check_pass">{{
+            show_check_pass ? "mdi-eye" : "mdi-eye-off"
+          }}</v-icon></v-text-field
+        >
 
         <v-checkbox
           v-model="is_checked"
+          @click="!this.is_checked"
           label="Slažem se sa"
           class="d-flex align-center"
         >
@@ -78,8 +93,11 @@
           style="
             width: 100%;
             height: 3rem;
+            color: white;
+            font-size: 1.2rem;
             margin-top: 1rem;
-            background-color: lightblue;
+            margin-bottom: 1.2rem;
+            background-color: #2f5382;
           "
           outlined
           >Registruj se</v-btn
@@ -87,7 +105,16 @@
 
         {{ error_msg }}
 
-        <div>Already have an account? Login here</div>
+        <div>
+          Imate već korisnički profil?
+          <router-link to="/prijava">
+            <span
+              class="text-primary text-body-1 font-weight-bold cursor-pointer hover:text-primary hover:underline"
+            >
+              Prijavite se ovdje
+            </span>
+          </router-link>
+        </div>
       </v-form>
     </v-container>
     <v-img
@@ -104,18 +131,16 @@
   </div>
 </template>
 
-<style scoped>
-form {
-  width: 100%;
-}
-</style>
-
 <script>
 export default {
   data() {
     return {
       is_checked: false,
+      password: "",
+      confirm_password: "",
       is_loading: true,
+      show_password: false,
+      show_check_pass: false,
       valid: false,
       error_msg: "",
       name: "",
@@ -129,10 +154,14 @@ export default {
           if (value.length < 8) {
             return "Šifra mora imati minimalno 8 karaktera";
           }
+
+          if (value.length > 25) {
+            return "Šifra ne može biti duža od 25 karaktera";
+          }
           return true;
         },
         confirm_password: (value) => {
-          value === this.password || "Šifre se ne poklapaju";
+          return value === this.password || "Šifre se ne poklapaju";
         },
         name: (value) => {
           if (value.length < 3) {
@@ -147,16 +176,36 @@ export default {
     };
   },
   methods: {
+    toggle_password() {
+      this.show_password = !this.show_password;
+    },
+    toggle_check_pass() {
+      this.show_check_pass = !this.show_check_pass;
+    },
     submit() {
-      if (this.$refs.form.validate()) {
-        if (this.is_checked) {
-          alert("Form submitted!");
-        } else {
-          this.error_msg = "Morate prihvatiti uslove korištenja";
-        }
-      } else {
-        this.error_msg = "Molimo popunite sva obavezna polja.";
+      this.error_msg = '';
+      if (!this.$refs.form.validate()) {
+        return "Molimo popunite sva polja";
+      } else if (!this.is_checked) {
+        this.error_msg = "Morate prihvatiti uslove korištenja";
+        return;
+      } else if(this.password === ""){
+        this.error_msg = "Niste upisali šifru"
+        return
+      } else if (this.password !== this.confirm_password) {
+        this.error_msg = "Šifre se ne poklapaju";
+        return;
+      } else if (this.email === "") {
+        this.error_msg = "Niste upisali email adresu";
+        return;
+      } else if (this.name === "") {
+        this.error_msg = "Niste upisali Vaše ime";
+        return;
       }
+      this.error_msg = "";
+
+      alert("Form submitted successfully");
+      this.$refs.form.reset()
     },
   },
   mounted() {
@@ -168,12 +217,34 @@ export default {
 </script>
 
 <style scoped>
+.text-h4{
+  width: 60%;
+}
+#eye-icon {
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  transform: translateY(-50%);
+}
+
+.v-text-field {
+  width: 100%;
+  position: relative;
+}
+
+label {
+  font-size: 1.2rem;
+}
 @media (max-width: 1024px) {
   #container {
     grid-template-columns: 1fr !important;
   }
 
   .v-form {
+    width: 90% !important;
+  }
+
+  .text-h4{
     width: 90% !important;
   }
 }

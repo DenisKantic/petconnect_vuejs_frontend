@@ -33,12 +33,15 @@
 
         <label>Šifra</label>
         <v-text-field
-          v-model="name"
+          v-model="password"
           :rules="[rules.password]"
           required
+          :type="show_password ? 'text' : 'password'"
           variant="outlined"
           class="mb-5 mt-2"
-        ></v-text-field>
+        ><v-icon id="eye-icon" @click="toggle_password">{{
+            show_password ? "mdi-eye" : "mdi-eye-off"
+          }}</v-icon></v-text-field>
 
         <span class="text-decoration-underline text-subtitle-2"
           >Zaboravili ste lozinku?</span
@@ -54,14 +57,19 @@
             background-color: #2f5382;
             color: #ffffff;
           "
+          outlined
           >Prijavi se</v-btn
         >
 
+        {{ error_msg }} <br>
+
         <span
           >Nemaš kreiran nalog?
-          <span style="color: #2f5382; font-weight: bolder"
-            >Kreiraj ovdje!</span
-          ></span
+          <router-link to="/registracija">
+            <span style="color: #2f5382; font-weight: bolder"
+              >Kreiraj ovdje!</span
+            >
+          </router-link></span
         >
       </v-form>
     </v-container>
@@ -79,13 +87,9 @@
   </div>
 </template>
 
-<style scoped>
-form {
-  width: 100%;
-}
-</style>
 
 <script>
+
 export default {
   data() {
     return {
@@ -93,6 +97,9 @@ export default {
       valid: false,
       name: "",
       email: "",
+      error_msg: "",
+      password: "",
+      show_password: false,
       message: "",
       rules: {
         required: (value) => !!value || "*Obavezno polje.",
@@ -108,11 +115,23 @@ export default {
     };
   },
   methods: {
+    toggle_password() {
+      this.show_password = !this.show_password;
+    },
     submit() {
-      if (this.$refs.form.validate()) {
-        // Handle form submission
-        alert("Form submitted!");
+      this.error_msg = '';
+      if (!this.$refs.form.validate()) {
+        return "Molimo popunite sva polja"
       }
+      if(this.password === ""){
+        this.error_msg = "Niste upisali šifru"
+        console.log("SIFRA ERROR")
+        return
+      } 
+      this.error_msg = "";
+      alert("form submited")
+      this.$refs.form.reset()
+
     },
   },
 
@@ -125,12 +144,26 @@ export default {
 </script>
 
 <style scoped>
+.text-h4 {
+  width: 60%;
+}
+
+#eye-icon {
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  transform: translateY(-50%);
+}
 @media (max-width: 1024px) {
   #container {
     grid-template-columns: 1fr !important;
   }
 
   .v-form {
+    width: 90% !important;
+  }
+
+  .text-h4 {
     width: 90% !important;
   }
 }
