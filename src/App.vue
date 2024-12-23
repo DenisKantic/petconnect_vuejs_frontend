@@ -1,5 +1,5 @@
 <template>
-  <v-app class="px-16">
+  <v-app>
     <v-main>
       <router-view />
     </v-main>

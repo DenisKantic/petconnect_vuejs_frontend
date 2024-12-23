@@ -7,14 +7,18 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    copy: typeof import('./src/components/navbar/main_navbar copy.vue')['default']
+    Adopt_animals: typeof import('./src/components/home_screens/adopt_animals.vue')['default']
+    copy: typeof import('./src/components/home_screens/lost_animals copy.vue')['default']
+    Donations: typeof import('./src/components/home_screens/donations.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     Login: typeof import('./src/components/auth/login.vue')['default']
+    Lost_animals: typeof import('./src/components/home_screens/lost_animals.vue')['default']
     Main_navbar: typeof import('./src/components/navbar/main_navbar.vue')['default']
     Not_found: typeof import('./src/components/not_found.vue')['default']
     Register: typeof import('./src/components/auth/register.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Second_navbar: typeof import('./src/components/navbar/second_navbar.vue')['default']
+    Sos: typeof import('./src/components/home_screens/sos.vue')['default']
   }
 }

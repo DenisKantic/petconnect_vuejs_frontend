@@ -146,6 +146,12 @@ export default {
   width: 60%;
 }
 
+html {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
 #eye-icon {
   position: absolute;
   top: 50%;
