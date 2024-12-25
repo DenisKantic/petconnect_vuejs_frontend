@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-row items-center justify-between pt-10">
-    <h1>SOS oglasi</h1>
+    <h1><span style="color: red; font-weight: boldernpm ;">SOS</span> oglasi</h1>
     <v-btn variant="outlined" color="primary">Prikaži sve</v-btn>
   </div>
   <v-row class="pt-5">

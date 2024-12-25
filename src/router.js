@@ -27,6 +27,38 @@ const routes = [
     component: () => import("@/views/auth/register.vue"),
   },
   {
+    path: "/udomi",
+    name: "udomi",
+    meta: {
+      title: "Udomi ljubimca"
+    },
+    component: () => import ("@/views/pages/adopt_page.vue")
+  },
+  {
+    path: "/sos",
+    name: "sos oglasi",
+    meta: {
+      title: "SOS oglasi"
+    },
+    component: () => import("@/views/pages/sos_page.vue")
+  },
+  {
+    path: "/izgubljeni",
+    name: "izgubljeni ljubimci",
+    meta: {
+      title: "Izgubljeni ljubimci"
+    },
+    component: () => import("@/views/pages/lost_page.vue")
+  },
+  {
+    path: "/donacije",
+    name: "donacijski oglasi",
+    meta: {
+      title: "Donacijski oglasi"
+    },
+    component: () => import("@/views/pages/donation_page.vue")
+  },
+  {
     path: "/:pathMatch(.*)*",
     name: "not-found",
     component: () => import("@/views/not_found.vue"),
