@@ -1,18 +1,18 @@
 <template>
-    <Navbar />  
-    <SecondNavbar />
+  <Navbar />
+  <SecondNavbar />
 
-    <h1>SOS oglasi</h1>
+  <h1>SOS oglasi</h1>
 </template>
 
 <script>
-import Navbar from '../navbar/main_navbar.vue';
-import SecondNavbar from '../navbar/second_navbar.vue';
+import Navbar from "../navbar/main_navbar.vue";
+import SecondNavbar from "../navbar/second_navbar.vue";
 
-export default{
-    components:{
-        Navbar,
-        SecondNavbar
-    }
-}
+export default {
+  components: {
+    Navbar,
+    SecondNavbar,
+  },
+};
 </script>

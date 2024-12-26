@@ -9,11 +9,15 @@ declare module 'vue' {
   export interface GlobalComponents {
     Adopt_animals: typeof import('./src/components/home_screens/adopt_animals.vue')['default']
     Adopt_page: typeof import('./src/components/pages/adopt_page.vue')['default']
-    copy: typeof import('./src/components/home_screens/lost_animals copy.vue')['default']
+    Adopt_post: typeof import('./src/components/dashboard/adopt_post.vue')['default']
+    copy: typeof import('./src/components/dashboard/sos_post copy.vue')['default']
     Donation_page: typeof import('./src/components/pages/donation_page.vue')['default']
+    Donation_post: typeof import('./src/components/dashboard/donation_post.vue')['default']
     Donations: typeof import('./src/components/home_screens/donations.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    Home_page: typeof import('./src/components/dashboard/home_page.vue')['default']
     Login: typeof import('./src/components/auth/login.vue')['default']
+    Lost_animal_page: typeof import('./src/components/dashboard/lost_animal_page.vue')['default']
     Lost_animals: typeof import('./src/components/home_screens/lost_animals.vue')['default']
     Lost_page: typeof import('./src/components/pages/lost_page.vue')['default']
     Main_navbar: typeof import('./src/components/navbar/main_navbar.vue')['default']
@@ -24,5 +28,6 @@ declare module 'vue' {
     Second_navbar: typeof import('./src/components/navbar/second_navbar.vue')['default']
     Sos: typeof import('./src/components/home_screens/sos.vue')['default']
     Sos_page: typeof import('./src/components/pages/sos_page.vue')['default']
+    Sos_post: typeof import('./src/components/dashboard/sos_post.vue')['default']
   }
 }
