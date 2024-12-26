@@ -30,33 +30,41 @@ const routes = [
     path: "/udomi",
     name: "udomi",
     meta: {
-      title: "Udomi ljubimca"
+      title: "Udomi ljubimca",
     },
-    component: () => import ("@/views/pages/adopt_page.vue")
+    component: () => import("@/views/pages/adopt_page.vue"),
   },
   {
     path: "/sos",
     name: "sos oglasi",
     meta: {
-      title: "SOS oglasi"
+      title: "SOS oglasi",
     },
-    component: () => import("@/views/pages/sos_page.vue")
+    component: () => import("@/views/pages/sos_page.vue"),
   },
   {
     path: "/izgubljeni",
     name: "izgubljeni ljubimci",
     meta: {
-      title: "Izgubljeni ljubimci"
+      title: "Izgubljeni ljubimci",
     },
-    component: () => import("@/views/pages/lost_page.vue")
+    component: () => import("@/views/pages/lost_page.vue"),
   },
   {
     path: "/donacije",
     name: "donacijski oglasi",
     meta: {
-      title: "Donacijski oglasi"
+      title: "Donacijski oglasi",
     },
-    component: () => import("@/views/pages/donation_page.vue")
+    component: () => import("@/views/pages/donation_page.vue"),
+  },
+  {
+    path: "/profil/oglasi",
+    name: "moji oglasi",
+    meta: {
+      title: "Moji oglasi"
+    },
+    component: () => import("@/views/dashboard/home_page.vue")
   },
   {
     path: "/:pathMatch(.*)*",

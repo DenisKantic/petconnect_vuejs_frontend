@@ -1,15 +1,15 @@
 <template>
-    <div class="px-16 pt-5">
-        <AdoptPage />
-    </div>
+  <div class="px-16 pt-5">
+    <AdoptPage />
+  </div>
 </template>
 
 <script>
-import AdoptPage from '@/components/pages/adopt_page.vue';
+import AdoptPage from "@/components/pages/adopt_page.vue";
 
-export default{
-    components:{
-        AdoptPage,
-    }
-}
+export default {
+  components: {
+    AdoptPage,
+  },
+};
 </script>

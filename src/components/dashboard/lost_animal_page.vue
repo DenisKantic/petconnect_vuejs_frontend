@@ -1,11 +1,10 @@
 <template>
-  <div class="d-flex flex-row items-center justify-between pt-10">
-    <h1><span style="color: red; font-weight: boldernpm">SOS</span> oglasi</h1>
-    <v-btn variant="outlined" color="primary">Prikaži sve</v-btn>
-  </div>
-  <v-row class="pt-5">
+        <h1 class="pt-10">Izgubljeni ljubimci</h1>
+        <span class="text-body-1 text-blue">Dostupan broj oglasa: 0</span>
+
+        <v-row class="pt-5">
     <!-- Loop to create 4 cards -->
-    <v-col v-for="i in 6" :key="i" cols="12" sm="6" md="4" xl="2">
+    <v-col v-for="i in 3" :key="i" cols="12" sm="4" md="4" xl="4">
       <v-card>
         <v-img src="https://via.placeholder.com/300x200" height="60%"></v-img>
 
@@ -13,11 +12,16 @@
         <v-card-title>
           <div class="text-h6">{{ name }}</div>
         </v-card-title>
-        <v-card-subtitle>
+        <v-card-subtitle class="pb-2">
           <div>{{ location }}</div>
           <div>{{ category }}</div>
           <div>{{ sex }}</div>
         </v-card-subtitle>
+        <v-divider></v-divider>
+        <div class="d-flex justify-center items-center pt-5">
+            <v-btn color="primary">Edit</v-btn>
+            <v-btn color="warning">Delete</v-btn>
+        </div>
       </v-card>
     </v-col>
   </v-row>
