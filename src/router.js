@@ -62,9 +62,17 @@ const routes = [
     path: "/profil/oglasi",
     name: "moji oglasi",
     meta: {
-      title: "Moji oglasi"
+      title: "Moji oglasi",
     },
-    component: () => import("@/views/dashboard/home_page.vue")
+    component: () => import("@/views/dashboard/home_page.vue"),
+  },
+  {
+    path: "/profil/postavke",
+    name: "Postavke profila",
+    meta: {
+      title: "Postavke profila",
+    },
+    component: () => import("@/views/settings/settings.vue"),
   },
   {
     path: "/:pathMatch(.*)*",
