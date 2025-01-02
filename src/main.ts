@@ -3,12 +3,14 @@ import router from "./router";
 import { createVuetify } from "vuetify";
 import "vuetify/styles"; // Global styles
 import "@mdi/font/css/materialdesignicons.css"; // Material Design Icons
+import axios from "axios";
 
 // Composables
 import { createApp } from "vue";
 
 const app = createApp(App);
 const vuetify = createVuetify();
+app.config.globalProperties.$http = axios; // defining axios globaly, this.$http.get/post/....
 
 app.use(router);
 app.use(vuetify);

@@ -1,7 +1,7 @@
 <template>
-    <MainNavbar />
-    <SecondNavbar />
-    <Settings />
+  <MainNavbar />
+  <SecondNavbar />
+  <Settings />
 </template>
 
 <script>
@@ -13,9 +13,7 @@ export default {
   components: {
     MainNavbar,
     SecondNavbar,
-    Settings
+    Settings,
   },
 };
 </script>
-
-

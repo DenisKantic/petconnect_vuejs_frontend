@@ -1,5 +1,6 @@
 <template>
-  <div class="px-16" id="container">
+  <fieldset class="px-16 mt-10" id="container" style="width: 60%; margin: auto">
+    <legend class="text-h5">Postavke profila</legend>
     <label>Nova šifra</label>
     <v-text-field
       class="my-2"
@@ -29,7 +30,15 @@
         show_check_pass ? "mdi-eye" : "mdi-eye-off"
       }}</v-icon></v-text-field
     >
-  </div>
+
+    <v-btn color="primary">Promijeni</v-btn>
+
+    <v-divider class="pb-4 mt-4"></v-divider>
+
+    <p class="text-h6">Obriši korisnički profil</p>
+
+    <v-btn color="red" class="mb-5">Obriši</v-btn>
+  </fieldset>
 </template>
 
 <script>
@@ -70,7 +79,6 @@ export default {
 };
 </script>
 
-
 <style scoped>
 .text-h4 {
   width: 60%;
@@ -87,14 +95,14 @@ export default {
   position: relative;
 }
 
+#container {
+  border: 1px solid black;
+}
+
 label {
   font-size: 1.2rem;
 }
 @media (max-width: 1024px) {
-  #container {
-    grid-template-columns: 1fr !important;
-  }
-
   .v-form {
     width: 90% !important;
   }
@@ -102,6 +110,9 @@ label {
   .text-h4 {
     width: 90% !important;
   }
+
+  #container {
+    width: 90% !important;
+  }
 }
 </style>
-

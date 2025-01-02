@@ -59,7 +59,7 @@ const routes = [
     component: () => import("@/views/pages/donation_page.vue"),
   },
   {
-    path: "/profil/oglasi",
+    path: "/profil",
     name: "moji oglasi",
     meta: {
       title: "Moji oglasi",
