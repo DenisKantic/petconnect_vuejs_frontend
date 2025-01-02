@@ -25,6 +25,7 @@
       <v-form ref="form" v-model="valid" lazy-validation style="width: 60%">
         <label>Email</label>
         <v-text-field
+          :disabled="is_submiting"
           outlined
           class="input_field my-2"
           v-model="email"
@@ -35,15 +36,17 @@
 
         <label>Korisničko ime</label>
         <v-text-field
+          :disabled="is_submiting"
           class="my-2"
-          v-model="name"
-          :rules="[rules.required, rules.name]"
+          v-model="username"
+          :rules="[rules.required, rules.username]"
           required
           variant="outlined"
         ></v-text-field>
 
         <label>Šifra</label>
         <v-text-field
+          :disabled="is_submiting"
           class="my-2"
           maxlength="25"
           v-model="password"
@@ -59,6 +62,7 @@
 
         <label>Potvrdite šifru</label>
         <v-text-field
+          :disabled="is_submiting"
           class="my-2"
           maxlength="25"
           :type="show_check_pass ? 'text' : 'password'"
@@ -73,6 +77,7 @@
         >
 
         <v-checkbox
+          :disabled="is_submiting"
           v-model="is_checked"
           @click="!this.is_checked"
           label="Slažem se sa"
@@ -87,6 +92,7 @@
         </v-checkbox>
 
         <v-btn
+          :disabled="is_submiting"
           @click="submit"
           style="
             width: 100%;
@@ -134,6 +140,7 @@ export default {
   data() {
     return {
       is_checked: false,
+      is_submiting: false,
       password: "",
       confirm_password: "",
       is_loading: true,
@@ -141,7 +148,7 @@ export default {
       show_check_pass: false,
       valid: false,
       error_msg: "",
-      name: "",
+      username: "",
       email: "",
       message: "",
       rules: {
@@ -161,7 +168,7 @@ export default {
         confirm_password: (value) => {
           return value === this.password || "Šifre se ne poklapaju";
         },
-        name: (value) => {
+        username: (value) => {
           if (value.length < 3) {
             return "Ime ne može biti kraće od 3 karaktera";
           }
@@ -182,6 +189,7 @@ export default {
     },
     submit() {
       this.error_msg = "";
+      this.is_submiting = true;
       if (!this.$refs.form.validate()) {
         return "Molimo popunite sva polja";
       } else if (!this.is_checked) {
@@ -196,14 +204,31 @@ export default {
       } else if (this.email === "") {
         this.error_msg = "Niste upisali email adresu";
         return;
-      } else if (this.name === "") {
+      } else if (this.username === "") {
         this.error_msg = "Niste upisali Vaše ime";
         return;
       }
       this.error_msg = "";
 
-      alert("Form submitted successfully");
+      const form_object = {
+        username: this.username,
+        email: this.email,
+        password: this.password,
+        is_valid: this.is_checked,
+      };
+
+      this.$http
+        .post("http://localhost:8080/register", form_object)
+        .then((response) => {
+          console.log("success", response.data);
+          this.$router.push("/profil")
+        })
+        .catch((error) => {
+          console.error("ERROR", error);
+        });
+
       this.$refs.form.reset();
+      this.is_submiting = false;
     },
   },
   mounted() {

@@ -1,7 +1,11 @@
 <template>
   <div class="d-flex flex-row items-center justify-between">
     <h1>Udomi ljubimca</h1>
-    <v-btn variant="outlined" color="primary">Prikaži sve</v-btn>
+    <router-link to="/udomi"
+      ><v-btn variant="outlined" color="primary"
+        >Prikaži sve</v-btn
+      ></router-link
+    >
   </div>
   <v-row class="pt-5">
     <!-- Loop to create 4 cards -->

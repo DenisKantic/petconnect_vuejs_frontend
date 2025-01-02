@@ -6,11 +6,12 @@
     />
 
     <v-app-bar-title>
-      <v-avatar color="surface-light" size="45">
-        <router-link to="/">
+      <router-link to="/">
+        <v-avatar color="surface-light" size="45">
           <img src="@/assets/logo.svg" alt="Logo" />
-        </router-link>
-      </v-avatar>
+        </v-avatar>
+        <span class="text-h5 ml-5">PetConnect</span>
+      </router-link>
     </v-app-bar-title>
 
     <v-spacer></v-spacer>

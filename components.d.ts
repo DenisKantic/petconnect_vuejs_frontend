@@ -26,6 +26,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Second_navbar: typeof import('./src/components/navbar/second_navbar.vue')['default']
+    Settings: typeof import('./src/components/settings/settings.vue')['default']
     Sos: typeof import('./src/components/home_screens/sos.vue')['default']
     Sos_page: typeof import('./src/components/pages/sos_page.vue')['default']
     Sos_post: typeof import('./src/components/dashboard/sos_post.vue')['default']
