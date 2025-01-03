@@ -5,7 +5,13 @@
       :timeout="snackbar.timeout"
       :color="snackbar.color"
     >
-      {{ snackbar.message }}
+    <div       class="d-flex justify-space-between align-center"
+    >
+      <span style="font-size: 1.2rem;">{{ snackbar.message }}</span>
+      <v-btn icon @click="snackbar.visible = false" class="ml-2">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </div>
     </v-snackbar>
     <v-container
       v-if="is_loading"
@@ -148,7 +154,7 @@ export default {
     return {
       snackbar: {
         visible: false,
-        message: "test",
+        message: "",
         timeout: 3000, // Duration in milliseconds
         color: "success", // The color of the snackbar (success, error, etc.)
       },
@@ -246,11 +252,13 @@ export default {
         .then((response) => {
           console.log("success", response.data);
           this.$router.push("/profil");
-          this.showSnackbar("Registracija uspješna", "success")
+          this.showSnackbar("Registracija uspješna", "success");
         })
         .catch((error) => {
-          this.showSnackbar("Desila se greška", "error")
+          this.showSnackbar("Desila se greška", "error");
           console.error("ERROR", error);
+          this.error_msg = ""
+          this.$refs.form.reset();
         });
 
       this.$refs.form.reset();
