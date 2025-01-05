@@ -1,102 +1,119 @@
 <template>
   <!-- loading spinner-->
-  <v-container
-    v-if="is_loading"
-    class="d-flex align-center justify-center flex-column"
-    style="height: 100vh; background: none"
-  >
-    <v-progress-circular indeterminate color="primary" size="120" width="12">
-    </v-progress-circular>
-    <br />
-    <span class="text-h5 text-center">Učitavanje...</span>
-  </v-container>
-  <div
-    v-else
-    id="container"
-    style="display: grid; grid-template-columns: 1fr 1fr; height: 100vh"
-  >
+  <v-app>
+    <v-snackbar
+      v-model="snackbar.visible"
+      :timeout="snackbar.timeout"
+      :color="snackbar.color"
+    >
+      <div class="d-flex justify-space-between align-center">
+        <span style="font-size: 1.2rem">{{ snackbar.message }}</span>
+        <v-btn icon @click="snackbar.visible = false" class="ml-2">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </div>
+    </v-snackbar>
     <v-container
+      v-if="is_loading"
       class="d-flex align-center justify-center flex-column"
-      style="height: 100vh; background-color: white"
+      style="height: 100vh; background: none"
     >
-      <span class="text-start text-h4">Prijavi se</span> <br />
-      <v-form ref="form" v-model="valid" lazy-validation style="width: 60%">
-        <label>Email</label>
-        <v-text-field
-          outlined
-          class="input_field mb-2 mt-2"
-          v-model="email"
-          :rules="[rules.required, rules.email]"
-          required
-          variant="outlined"
-        ></v-text-field>
-
-        <label>Šifra</label>
-        <v-text-field
-          v-model="password"
-          :rules="[rules.password]"
-          required
-          :type="show_password ? 'text' : 'password'"
-          variant="outlined"
-          class="mb-5 mt-2"
-          ><v-icon id="eye-icon" @click="toggle_password">{{
-            show_password ? "mdi-eye" : "mdi-eye-off"
-          }}</v-icon></v-text-field
-        >
-
-        <span class="text-decoration-underline text-subtitle-2"
-          >Zaboravili ste lozinku?</span
-        >
-
-        <v-btn
-          @click="submit"
-          class="mb-4"
-          style="
-            width: 100%;
-            height: 3rem;
-            margin-top: 1rem;
-            background-color: #2f5382;
-            color: #ffffff;
-          "
-          outlined
-          >Prijavi se</v-btn
-        >
-
-        {{ error_msg }} <br />
-
-        <span
-          >Nemaš kreiran nalog?
-          <router-link to="/registracija">
-            <span style="color: #2f5382; font-weight: bolder"
-              >Kreiraj ovdje!</span
-            >
-          </router-link></span
-        >
-      </v-form>
+      <v-progress-circular indeterminate color="primary" size="120" width="12">
+      </v-progress-circular>
+      <br />
+      <span class="text-h5 text-center">Učitavanje...</span>
     </v-container>
-    <v-img
-      src="@/assets/picture.svg"
-      cover
-      style="
-        width: 100%;
-        height: 100%;
-        max-width: 100%;
-        background-color: #2f5382;
-      "
+    <div
+      v-else
+      id="container"
+      style="display: grid; grid-template-columns: 1fr 1fr; height: 100vh"
     >
-    </v-img>
-  </div>
+      <v-container
+        class="d-flex align-center justify-center flex-column"
+        style="height: 100vh; background-color: white"
+      >
+        <span class="text-start text-h4">Prijavi se</span> <br />
+        <v-form ref="form" v-model="valid" lazy-validation style="width: 60%">
+          <label>Email</label>
+          <v-text-field
+            outlined
+            class="input_field mb-2 mt-2"
+            v-model="email"
+            :rules="[rules.required, rules.email]"
+            required
+            variant="outlined"
+          ></v-text-field>
+
+          <label>Šifra</label>
+          <v-text-field
+            v-model="password"
+            :rules="[rules.password]"
+            required
+            :type="show_password ? 'text' : 'password'"
+            variant="outlined"
+            class="mb-5 mt-2"
+            ><v-icon id="eye-icon" @click="toggle_password">{{
+              show_password ? "mdi-eye" : "mdi-eye-off"
+            }}</v-icon></v-text-field
+          >
+
+          <span class="text-decoration-underline text-subtitle-2"
+            >Zaboravili ste lozinku?</span
+          >
+
+          <v-btn
+            @click="submit"
+            class="mb-4"
+            style="
+              width: 100%;
+              height: 3rem;
+              margin-top: 1rem;
+              background-color: #2f5382;
+              color: #ffffff;
+            "
+            outlined
+            >Prijavi se</v-btn
+          >
+
+          <span
+            >Nemaš kreiran nalog?
+            <router-link to="/registracija">
+              <span style="color: #2f5382; font-weight: bolder"
+                >Kreiraj ovdje!</span
+              >
+            </router-link></span
+          >
+        </v-form>
+      </v-container>
+      <v-img
+        src="@/assets/picture.svg"
+        cover
+        style="
+          width: 100%;
+          height: 100%;
+          max-width: 100%;
+          background-color: #2f5382;
+        "
+      >
+      </v-img>
+    </div>
+  </v-app>
 </template>
 
 <script>
 export default {
   data() {
     return {
+      snackbar: {
+        visible: false,
+        message: "",
+        timeout: 3000,
+        color: "success",
+      },
       is_loading: true,
       valid: false,
       name: "",
       email: "",
-      error_msg: "",
       password: "",
       show_password: false,
       message: "",
@@ -117,18 +134,33 @@ export default {
     toggle_password() {
       this.show_password = !this.show_password;
     },
+    showSnackbar(message, color) {
+      this.snackbar.visible = true;
+      this.snackbar.message = message;
+      this.snackbar.color = color;
+    },
     submit() {
-      this.error_msg = "";
-      if (!this.$refs.form.validate()) {
-        return "Molimo popunite sva polja";
-      }
-      if (this.password === "") {
-        this.error_msg = "Niste upisali šifru";
-        console.log("SIFRA ERROR");
+      if (this.password == "" || this.email == "") {
+        this.showSnackbar("Niste popunili sva polja!", "error");
         return;
       }
-      this.error_msg = "";
-      alert("form submited");
+      const form_object = {
+        email: this.email,
+        password: this.password,
+      };
+
+      this.$http
+        .post("http://localhost:8080/login", form_object)
+        .then((response) => {
+          this.$router.push("/profil");
+          this.showSnackbar("Prijava uspješna", "success");
+          return;
+        })
+        .catch((error) => {
+          this.showSnackbar("Desila se greška", "error");
+          this.$refs.form.reset();
+          return;
+        });
       this.$refs.form.reset();
     },
   },

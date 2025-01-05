@@ -5,13 +5,12 @@
       :timeout="snackbar.timeout"
       :color="snackbar.color"
     >
-    <div       class="d-flex justify-space-between align-center"
-    >
-      <span style="font-size: 1.2rem;">{{ snackbar.message }}</span>
-      <v-btn icon @click="snackbar.visible = false" class="ml-2">
-        <v-icon>mdi-close</v-icon>
-      </v-btn>
-    </div>
+      <div class="d-flex justify-space-between align-center">
+        <span style="font-size: 1.2rem">{{ snackbar.message }}</span>
+        <v-btn icon @click="snackbar.visible = false" class="ml-2">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </div>
     </v-snackbar>
     <v-container
       v-if="is_loading"
@@ -33,10 +32,10 @@
         class="d-flex align-center flex-column justify-center"
         style="height: 100vh; background-color: white"
       >
-        <span class="text-start text-h4 pb-5">Registruj se</span>
+        <span id="title" class="text-start text-h4 py-5">Registruj se</span>
         <br />
 
-        <v-form ref="form" v-model="valid" lazy-validation style="width: 60%">
+        <v-form ref="form" v-model="valid" lazy-validation style="width: 60%;">
           <label>Email</label>
           <v-text-field
             :disabled="is_submiting"
@@ -121,12 +120,12 @@
             >Registruj se</v-btn
           >
 
-          <div>
+          <div class="link-text">
             Imate već korisnički profil?
             <router-link to="/prijava">
               <span
                 class="text-primary text-body-1 font-weight-bold cursor-pointer hover:text-primary hover:underline"
-              >
+              > 
                 Prijavite se ovdje
               </span>
             </router-link>
@@ -136,10 +135,10 @@
       <v-img
         src="@/assets/picture.svg"
         cover
+        class="right-image"
         style="
           width: 100%;
-          height: 100%;
-          max-width: 100%;
+          height: 100vh;
           background-color: lightblue;
         "
       >
@@ -166,7 +165,6 @@ export default {
       show_password: false,
       show_check_pass: false,
       valid: false,
-      error_msg: "",
       username: "",
       email: "",
       message: "",
@@ -211,34 +209,7 @@ export default {
       this.snackbar.color = color;
     },
     submit() {
-      this.error_msg = "";
       this.is_submiting = true;
-      if (!this.$refs.form.validate()) {
-        this.is_submiting = false;
-        this.showSnackbar("Molimo popunite sva polja", "error");
-        return;
-      } else if (!this.is_checked) {
-        this.is_submiting = false;
-        this.error_msg = "Morate prihvatiti uslove korištenja";
-        return;
-      } else if (this.password === "") {
-        this.is_submiting = false;
-        this.error_msg = "Niste upisali šifru";
-        return;
-      } else if (this.password !== this.confirm_password) {
-        this.is_submiting = false;
-        this.error_msg = "Šifre se ne poklapaju";
-        return;
-      } else if (this.email === "") {
-        this.is_submiting = false;
-        this.error_msg = "Niste upisali email adresu";
-        return;
-      } else if (this.username === "") {
-        this.is_submiting = false;
-        this.error_msg = "Niste upisali Vaše ime";
-        return;
-      }
-      this.error_msg = "";
 
       const form_object = {
         username: this.username,
@@ -257,7 +228,7 @@ export default {
         .catch((error) => {
           this.showSnackbar("Desila se greška", "error");
           console.error("ERROR", error);
-          this.error_msg = ""
+          this.error_msg = "";
           this.$refs.form.reset();
         });
 
@@ -295,6 +266,24 @@ label {
 @media (max-width: 1024px) {
   #container {
     grid-template-columns: 1fr !important;
+  }
+
+  .v-container{
+    margin-top: 5rem;
+    min-height: 150vh auto !important;
+  }
+
+  #title{
+    text-align: center !important;
+  }
+
+  .link-text{
+    text-align: center !important;
+    word-break: keep-all;
+  }
+
+  .right-image{
+    display: none !important;
   }
 
   .v-form {
