@@ -1,13 +1,13 @@
 <template>
-  <Login />
+  <NotFound />
 </template>
 
 <script>
-import Login from "@/components/auth/login.vue";
+import NotFound from "@/components/not_found.vue";
 
 export default {
   components: {
-    Login,
+    NotFound,
   },
 };
 </script>
