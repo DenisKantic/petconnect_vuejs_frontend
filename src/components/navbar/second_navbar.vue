@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app color="#1D3A5F" dark class="px-16">
+  <v-app-bar v-if="$vuetify.display.mdAndUp" app color="#1D3A5F" dark class="px-16">
     <div class="d-flex items-center justify-end" style="width: 100%">
       <router-link style="color: white" to="/udomi"
         ><v-btn><v-icon>mdi-paw</v-icon>Udomi životinju</v-btn></router-link
