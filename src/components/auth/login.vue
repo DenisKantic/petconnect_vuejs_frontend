@@ -51,7 +51,7 @@
             required
             :type="show_password ? 'text' : 'password'"
             variant="outlined"
-            class="mb-5 mt-2"
+            class="mb-1 mt-2"
             ><v-icon id="eye-icon" @click="toggle_password">{{
               show_password ? "mdi-eye" : "mdi-eye-off"
             }}</v-icon></v-text-field
