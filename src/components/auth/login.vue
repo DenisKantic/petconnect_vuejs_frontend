@@ -39,19 +39,21 @@
             outlined
             class="input_field mb-2 mt-2"
             v-model="email"
-            :rules="[rules.required, rules.email]"
+            :rules="computedEmailRules"
             required
             variant="outlined"
+            @blur="validateEmail"
           ></v-text-field>
 
           <label>Šifra</label>
           <v-text-field
             v-model="password"
-            :rules="[rules.password]"
+            :rules="computedPasswordRules"
             required
             :type="show_password ? 'text' : 'password'"
             variant="outlined"
             class="mb-1 mt-2"
+            @blur="validatePassword"
             ><v-icon id="eye-icon" @click="toggle_password">{{
               show_password ? "mdi-eye" : "mdi-eye-off"
             }}</v-icon></v-text-field
@@ -116,6 +118,8 @@ export default {
       email: "",
       password: "",
       show_password: false,
+      emailTouched: false, // Flag to track if email field has been touched
+      passwordTouched: false, // Flag to track if password field has been touched
       message: "",
       rules: {
         required: (value) => !!value || "*Obavezno polje.",
@@ -130,7 +134,21 @@ export default {
       },
     };
   },
+  computed: {
+    computedEmailRules() {
+      return this.emailTouched ? [this.rules.required, this.rules.email] : [];
+    },
+    computedPasswordRules() {
+      return this.passwordTouched ? [this.rules.required, this.rules.password] : [];
+    },
+  },
   methods: {
+    validateEmail() {
+      this.emailTouched = true; // Mark the email field as touched
+    },
+    validatePassword() {
+      this.passwordTouched = true; // Mark the password field as touched
+    },
     toggle_password() {
       this.show_password = !this.show_password;
     },
