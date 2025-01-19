@@ -11,7 +11,7 @@
     <!-- Loop to create 4 cards -->
     <v-col v-for="i in 6" :key="i" cols="12" sm="6" md="4" xl="2">
       <v-card>
-        <v-img src="https://via.placeholder.com/300x200" height="60%"></v-img>
+        <v-img src="https://placehold.co/300x200" height="60%"></v-img>
 
         <!-- Card content -->
         <v-card-title>
