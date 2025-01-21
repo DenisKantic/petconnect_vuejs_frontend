@@ -168,7 +168,7 @@ export default {
       };
 
       this.$http
-        .post("http://localhost:8080/login", form_object)
+        .post("http://localhost:8080/login", form_object, {withCredentials: true})
         .then((response) => {
           this.$router.push("/profil");
           this.showSnackbar("Prijava uspješna", "success");
