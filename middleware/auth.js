@@ -4,6 +4,7 @@ import axios from 'axios';
 
 const BACKGROUND_VALIDATION_INTERVAL = 5 * 60 * 1000; // 5 minutes
 
+
 export default function auth() {
   return new Promise((resolve, reject) => {
     const token = Cookies.get('auth_token');
