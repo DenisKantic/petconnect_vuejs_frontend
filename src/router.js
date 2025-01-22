@@ -103,7 +103,8 @@ router.beforeEach(async(to, from, next) => {
       // User is not authenticated, redirect to login
       next({ name: 'login' });
     }
-  } else {
+  } 
+  else {
     next(); // Route doesn't require auth, proceed as normal
   }
 });

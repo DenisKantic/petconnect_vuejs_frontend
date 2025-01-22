@@ -1,25 +1,21 @@
 <template>
   <v-app-bar app color="white" dark class="px-16">
-    <!-- Drawer toggle icon for small devices -->
     <v-app-bar-nav-icon
       v-if="$vuetify.display.smAndDown"
       @click="drawer = !drawer"
     />
 
-    <!-- Logo and Title -->
     <v-app-bar-title v-if="$vuetify.display.mdAndUp">
       <router-link to="/">
         <v-avatar color="surface-light" size="45">
           <img src="@/assets/logo.svg" alt="Logo" />
         </v-avatar>
       </router-link>
-      <v-btn text class="ml-2"
-      v-if="$vuetify.display.lgAndUp">PetConnect</v-btn>
+      <v-btn text class="ml-2" v-if="$vuetify.display.lgAndUp">PetConnect</v-btn>
     </v-app-bar-title>
 
     <v-spacer></v-spacer>
 
-    <!-- Links for larger devices -->
     <template v-if="$vuetify.display.mdAndUp">
       <v-btn text class="ml-2">Početna</v-btn>
       <v-btn text class="ml-2">O nama</v-btn>
@@ -27,8 +23,7 @@
       <v-btn text class="ml-2">Kontakt</v-btn>
     </template>
 
-    <!-- User menu (shared across all screen sizes) -->
-    <v-menu>
+    <v-menu v-if="isLoggedIn">
       <template v-slot:activator="{ props }">
         <v-btn v-bind="props">
           <v-avatar
@@ -38,33 +33,40 @@
           />
         </v-btn>
       </template>
-      <v-list>
+      <v-list style="padding: 0">
         <v-list-item
           v-for="(item, index) in items"
           :key="index"
-          :value="index"
         >
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
+        <v-btn
+          style="width: 100%; border-radius: 0;"
+          color="red"
+          @click="logout"
+        >
+          ODJAVI SE
+        </v-btn>
       </v-list>
     </v-menu>
 
-    
-    <!-- Drawer for smaller devices -->
+    <router-link v-else to="/prijava">
+      <v-btn variant="outlined" flat color="blue">Prijavi se</v-btn>
+    </router-link>
+
     <v-navigation-drawer
       v-model="drawer"
       app
       temporary
       right
-      :class="{'drawer-open':drawer, 'drawer-closed': !drawer}"
+      :class="{ 'drawer-open': drawer, 'drawer-closed': !drawer }"
       class="px-16"
       v-if="$vuetify.display.smAndDown"
     >
-    <v-list id="first-list">
+      <v-list id="first-list">
         <v-list-item
           v-for="(item, index) in links"
           :key="index"
-          :value="index"
         >
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
@@ -73,43 +75,82 @@
       <p class="text-center" id="categories">Kategorije oglasa</p>
 
       <v-list id="second-navbar">
-        <v-list-item
-          v-for="(item, index) in categories"
-          :key="index"
-          :value="index"
-        >
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        <v-list-item>
+          <v-list-item-title><router-link to="/udomi">Udomi životinju</router-link></v-list-item-title>
+          <v-list-item-title><router-link to="/izgubljeni">Izgubljene životinje</router-link></v-list-item-title>
+          <v-list-item-title><router-link to="/donacije">Donacijski oglasi</router-link></v-list-item-title>
+          <v-list-item-title><router-link to="/sos">SOS oglasi</router-link></v-list-item-title>
+
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
   </v-app-bar>
 </template>
 
-<script setup>
-import { ref } from "vue";
 
-const drawer = ref(false);
+<script>
+import auth from '../../../middleware/auth';
+import Cookies from 'js-cookie';
 
-const items = [
-  { title: "Objavi oglas" },
-  { title: "Moj profil" },
-  { title: "Postavke" },
-  { title: "Odjavi se" },
-];
 
-const categories = [
-  {title: "Udomi životinju"},
-  {title: "Izgubljene životinje"},
-  {title: "Donacijski oglasi"},
-  {title: "SOS oglasi"}
-]
-
-const links = [
-  {title: "Početna"}, 
-  {title: "O nama"}, 
-  {title: "Politika privatnosti"}, 
-  {title: "Kontakt"}
-  ];
+export default {
+  data() {
+    return {
+      drawer: false,
+      snackbar: {
+        visible: false,
+        message: "",
+        color: "success",
+      },
+      items: [
+        { title: "Objavi oglas" },
+        { title: "Moj profil" },
+        { title: "Postavke" },
+      ],
+      links: [
+        { title: "Početna" },
+        { title: "O nama" },
+        { title: "Politika privatnosti" },
+        { title: "Kontakt" },
+      ],
+    };
+  },
+  computed: {
+    isLoggedIn() {
+      const token = Cookies.get('auth_token'); // Check for token in cookies
+      return !!token; // Convert to boolean
+    },
+  },
+  methods: {
+    async checkAuth() {
+      try {
+        await auth(); // Call the auth function to validate the token
+      } catch (error) {
+        console.error('Authentication error:', error);
+      }
+    },
+    showSnackbar(message, color) {
+      this.snackbar.visible = true;
+      this.snackbar.message = message;
+      this.snackbar.color = color;
+    },
+    logout() {
+      this.$http.get("http://localhost:8080/logout", { withCredentials: true })
+        .then(() => {
+          this.showSnackbar("Odjavljivanje uspješno", "success");
+          this.$router.push("/");
+          window.location.reload(); // Refresh the page
+        })
+        .catch((error) => {
+          console.error("Logout error:", error);
+          this.showSnackbar("Greška prilikom odjavivanja", "error");
+        });
+    },
+  },
+  mounted() {
+    this.checkAuth(); // Check authentication status when the component mounts
+  },
+};
 </script>
 
 <style scoped>
@@ -128,12 +169,16 @@ const links = [
   font-size: 1.2rem !important;
 }
 
-#second-navbar .v-list-item-title{
-  color: #1D3A5F !important;
-  font-size: 1.2rem !important;
+#second-navbar .v-list-item .v-list-item-title{
+  font-size: 1.3rem;
   font-weight: bolder;
+  padding-top: 1rem;
 }
 
+#second-navbar .v-list-item .v-list-item-title a {
+  text-decoration: none;
+  color: #1D3A5F !important;
+}
 
 
 #categories{
