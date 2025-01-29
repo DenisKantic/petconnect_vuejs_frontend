@@ -9,18 +9,23 @@
   </div>
   <v-row class="pt-5">
     <!-- Loop to create 4 cards -->
-    <v-col v-for="i in 6" :key="i" cols="12" sm="6" md="4" xl="2">
+    <v-col v-for="post in post" :key="post.id" cols="12" sm="6" md="4" xl="2">
       <v-card>
-        <v-img src="https://placehold.co/300x200" height="60%"></v-img>
 
+        <v-img 
+        :src="post.images.length >5 ? 
+        `http://localhost:8080/${post.images[0]}` 
+        : 'https://placehold.co/300x200'" 
+        >
+      </v-img>
         <!-- Card content -->
         <v-card-title>
-          <div class="text-h6">{{ name }}</div>
+          <div class="text-h6">{{ post.name }}</div>
         </v-card-title>
         <v-card-subtitle>
-          <div>{{ location }}</div>
-          <div>{{ category }}</div>
-          <div>{{ sex }}</div>
+          <div>{{ post.location }}</div>
+          <div>{{ post.category }}</div>
+          <div>{{ post.sex }}</div>
         </v-card-subtitle>
       </v-card>
     </v-col>
@@ -31,13 +36,28 @@
 export default {
   data() {
     return {
+      post: [],
       name: "Pet Name",
       location: "Location",
       category: "Category",
       sex: "Male",
     };
   },
-};
+  mounted(){
+    this.FetchPost()
+  },  
+  methods:{
+    async FetchPost(){
+      try{
+        const response = await this.$http.get("http://localhost:8080/latest-lost-post");
+        this.post = response.data;
+        console.log(response.data)
+      } catch(error){
+        console.log("error")
+      }
+    }
+}
+}
 </script>
 
 <style scoped>
