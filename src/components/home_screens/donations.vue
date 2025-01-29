@@ -10,21 +10,21 @@
   <v-row class="pt-5">
     <v-col v-for="post in post" :key="post.id" cols="12" sm="6" md="4" xl="2">
       <v-card>
-
-        <v-img 
-        :src="post.images.length > 5 ? 
-        `http://localhost:8080/${post.images[0]}` 
-        : 'https://placehold.co/300x200'" 
-        >
-      </v-img>
+        <img
+          :src="
+            post.images.length > 5
+              ? `http://localhost:8080/${post.images[0]}`
+              : 'https://placehold.co/300x200'
+          "
+        />
         <!-- Card content -->
         <v-card-title>
-          <div class="text-h6">{{ post.name }}</div>
+          <div class="text-h6">{{ post.post_name }}</div>
         </v-card-title>
         <v-card-subtitle>
           <div>{{ post.location }}</div>
-          <div>{{ post.category }}</div>
-          <div>{{ post.sex }}</div>
+          <div>{{ post.animal_category }}</div>
+          <div>{{ post.post_category }}</div>
         </v-card-subtitle>
       </v-card>
     </v-col>
@@ -42,20 +42,22 @@ export default {
       sex: "Male",
     };
   },
-  mounted(){
-    this.FetchPost()
-  },  
-  methods:{
-    async FetchPost(){
-      try{
-        const response = await this.$http.get("http://localhost:8080/latest-donation-post");
+  mounted() {
+    this.FetchPost();
+  },
+  methods: {
+    async FetchPost() {
+      try {
+        const response = await this.$http.get(
+          "http://localhost:8080/latest-donation-post",
+        );
         this.post = response.data;
-        console.log(response.data)
-      } catch(error){
-        console.log("error")
+        console.log(response.data);
+      } catch (error) {
+        console.log("error");
       }
-    }
-}
+    },
+  },
 };
 </script>
 
@@ -68,7 +70,7 @@ export default {
   display: flex;
   flex-direction: column;
   max-height: 100%;
-  padding: 0.8rem;
+  padding-bottom: 0.8rem;
   border-radius: 0.8rem;
 }
 
@@ -78,8 +80,9 @@ export default {
   align-items: center;
   width: 100%;
 }
-.v-img {
-  object-fit: cover; /* Ensures the image covers the area without distortion */
-  border-radius: 1rem;
+img {
+  object-fit: cover;
+  overflow: hidden;
+  height: 25vh;
 }
 </style>

@@ -8,16 +8,15 @@
     >
   </div>
   <v-row class="pt-5">
-    <!-- Loop to create 4 cards -->
     <v-col v-for="post in post" :key="post.id" cols="12" sm="6" md="4" xl="2">
       <v-card>
-
-        <v-img 
-        :src="post.images.length >5 ? 
-        `http://localhost:8080/${post.images[0]}` 
-        : 'https://placehold.co/300x200'" 
-        >
-      </v-img>
+        <img
+          :src="
+            post.images.length
+              ? `http://localhost:8080/${post.images[0]}`
+              : 'https://placehold.co/300x200'
+          "
+        />
         <!-- Card content -->
         <v-card-title>
           <div class="text-h6">{{ post.name }}</div>
@@ -43,21 +42,23 @@ export default {
       sex: "Male",
     };
   },
-  mounted(){
-    this.FetchPost()
-  },  
-  methods:{
-    async FetchPost(){
-      try{
-        const response = await this.$http.get("http://localhost:8080/latest-lost-post");
+  mounted() {
+    this.FetchPost();
+  },
+  methods: {
+    async FetchPost() {
+      try {
+        const response = await this.$http.get(
+          "http://localhost:8080/latest-lost-post",
+        );
         this.post = response.data;
-        console.log(response.data)
-      } catch(error){
-        console.log("error")
+        console.log(response.data);
+      } catch (error) {
+        console.log("error");
       }
-    }
-}
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -79,8 +80,9 @@ export default {
   align-items: center;
   width: 100%;
 }
-.v-img {
-  object-fit: cover; /* Ensures the image covers the area without distortion */
-  border-radius: 1rem;
+img {
+  object-fit: cover;
+  overflow: hidden;
+  height: 25vh;
 }
 </style>
