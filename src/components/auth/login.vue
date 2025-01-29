@@ -139,7 +139,9 @@ export default {
       return this.emailTouched ? [this.rules.required, this.rules.email] : [];
     },
     computedPasswordRules() {
-      return this.passwordTouched ? [this.rules.required, this.rules.password] : [];
+      return this.passwordTouched
+        ? [this.rules.required, this.rules.password]
+        : [];
     },
   },
   methods: {
@@ -168,18 +170,20 @@ export default {
       };
 
       this.$http
-        .post("http://localhost:8080/login", form_object, {withCredentials: true})
+        .post("http://localhost:8080/login", form_object, {
+          withCredentials: true,
+        })
         .then((response) => {
+          console.log(response.data);
           this.$router.push("/profil");
           this.showSnackbar("Prijava uspješna", "success");
           return;
         })
         .catch((error) => {
-          this.showSnackbar("Desila se greška", "error");
-          this.$refs.form.reset();
+          console.log("error", error.response.data);
+          this.showSnackbar(error.response.data, "error");
           return;
         });
-      this.$refs.form.reset();
     },
   },
 
