@@ -10,13 +10,13 @@
   <v-row>
     <v-col v-for="post in post" :key="post.id" cols="12" sm="6" md="4" xl="2">
       <v-card>
-
-        <v-img 
-        :src="post.images.length ? 
-        `http://localhost:8080/${post.images[0]}` 
-        : 'https://placehold.co/300x200'" 
-        >
-      </v-img>
+        <img
+          :src="
+            post.images.length
+              ? `http://localhost:8080/${post.images[0]}`
+              : 'https://placehold.co/300x200'
+          "
+        />
         <!-- Card content -->
         <v-card-title>
           <div class="text-h6">{{ post.name }}</div>
@@ -42,20 +42,22 @@ export default {
       sex: "Male",
     };
   },
-  mounted(){
+  mounted() {
     this.FetchPost();
   },
-  methods:{
-    async FetchPost(){
-      try{
-        const response = await this.$http.get("http://localhost:8080/latest-adopt-post");
+  methods: {
+    async FetchPost() {
+      try {
+        const response = await this.$http.get(
+          "http://localhost:8080/latest-adopt-post",
+        );
         this.post = response.data;
-        console.log(response.data)
-      } catch(error){
-        console.log("error")
+        console.log(response.data);
+      } catch (error) {
+        console.log("error");
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -67,7 +69,8 @@ export default {
 .v-card {
   display: flex;
   flex-direction: column;
-  height: 45vh;
+  height: 100%;
+  padding-bottom: 0.8rem;
   border-radius: 0.8rem;
   overflow: hidden;
 }
@@ -78,11 +81,9 @@ export default {
   align-items: center;
   width: 100%;
 }
-.v-img {
+img {
   object-fit: cover;
   overflow: hidden;
   height: 25vh;
 }
-
-
 </style>

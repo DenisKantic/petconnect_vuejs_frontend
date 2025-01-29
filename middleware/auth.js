@@ -1,6 +1,4 @@
-export default function auth(){
-  
-}
+export default function auth() {}
 
 // import Cookies from "js-cookie";
 // import axios from "axios";
