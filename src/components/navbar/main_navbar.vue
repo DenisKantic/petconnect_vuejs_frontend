@@ -11,7 +11,9 @@
           <img src="@/assets/logo.svg" alt="Logo" />
         </v-avatar>
       </router-link>
-      <v-btn text class="ml-2" v-if="$vuetify.display.lgAndUp">PetConnect</v-btn>
+      <v-btn text class="ml-2" v-if="$vuetify.display.lgAndUp"
+        >PetConnect</v-btn
+      >
     </v-app-bar-title>
 
     <v-spacer></v-spacer>
@@ -34,14 +36,11 @@
         </v-btn>
       </template>
       <v-list style="padding: 0">
-        <v-list-item
-          v-for="(item, index) in items"
-          :key="index"
-        >
+        <v-list-item v-for="(item, index) in items" :key="index">
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
         <v-btn
-          style="width: 100%; border-radius: 0;"
+          style="width: 100%; border-radius: 0"
           color="red"
           @click="logout"
         >
@@ -50,7 +49,7 @@
       </v-list>
     </v-menu>
 
-    <router-link v-else to="/prijava">
+    <router-link to="/prijava" v-else>
       <v-btn variant="outlined" flat color="blue">Prijavi se</v-btn>
     </router-link>
 
@@ -64,10 +63,7 @@
       v-if="$vuetify.display.smAndDown"
     >
       <v-list id="first-list">
-        <v-list-item
-          v-for="(item, index) in links"
-          :key="index"
-        >
+        <v-list-item v-for="(item, index) in links" :key="index">
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -76,22 +72,34 @@
 
       <v-list id="second-navbar">
         <v-list-item>
-          <v-list-item-title><router-link to="/udomi">Udomi životinju</router-link></v-list-item-title>
-          <v-list-item-title><router-link to="/izgubljeni">Izgubljene životinje</router-link></v-list-item-title>
-          <v-list-item-title><router-link to="/donacije">Donacijski oglasi</router-link></v-list-item-title>
-          <v-list-item-title><router-link to="/sos">SOS oglasi</router-link></v-list-item-title>
-
+          <v-list-item-title
+            ><router-link to="/udomi"
+              >Udomi životinju</router-link
+            ></v-list-item-title
+          >
+          <v-list-item-title
+            ><router-link to="/izgubljeni"
+              >Izgubljene životinje</router-link
+            ></v-list-item-title
+          >
+          <v-list-item-title
+            ><router-link to="/donacije"
+              >Donacijski oglasi</router-link
+            ></v-list-item-title
+          >
+          <v-list-item-title
+            ><router-link to="/sos">SOS oglasi</router-link></v-list-item-title
+          >
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
   </v-app-bar>
 </template>
 
-
 <script>
-import auth from '../../../middleware/auth';
-import Cookies from 'js-cookie';
-
+import auth from "../../../middleware/auth";
+import Cookies from "js-cookie";
+import router from "@/router";
 
 export default {
   data() {
@@ -117,16 +125,16 @@ export default {
   },
   computed: {
     isLoggedIn() {
-      const token = Cookies.get('auth_token'); // Check for token in cookies
+      const token = Cookies.get("auth_token"); // Check for token in cookies
       return !!token; // Convert to boolean
     },
   },
   methods: {
     async checkAuth() {
       try {
-        await auth(); // Call the auth function to validate the token
+        await auth(router); // Call the auth function to validate the token
       } catch (error) {
-        console.error('Authentication error:', error);
+        console.error("Authentication error:", error);
       }
     },
     showSnackbar(message, color) {
@@ -135,7 +143,8 @@ export default {
       this.snackbar.color = color;
     },
     logout() {
-      this.$http.get("http://localhost:8080/logout", { withCredentials: true })
+      this.$http
+        .get("http://localhost:8080/logout", { withCredentials: true })
         .then(() => {
           this.showSnackbar("Odjavljivanje uspješno", "success");
           this.$router.push("/");
@@ -154,22 +163,22 @@ export default {
 </script>
 
 <style scoped>
-.drawer-closed{
+.drawer-closed {
   transition: transform 0.3 ease-in-out;
   display: none;
 }
 
-.v-navigation-drawer{
+.v-navigation-drawer {
   min-height: 50vh;
   width: 100% !important;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 
-#first-list .v-list-item-title{
+#first-list .v-list-item-title {
   font-size: 1.2rem !important;
 }
 
-#second-navbar .v-list-item .v-list-item-title{
+#second-navbar .v-list-item .v-list-item-title {
   font-size: 1.3rem;
   font-weight: bolder;
   padding-top: 1rem;
@@ -177,12 +186,11 @@ export default {
 
 #second-navbar .v-list-item .v-list-item-title a {
   text-decoration: none;
-  color: #1D3A5F !important;
+  color: #1d3a5f !important;
 }
 
-
-#categories{
-  background-color: #1D3A5F;
+#categories {
+  background-color: #1d3a5f;
   color: white;
   font-size: 1.5rem;
   padding: 0.4rem;

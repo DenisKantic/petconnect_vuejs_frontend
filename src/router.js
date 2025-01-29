@@ -3,7 +3,7 @@ import {
   //createWebHashHistory,
   createWebHistory,
 } from "vue-router";
-import auth from "../middleware/auth"
+//import auth from "../middleware/auth";
 
 const routes = [
   {
@@ -64,7 +64,6 @@ const routes = [
     name: "moji oglasi",
     meta: {
       title: "Moji oglasi",
-      requiresAuth: true
     },
     component: () => import("@/views/dashboard/home_page.vue"),
   },
@@ -88,23 +87,22 @@ const router = createRouter({
 });
 
 // Global navigation guard to update the document title
-router.beforeEach(async(to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title; // Set the document title from route meta
   } else {
     document.title = "PetConnect"; // Fallback title if none is set in the route meta
-  }  
+  }
   // Check if the route requires authentication
-  if (to.matched.some(record => record.meta.requiresAuth)) {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
     try {
-      await auth();
+      //auth();
       next(); // User is authenticated, proceed to route
     } catch (error) {
       // User is not authenticated, redirect to login
-      next({ name: 'login' });
+      next({ name: "login" });
     }
-  } 
-  else {
+  } else {
     next(); // Route doesn't require auth, proceed as normal
   }
 });

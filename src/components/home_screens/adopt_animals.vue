@@ -7,20 +7,24 @@
       ></router-link
     >
   </div>
-  <v-row class="pt-5">
-    <!-- Loop to create 4 cards -->
-    <v-col v-for="i in 6" :key="i" cols="12" sm="6" md="4" xl="2">
+  <v-row>
+    <v-col v-for="post in post" :key="post.id" cols="12" sm="6" md="4" xl="2">
       <v-card>
-        <v-img src="https://placehold.co/300x200" height="60%"></v-img>
 
+        <v-img 
+        :src="post.images.length ? 
+        `http://localhost:8080/${post.images[0]}` 
+        : 'https://placehold.co/300x200'" 
+        >
+      </v-img>
         <!-- Card content -->
         <v-card-title>
-          <div class="text-h6">{{ name }}</div>
+          <div class="text-h6">{{ post.name }}</div>
         </v-card-title>
         <v-card-subtitle>
-          <div>{{ location }}</div>
-          <div>{{ category }}</div>
-          <div>{{ sex }}</div>
+          <div>{{ post.location }}</div>
+          <div>{{ post.category }}</div>
+          <div>{{ post.sex }}</div>
         </v-card-subtitle>
       </v-card>
     </v-col>
@@ -31,12 +35,27 @@
 export default {
   data() {
     return {
+      post: [],
       name: "Pet Name",
       location: "Location",
       category: "Category",
       sex: "Male",
     };
   },
+  mounted(){
+    this.FetchPost();
+  },
+  methods:{
+    async FetchPost(){
+      try{
+        const response = await this.$http.get("http://localhost:8080/latest-adopt-post");
+        this.post = response.data;
+        console.log(response.data)
+      } catch(error){
+        console.log("error")
+      }
+    }
+  }
 };
 </script>
 
@@ -48,9 +67,9 @@ export default {
 .v-card {
   display: flex;
   flex-direction: column;
-  max-height: 100%;
-  padding: 0.8rem;
+  height: 45vh;
   border-radius: 0.8rem;
+  overflow: hidden;
 }
 
 .d-flex {
@@ -60,7 +79,10 @@ export default {
   width: 100%;
 }
 .v-img {
-  object-fit: cover; /* Ensures the image covers the area without distortion */
-  border-radius: 1rem;
+  object-fit: cover;
+  overflow: hidden;
+  height: 25vh;
 }
+
+
 </style>

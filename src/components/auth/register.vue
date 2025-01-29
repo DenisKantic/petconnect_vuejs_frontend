@@ -35,7 +35,7 @@
         <span id="title" class="text-start text-h4 py-5">Registruj se</span>
         <br />
 
-        <v-form ref="form" v-model="valid" lazy-validation style="width: 60%;">
+        <v-form ref="form" v-model="valid" lazy-validation style="width: 60%">
           <label>Email</label>
           <v-text-field
             :disabled="is_submiting"
@@ -125,7 +125,7 @@
             <router-link to="/prijava">
               <span
                 class="text-primary text-body-1 font-weight-bold cursor-pointer hover:text-primary hover:underline"
-              > 
+              >
                 Prijavite se ovdje
               </span>
             </router-link>
@@ -136,11 +136,7 @@
         src="@/assets/picture.svg"
         cover
         class="right-image"
-        style="
-          width: 100%;
-          height: 100vh;
-          background-color: lightblue;
-        "
+        style="width: 100%; height: 100vh; background-color: lightblue"
       >
       </v-img>
     </div>
@@ -268,21 +264,21 @@ label {
     grid-template-columns: 1fr !important;
   }
 
-  .v-container{
+  .v-container {
     margin-top: 5rem;
     min-height: 150vh auto !important;
   }
 
-  #title{
+  #title {
     text-align: center !important;
   }
 
-  .link-text{
+  .link-text {
     text-align: center !important;
     word-break: keep-all;
   }
 
-  .right-image{
+  .right-image {
     display: none !important;
   }
 
