@@ -68,6 +68,15 @@ const routes = [
     component: () => import("@/views/dashboard/home_page.vue"),
   },
   {
+    path: "/profil/kreirajoglas/udomi",
+    name: "Kreiraj oglas",
+    meta: {
+      title: "Kreiraj oglas",
+      requiresAuth: true,
+    },
+    component: () => import("@/views/dashboard/createAdoptPost/create_adopt_post.vue")
+  },
+  {
     path: "/profil/postavke",
     name: "Postavke profila",
     meta: {
