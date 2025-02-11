@@ -6,7 +6,7 @@
       <AdoptAnimals />
       <LostAnimals />
       <Donations />
-      <SOS />
+
     </v-main>
   </div>
 </template>
@@ -17,7 +17,6 @@ import SecondNavbar from "@/components/navbar/second_navbar.vue";
 import AdoptAnimals from "@/components/home_screens/adopt_animals.vue";
 import LostAnimals from "@/components/home_screens/lost_animals.vue";
 import Donations from "@/components/home_screens/donations.vue";
-import SOS from "@/components/home_screens/sos.vue";
 
 export default {
   components: {
@@ -26,7 +25,6 @@ export default {
     AdoptAnimals,
     LostAnimals,
     Donations,
-    SOS,
   },
 };
 </script>
