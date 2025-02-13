@@ -20,7 +20,7 @@
           ><v-icon>mdi-hand-coin</v-icon>Donacijski oglasi</v-btn
         ></router-link
       >
-      <router-link style="color: white" to="/sos"
+      <!-- <router-link style="color: white" to="/sos"
         ><v-btn
           ><v-icon color="red">mdi-alert</v-icon
           ><span style="color: red; font-weight: bolder; margin-right: 0.3rem"
@@ -28,7 +28,7 @@
           </span>
           oglasi</v-btn
         ></router-link
-      >
+      > -->
     </div>
   </v-app-bar>
 </template>

@@ -1,9 +1,5 @@
-import {
-  createRouter,
-  //createWebHashHistory,
-  createWebHistory,
-} from "vue-router";
-//import auth from "../middleware/auth";
+import { createRouter, createWebHistory } from "vue-router";
+import axios from "axios";
 
 const routes = [
   {
@@ -35,14 +31,14 @@ const routes = [
     },
     component: () => import("@/views/pages/adopt_page.vue"),
   },
-  {
-    path: "/sos",
-    name: "sos oglasi",
-    meta: {
-      title: "SOS oglasi",
-    },
-    component: () => import("@/views/pages/sos_page.vue"),
-  },
+  // {
+  //   path: "/sos",
+  //   name: "sos oglasi",
+  //   meta: {
+  //     title: "SOS oglasi",
+  //   },
+  //   component: () => import("@/views/pages/sos_page.vue"),
+  // },
   {
     path: "/izgubljeni",
     name: "izgubljeni ljubimci",
@@ -64,14 +60,26 @@ const routes = [
     name: "moji oglasi",
     meta: {
       title: "Moji oglasi",
+      requiresAuth: true,
     },
     component: () => import("@/views/dashboard/home_page.vue"),
+  },
+  {
+    path: "/profil/kreirajoglas/udomi",
+    name: "Kreiraj oglas",
+    meta: {
+      title: "Kreiraj oglas",
+      requiresAuth: true,
+    },
+    component: () =>
+      import("@/views/dashboard/createAdoptPost/create_adopt_post.vue"),
   },
   {
     path: "/profil/postavke",
     name: "Postavke profila",
     meta: {
       title: "Postavke profila",
+      requiresAuth: true,
     },
     component: () => import("@/views/settings/settings.vue"),
   },
@@ -81,26 +89,32 @@ const routes = [
     component: () => import("@/views/not_found.vue"),
   },
 ];
+
 const router = createRouter({
   history: createWebHistory(),
   routes,
 });
 
-// Global navigation guard to update the document title
+// Global navigation guard to update the document title and check authentication
 router.beforeEach(async (to, from, next) => {
-  if (to.meta.title) {
-    document.title = to.meta.title; // Set the document title from route meta
-  } else {
-    document.title = "PetConnect"; // Fallback title if none is set in the route meta
-  }
+  // Update the document title
+  document.title = to.meta.title || "PetConnect"; // Fallback title
+
   // Check if the route requires authentication
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     try {
-      //auth();
-      next(); // User is authenticated, proceed to route
+      const response = await axios.get("http://localhost:8080/validate-token", {
+        withCredentials: true, // Ensure cookies are sent
+      });
+      console.log("RESPONSE", response.status);
+      if (response.status) {
+        next(); // User is authenticated, proceed to route
+      } else {
+        next({ name: "login" }); // User is not authenticated, redirect to login
+      }
     } catch (error) {
-      // User is not authenticated, redirect to login
-      next({ name: "login" });
+      console.error("Authentication check failed:", error);
+      next({ name: "login" }); // In case of error during auth, redirect to login
     }
   } else {
     next(); // Route doesn't require auth, proceed as normal

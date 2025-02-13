@@ -8,7 +8,15 @@
     >
   </div>
   <v-row>
-    <v-col v-for="post in post" :key="post.id" cols="12" sm="6" md="4" xl="2">
+    <v-col
+      v-for="post in post"
+      :key="post.id"
+      cols="12"
+      sm="6"
+      md="4"
+      lg="2"
+      xl="4"
+    >
       <v-card>
         <img
           :src="
@@ -19,7 +27,7 @@
         />
         <!-- Card content -->
         <v-card-title>
-          <div class="text-h6">{{ post.name }}</div>
+          <div class="text-h6">{{ post.pet_name }}</div>
         </v-card-title>
         <v-card-subtitle>
           <div>{{ post.location }}</div>
@@ -63,6 +71,7 @@ export default {
 
 <style scoped>
 .v-row {
+  padding-top: 1rem;
   display: flex;
   flex-direction: row;
 }
@@ -84,6 +93,6 @@ export default {
 img {
   object-fit: cover;
   overflow: hidden;
-  height: 25vh;
+  height: 20vh;
 }
 </style>
