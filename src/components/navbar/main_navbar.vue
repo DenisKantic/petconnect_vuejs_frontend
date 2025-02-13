@@ -87,9 +87,9 @@
               >Donacijski oglasi</router-link
             ></v-list-item-title
           >
-          <v-list-item-title
+          <!-- <v-list-item-title
             ><router-link to="/sos">SOS oglasi</router-link></v-list-item-title
-          >
+          > -->
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -97,13 +97,13 @@
 </template>
 
 <script>
-import auth from "../../../middleware/auth";
 import Cookies from "js-cookie";
-import router from "@/router";
+import axios from "axios";
 
 export default {
   data() {
     return {
+      isLoggedIn: false,
       drawer: false,
       snackbar: {
         visible: false,
@@ -123,18 +123,27 @@ export default {
       ],
     };
   },
-  computed: {
-    isLoggedIn() {
-      const token = Cookies.get("auth_token"); // Check for token in cookies
-      return !!token; // Convert to boolean
-    },
-  },
+  computed: {},
   methods: {
     async checkAuth() {
+      this.isLoggedIn = false;
+      console.log("IS LOGGED IN STATE", this.isLoggedIn);
+
       try {
-        await auth(router); // Call the auth function to validate the token
+        const response = await axios.get(
+          "http://localhost:8080/validate-token",
+          {
+            withCredentials: true, // Ensure cookies are sent
+          },
+        );
+        console.log("RES", response);
+        if (response.status == 200) {
+          this.isLoggedIn = true;
+        }
       } catch (error) {
         console.error("Authentication error:", error);
+        this.isLoggedIn = false;
+        Cookies.remove("auth_token", { path: "/" });
       }
     },
     showSnackbar(message, color) {
@@ -143,13 +152,16 @@ export default {
       this.snackbar.color = color;
     },
     logout() {
-      this.$http
-        .get("http://localhost:8080/logout", { withCredentials: true })
-        .then(() => {
-          this.showSnackbar("Odjavljivanje uspješno", "success");
-          this.$router.push("/");
-          window.location.reload(); // Refresh the page
-        })
+      Cookies.remove("auth_token", { path: "/" });
+      this.showSnackbar("Odjavljivanje uspješno", "success");
+      this.isLoggedIn = false;
+      this.$router.push("/");
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
+      axios
+        .post("http://localhost:8080/logout", {}, { withCredentials: true })
         .catch((error) => {
           console.error("Logout error:", error);
           this.showSnackbar("Greška prilikom odjavivanja", "error");
