@@ -6,7 +6,7 @@ let validationTimer;
 export const startTokenValidation = (callback) => {
   // Validate token immediately on start
   validateToken(callback);
-  
+
   // Set up interval to check token every 5 minutes (300,000 milliseconds)
   validationTimer = setInterval(() => {
     validateToken(callback);
@@ -19,9 +19,13 @@ export const stopTokenValidation = () => {
 
 const validateToken = async (callback) => {
   try {
-    const response = await axios.get("http://localhost:8080/validate-token", null, {
-      withCredentials: true, // Ensure cookies are sent
-    });
+    const response = await axios.get(
+      "http://localhost:8080/validate-token",
+      null,
+      {
+        withCredentials: true, // Ensure cookies are sent
+      },
+    );
     if (response.status === 200) {
       callback(true); // Call the callback with true if the token is valid
     } else {

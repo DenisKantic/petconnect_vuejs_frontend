@@ -6,7 +6,6 @@
       <AdoptAnimals />
       <LostAnimals />
       <Donations />
-
     </v-main>
   </div>
 </template>

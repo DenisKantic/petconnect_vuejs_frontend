@@ -13,12 +13,16 @@ export default async function auth() {
   try {
     const token = Cookies.get("auth_token");
     console.log("Token from cookies:", token); // Check if the token exists
-    const response = await axios.post("http://localhost:8080/validate-token", null, {
-      withCredentials: true, // Ensure cookies are sent
-    });
+    const response = await axios.post(
+      "http://localhost:8080/validate-token",
+      null,
+      {
+        withCredentials: true, // Ensure cookies are sent
+      },
+    );
 
-    if (response.status==200) {
-        console.log("DATA",response.data)
+    if (response.status == 200) {
+      console.log("DATA", response.data);
       return true; // Token is valid
     } else {
       Cookies.remove("auth_token");

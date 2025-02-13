@@ -20,7 +20,6 @@ export default {
     DonationPost,
     AdoptPost,
     LostAnimalPage,
-
   },
 };
 </script>

@@ -39,7 +39,7 @@
         <v-list-item v-for="(item, index) in items" :key="index">
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
-        <v-btn 
+        <v-btn
           style="width: 100%; border-radius: 0"
           color="red"
           @click="logout"
@@ -123,27 +123,27 @@ export default {
       ],
     };
   },
-  computed: {
-    
-  },
+  computed: {},
   methods: {
     async checkAuth() {
       this.isLoggedIn = false;
-      console.log("IS LOGGED IN STATE", this.isLoggedIn)
+      console.log("IS LOGGED IN STATE", this.isLoggedIn);
 
       try {
-        const response = await axios.get("http://localhost:8080/validate-token", {
-        withCredentials: true, // Ensure cookies are sent
-      });
-      console.log("RES",response)
-      if(response.status==200){
-         this.isLoggedIn = true;
-      }
+        const response = await axios.get(
+          "http://localhost:8080/validate-token",
+          {
+            withCredentials: true, // Ensure cookies are sent
+          },
+        );
+        console.log("RES", response);
+        if (response.status == 200) {
+          this.isLoggedIn = true;
+        }
       } catch (error) {
         console.error("Authentication error:", error);
         this.isLoggedIn = false;
-        Cookies.remove("auth_token", {path: "/"})
-
+        Cookies.remove("auth_token", { path: "/" });
       }
     },
     showSnackbar(message, color) {
@@ -152,25 +152,25 @@ export default {
       this.snackbar.color = color;
     },
     logout() {
-      Cookies.remove("auth_token", {path: "/"});
+      Cookies.remove("auth_token", { path: "/" });
       this.showSnackbar("Odjavljivanje uspješno", "success");
       this.isLoggedIn = false;
       this.$router.push("/");
 
       setTimeout(() => {
-    window.location.reload();
-  }, 100);
-  axios
-    .post("http://localhost:8080/logout", {}, {withCredentials: true})
-    .catch((error) => {
-      console.error("Logout error:", error);
-      this.showSnackbar("Greška prilikom odjavivanja", "error");
-    });
-}
+        window.location.reload();
+      }, 100);
+      axios
+        .post("http://localhost:8080/logout", {}, { withCredentials: true })
+        .catch((error) => {
+          console.error("Logout error:", error);
+          this.showSnackbar("Greška prilikom odjavivanja", "error");
+        });
+    },
   },
   mounted() {
-   this.checkAuth(); // Check authentication status when the component mounts
-  }
+    this.checkAuth(); // Check authentication status when the component mounts
+  },
 };
 </script>
 

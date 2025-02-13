@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import main_navbar from '../navbar/main_navbar.vue';
+import main_navbar from "../navbar/main_navbar.vue";
 export default {
   data() {
     return {

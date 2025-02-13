@@ -1,7 +1,4 @@
-import {
-  createRouter,
-  createWebHistory,
-} from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import axios from "axios";
 
 const routes = [
@@ -74,14 +71,15 @@ const routes = [
       title: "Kreiraj oglas",
       requiresAuth: true,
     },
-    component: () => import("@/views/dashboard/createAdoptPost/create_adopt_post.vue")
+    component: () =>
+      import("@/views/dashboard/createAdoptPost/create_adopt_post.vue"),
   },
   {
     path: "/profil/postavke",
     name: "Postavke profila",
     meta: {
       title: "Postavke profila",
-      requiresAuth: true
+      requiresAuth: true,
     },
     component: () => import("@/views/settings/settings.vue"),
   },
@@ -103,12 +101,12 @@ router.beforeEach(async (to, from, next) => {
   document.title = to.meta.title || "PetConnect"; // Fallback title
 
   // Check if the route requires authentication
-  if (to.matched.some(record => record.meta.requiresAuth)) {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
     try {
       const response = await axios.get("http://localhost:8080/validate-token", {
         withCredentials: true, // Ensure cookies are sent
       });
-      console.log("RESPONSE", response.status)
+      console.log("RESPONSE", response.status);
       if (response.status) {
         next(); // User is authenticated, proceed to route
       } else {
