@@ -1,13 +1,15 @@
 <template>
   <v-app id="container">
-    <p class="text-center pt-5 text-h6">Kreiraj oglas za udomljavanje</p>
-    <v-card>
-      <v-card-title class="text-h6 pt-5 font-weight-regular">
-        <span>{{ currentTitle }}</span>
-      </v-card-title>
+    <v-card :disabled="isCardDisabled">
+   
 
       <v-window v-model="step">
+       
         <v-window-item :value="1">
+          <p class="text-h6 text-center font-weight-light my-4">Kreiraj oglas za udomljavanje</p>
+          <v-card-title class="text-h6 pt-5 font-weight-regular">
+        <span>{{ currentTitle }}</span>
+      </v-card-title>
           <v-card-text>
             <v-text-field
               v-model="petName"
@@ -39,11 +41,14 @@
               <v-radio label="Ne" color="error" value="ne"></v-radio>
             </v-radio-group>
 
-            <p>Lokacija</p>
-            <v-select v-model="location" :items="locations"></v-select>
+            <v-select
+              label="Izaberite lokaciju"
+              v-model="location"
+              :items="locations"
+            ></v-select>
 
+            <p>Detaljni opis</p>
             <v-textarea
-              label="Opis"
               rows="8"
               no-resize
               counter
@@ -55,6 +60,7 @@
         </v-window-item>
 
         <v-window-item :value="2">
+          <p class="text-h6 text-center font-weight-light my-4">Unesite fotografije</p>
           <v-card-text>
             <VFileUpload
               class="upload"
@@ -78,27 +84,84 @@
         </v-window-item>
 
         <v-window-item :value="3">
-          <div class="pa-4 text-center">
-            <h3 class="text-h6 font-weight-light mb-2">
-              Oglas je uspješno kreiran!
-            </h3>
-            <v-btn @click="submitForm" color="primary" variant="flat"
-              >SUBMIT</v-btn
+          <h3 class="text-h6 text-center font-weight-light my-4">
+            Pregled oglasa prije objave!
+          </h3>
+          <div class="text-start pa-4 font-weight-light">
+            <p class="pb-2 font-weight-bold">
+              Ime životinje: <br />
+              <span class="font-weight-light">{{ petName }}</span>
+            </p>
+            <p class="pb-2">
+              Vrsta životinje: <br />
+              {{ animalCategory }}
+            </p>
+            <p class="pb-2">
+              Spol: <br />
+              {{ animalGender }}
+            </p>
+            <p class="pb-2">
+              Da li je životinja vakcinisana: <br />
+              {{ vaccinated }}
+            </p>
+            <p class="pb-2">
+              Da li je životinja čipovana: <br />
+              {{ chipped }}
+            </p>
+            <p class="pb-2">
+              Lokacija: <br />
+              {{ location }}
+            </p>
+            <p>Fotografije:</p>
+            <br />
+
+            <v-btn
+              :loading="isBtnLoading"
+              :disabled="isBtnDisabled"
+              @click="submitForm"
+              color="primary"
+              variant="flat"
+              >OBJAVI</v-btn
             >
           </div>
+        </v-window-item>
+
+        <v-window-item id="fourth-container" :value="4">
+          <v-icon size="40" color="green">mdi-check-circle-outline</v-icon>
+          <p>Objava je uspješno kreirana</p>
         </v-window-item>
       </v-window>
 
       <v-divider></v-divider>
 
-      <v-card-actions>
-        <v-btn v-if="step > 1" variant="text" @click="prevStep"> Nazad </v-btn>
+      <v-card-actions v-show="step !=4">
+        <v-btn
+          :disabled="isNazadBtnDisabled"
+          v-if="step >= 1 && step < 4"
+          variant="text"
+          @click="prevStep"
+        >
+          Nazad
+        </v-btn>
         <v-spacer></v-spacer>
         <v-btn v-if="step < 3" color="primary" variant="flat" @click="nextStep">
           Dalje
         </v-btn>
       </v-card-actions>
     </v-card>
+
+    <v-snackbar
+      v-model="snackbar.visible"
+      :timeout="snackbar.timeout"
+      :color="snackbar.color"
+    >
+      {{ snackbar.message }}
+      <template #action>
+        <v-btn color="white" text @click="snackbar.visible = false"
+          >Zatvori</v-btn
+        >
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -114,26 +177,113 @@ export default {
     const step = ref(1);
 
     return {
+      snackbar: {
+        visible: false,
+        message: "",
+        timeout: 2000,
+        color: "success",
+      },
       rules: [(v) => v.length <= 1500 || "Maksimalno 1500 karaktera"],
       locations: [
-        "Tuzla",
-        "Sarajevo",
-        "Zenica",
+        "Banja Luka",
+        "Bihać",
+        "Bijeljina",
+        "Bosanska Gradiška",
+        "Bosanska Krupa",
+        "Bosanski Brod",
+        "Bosanski Novi",
+        "Bosanski Petrovac",
+        "Brčko",
+        "Breza",
+        "Bugojno",
+        "Busovača",
+        "Cazin",
+        "Čapljina",
+        "Čelić",
+        "Čelinac",
+        "Čitluk",
+        "Derventa",
+        "Doboj",
+        "Donji Vakuf",
+        "Drvar",
+        "Fojnica",
+        "Gacko",
+        "Glamoč",
+        "Goražde",
+        "Gornji Vakuf-Uskoplje",
+        "Gračanica",
+        "Gradačac",
+        "Hadžići",
+        "Han Pijesak",
+        "Ilidža",
+        "Ilijaš",
+        "Jablanica",
+        "Jajce",
+        "Kakanj",
+        "Kalesija",
+        "Kalinovik",
+        "Kiseljak",
+        "Kladanj",
+        "Ključ",
+        "Konjic",
+        "Kotor Varoš",
+        "Kreševo",
+        "Kupres",
+        "Laktaši",
+        "Lopare",
+        "Ljubinje",
+        "Ljubuški",
+        "Lukavac",
+        "Maglaj",
+        "Milići",
+        "Modriča",
         "Mostar",
-        "Tuzla",
+        "Mrkonjić Grad",
+        "Neum",
+        "Nevesinje",
+        "Novi Travnik",
+        "Odžak",
+        "Orašje",
+        "Pale",
+        "Posušje",
+        "Prijedor",
+        "Prnjavor",
+        "Prozor-Rama",
+        "Rogatica",
+        "Rudo",
+        "Sanski Most",
+        "Sapna",
         "Sarajevo",
-        "Zenica",
-        "Mostar",
+        "Šamac",
+        "Šekovići",
+        "Šipovo",
+        "Sokolac",
+        "Srebrenica",
+        "Srebrenik",
+        "Široki Brijeg",
+        "Stolac",
+        "Teočak",
+        "Teslić",
+        "Tešanj",
+        "Tomislavgrad",
+        "Travnik",
+        "Trebinje",
+        "Trnovo",
         "Tuzla",
-        "Sarajevo",
+        "Ugljevik",
+        "Vareš",
+        "Velika Kladuša",
+        "Visoko",
+        "Vitez",
+        "Višegrad",
+        "Vogošća",
+        "Zavidovići",
         "Zenica",
-        "Mostar",
-        "Tuzla",
-        "Sarajevo",
-        "Zenica",
-        "Mostar",
+        "Zvornik",
+        "Žepče",
+        "Živinice",
       ],
-      location: "Izaberite",
+      location: "",
       petName: "",
       animalCategory: "",
       animalGender: "",
@@ -142,6 +292,10 @@ export default {
       description: "",
       uploadedImages: [],
       step: 1,
+      isCardDisabled: false,
+      isBtnDisabled: false,
+      isBtnLoading: false,
+      isNazadBtnDisabled: false,
     };
   },
   computed: {
@@ -157,6 +311,11 @@ export default {
     },
   },
   methods: {
+    showSnackbar(message, color) {
+      this.snackbar.visible = true;
+      this.snackbar.message = message;
+      this.snackbar.color = color;
+    },
     prevStep() {
       if (this.step > 1) {
         this.step--;
@@ -164,9 +323,36 @@ export default {
       }
     },
     nextStep() {
-      if (this.step < 3) {
-        this.step++;
-        window.scrollTo({ top: 0, behavior: "smooth" });
+      if (this.step === 1) {
+        if (
+          this.location &&
+          this.petName &&
+          this.animalCategory &&
+          this.animalGender &&
+          this.vaccinated &&
+          this.chipped &&
+          this.description
+        ) {
+          this.step++;
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          this.showSnackbar("Niste popunili sva polja.", "error");
+        }
+      }
+
+      // check for second page for images
+      else if (this.step === 2) {
+        // Ensure at least one image has been uploaded
+        if (this.uploadedImages.length > 0) {
+          this.step++;
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          this.showSnackbar("Niste dodali fotografije", "error");
+        }
+      } else if (this.step === 3){
+        window.scrollTo({top: 0, behavior: "smooth"})
+      } else if (this.step === 4){
+        window.scrollTo({top: 0, behavior: "smooth"})
       }
     },
 
@@ -175,6 +361,10 @@ export default {
     },
     submitForm() {
       const formData = new FormData();
+      this.isCardDisabled = true;
+      this.isBtnDisabled = true;
+      this.isBtnLoading = true;
+      this.isNazadBtnDisabled = true;
 
       console.log(
         "DATA",
@@ -182,9 +372,11 @@ export default {
         this.location,
         this.petName,
         "\n",
-        "animal category",this.animalCategory,
+        "animal category",
+        this.animalCategory,
         "\n",
-        "animal gender",this.animalGender,
+        "animal gender",
+        this.animalGender,
         "\n",
         this.vaccinated,
         "\n",
@@ -206,17 +398,23 @@ export default {
         formData.append("images", file); // Each file must be appended individually
       });
 
+      setTimeout(()=>{
       this.$http
         .post("http://localhost:8080/create-adopt-post", formData, {
           withCredentials: true,
         })
         .then((res) => {
+          this.step=4;
           console.log(res.data);
         })
         .catch((err) => {
           console.log("ERROR", err);
         });
-    },
+      this.isCardDisabled = false;
+      this.isBtnDisabled = false;
+      this.isBtnLoading = false;
+      this.isNazadBtnDisabled = false;
+    },1500)}
   },
 };
 </script>
@@ -227,14 +425,26 @@ export default {
   background-color: #e5e5e5;
   min-height: 60vh;
   overflow: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
 }
 .v-card {
-  margin: 2rem auto;
+  margin: 4rem auto;
   width: 50%;
+}
+
+
+#fourth-container{
+  width: 100%;
+  padding: 2rem;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#fourth-container .v-icon{
+  padding: 2rem;
+  display: flex;
 }
 </style>
 
