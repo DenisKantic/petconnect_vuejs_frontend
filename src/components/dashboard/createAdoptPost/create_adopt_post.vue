@@ -1,15 +1,14 @@
 <template>
   <v-app id="container">
     <v-card :disabled="isCardDisabled">
-   
-
       <v-window v-model="step">
-       
         <v-window-item :value="1">
-          <p class="text-h6 text-center font-weight-light my-4">Kreiraj oglas za udomljavanje</p>
+          <p class="text-h6 text-center font-weight-light my-4">
+            Kreiraj oglas za udomljavanje
+          </p>
           <v-card-title class="text-h6 pt-5 font-weight-regular">
-        <span>{{ currentTitle }}</span>
-      </v-card-title>
+            <span>{{ currentTitle }}</span>
+          </v-card-title>
           <v-card-text>
             <v-text-field
               v-model="petName"
@@ -60,7 +59,10 @@
         </v-window-item>
 
         <v-window-item :value="2">
-          <p class="text-h6 text-center font-weight-light my-4">Unesite fotografije</p>
+          <p class="text-h6 text-center font-weight-light my-4">
+            Unesite fotografije <br />
+            (5 fotografija maksimalno)
+          </p>
           <v-card-text>
             <VFileUpload
               class="upload"
@@ -71,13 +73,21 @@
               clearable
               multiple
               @update:model-value="handleFileUpload"
+              :model-value="uploadedImages"
               title="Kliknite ovdje ili prenesite fotografije"
               label="Upload Images"
               prepend-outer-icon="mdi-file"
             >
-              <template v-slot:upload>
-                <v-btn color="primary">Custom Browse File</v-btn>
-                <!-- Custom button label -->
+              <template v-slot:prepend>
+                <v-avatar size="150" rounded></v-avatar>
+              </template>
+              <template v-slot:clear="{ props: clearProps }">
+                <v-btn
+                  size="large"
+                  variant="text"
+                  color="red"
+                  v-bind="clearProps"
+                ></v-btn>
               </template>
             </VFileUpload>
           </v-card-text>
@@ -134,7 +144,7 @@
 
       <v-divider></v-divider>
 
-      <v-card-actions v-show="step !=4">
+      <v-card-actions v-show="step != 4">
         <v-btn
           :disabled="isNazadBtnDisabled"
           v-if="step >= 1 && step < 4"
@@ -291,7 +301,7 @@ export default {
       chipped: "",
       description: "",
       uploadedImages: [],
-      step: 1,
+      step: 2,
       isCardDisabled: false,
       isBtnDisabled: false,
       isBtnLoading: false,
@@ -349,15 +359,37 @@ export default {
         } else {
           this.showSnackbar("Niste dodali fotografije", "error");
         }
-      } else if (this.step === 3){
-        window.scrollTo({top: 0, behavior: "smooth"})
-      } else if (this.step === 4){
-        window.scrollTo({top: 0, behavior: "smooth"})
+      } else if (this.step === 3) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (this.step === 4) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     },
 
     handleFileUpload(files) {
-      this.uploadedImages = files;
+      const fileArray = Array.from(files);
+      const [validTypes] = ["image/png", "image/jpeg", "image/jpg"];
+      const filteredFiles = fileArray.filter((file) =>
+        validTypes.includes(file.type),
+      );
+
+      console.log(fileArray);
+
+
+      if (fileArray.length > 5) {
+        this.showSnackbar("Ne možete objaviti više od 5 fotografija", "error");
+        this.uploadedImages = fileArray.slice(0, 5);
+      } else if (filteredFiles.length === 0) {
+        this.showSnackbar(
+          "Molimo odaberite validne formate fotografija (PNG, JPG, JPEG)",
+          "error",
+        );
+        this.uploadedImages = [];
+      } else {
+        this.uploadedImages = fileArray;
+      }
+
+      this.$emit("update:model-value", this.uploadedImages);
     },
     submitForm() {
       const formData = new FormData();
@@ -366,25 +398,7 @@ export default {
       this.isBtnLoading = true;
       this.isNazadBtnDisabled = true;
 
-      console.log(
-        "DATA",
-        "location",
-        this.location,
-        this.petName,
-        "\n",
-        "animal category",
-        this.animalCategory,
-        "\n",
-        "animal gender",
-        this.animalGender,
-        "\n",
-        this.vaccinated,
-        "\n",
-        this.chipped,
-        "\n",
-        this.description,
-      );
-
+    
       formData.append("category", this.animalCategory);
       formData.append("petName", this.petName);
       formData.append("description", this.description);
@@ -398,23 +412,24 @@ export default {
         formData.append("images", file); // Each file must be appended individually
       });
 
-      setTimeout(()=>{
-      this.$http
-        .post("http://localhost:8080/create-adopt-post", formData, {
-          withCredentials: true,
-        })
-        .then((res) => {
-          this.step=4;
-          console.log(res.data);
-        })
-        .catch((err) => {
-          console.log("ERROR", err);
-        });
-      this.isCardDisabled = false;
-      this.isBtnDisabled = false;
-      this.isBtnLoading = false;
-      this.isNazadBtnDisabled = false;
-    },1500)}
+      setTimeout(() => {
+        this.$http
+          .post("http://localhost:8080/create-adopt-post", formData, {
+            withCredentials: true,
+          })
+          .then((res) => {
+            this.step = 4;
+            console.log(res.data);
+          })
+          .catch((err) => {
+            console.log("ERROR", err);
+          });
+        this.isCardDisabled = false;
+        this.isBtnDisabled = false;
+        this.isBtnLoading = false;
+        this.isNazadBtnDisabled = false;
+      }, 1500);
+    },
   },
 };
 </script>
@@ -431,8 +446,7 @@ export default {
   width: 50%;
 }
 
-
-#fourth-container{
+#fourth-container {
   width: 100%;
   padding: 2rem;
   height: auto;
@@ -442,19 +456,19 @@ export default {
   justify-content: center;
 }
 
-#fourth-container .v-icon{
+#fourth-container .v-icon {
   padding: 2rem;
   display: flex;
 }
-</style>
 
-<!-- 
-Name        string `form:"name" binding:"required"`
-	Category    string `form:"category" binding:"required"`
-	PetName     string `form:"petName" binding:"required"`
-	Description string `form:"description" binding:"required"`
-	Sex         string `form:"sex" binding:"required"`
-	Vaccinated  bool   `form:"vaccinated"`
-	Chipped     bool   `form:"chipped"`
-	Location    string `form:"location" binding:"required"`
-	Images      []string -->
+#delete-btn {
+  padding: 2rem;
+}
+
+/* responsive media*/
+@media (min-width: 200px) and (max-width: 550px){
+  .v-card{
+    width: 90%;
+  }
+}
+</style>
