@@ -123,6 +123,17 @@
               {{ location }}
             </p>
             <p>Fotografije:</p>
+            <div class="image-preview">
+              <v-img
+                v-for="(url, index) in imageURLs"
+                :key="index"
+                :model-value="imageURLs"
+                :src="url"
+                aspect-ratio="1"
+                class="my-2"
+              ></v-img>
+            </div>
+
             <br />
 
             <v-btn
@@ -177,15 +188,12 @@
 
 <script>
 import { VFileUpload } from "vuetify/labs/VFileUpload";
-import { ref } from "vue";
 
 export default {
   components: {
     VFileUpload,
   },
   data() {
-    const step = ref(1);
-
     return {
       snackbar: {
         visible: false,
@@ -301,6 +309,7 @@ export default {
       chipped: "",
       description: "",
       uploadedImages: [],
+      imageURLs: [],
       step: 2,
       isCardDisabled: false,
       isBtnDisabled: false,
@@ -362,6 +371,7 @@ export default {
       } else if (this.step === 3) {
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else if (this.step === 4) {
+        console.log("FUNCTION FIRED UP");
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     },
@@ -373,23 +383,30 @@ export default {
         validTypes.includes(file.type),
       );
 
-      console.log(fileArray);
-
-
-      if (fileArray.length > 5) {
-        this.showSnackbar("Ne možete objaviti više od 5 fotografija", "error");
-        this.uploadedImages = fileArray.slice(0, 5);
+      if (fileArray.length > 6) {
+        this.showSnackbar("Ne možete objaviti više od 6 fotografija", "error");
+        this.uploadedImages = fileArray.slice(0, 6);
+        this.imageURLs = this.uploadedImages.map((file) =>
+          URL.createObjectURL(file),
+        );
+        console.log("FIRST ARRAY", this.uploadedImages);
       } else if (filteredFiles.length === 0) {
         this.showSnackbar(
           "Molimo odaberite validne formate fotografija (PNG, JPG, JPEG)",
           "error",
         );
         this.uploadedImages = [];
+        this.imageURLs = [];
       } else {
         this.uploadedImages = fileArray;
+        this.imageURLs = this.uploadedImages.map((file) =>
+          URL.createObjectURL(file),
+        );
+        console.log("URL IMGES", this.imageURLs);
       }
 
       this.$emit("update:model-value", this.uploadedImages);
+      this.$emit("update:model-value", this.imageURLs);
     },
     submitForm() {
       const formData = new FormData();
@@ -398,7 +415,6 @@ export default {
       this.isBtnLoading = true;
       this.isNazadBtnDisabled = true;
 
-    
       formData.append("category", this.animalCategory);
       formData.append("petName", this.petName);
       formData.append("description", this.description);
@@ -430,11 +446,39 @@ export default {
         this.isNazadBtnDisabled = false;
       }, 1500);
     },
+    onBeforeUnmount() {
+      this.imageURLs.forEach((url) => {
+        URL.revokeObjectURL(url);
+      });
+    },
   },
 };
 </script>
 
 <style scoped>
+.image-preview {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 3rem auto;
+}
+
+@media (max-width: 600px) {
+  .image-preview {
+    grid-template-columns: repeat(1, 1fr);
+    margin: auto;
+    width: 100%;
+    background-color: green;
+  }
+}
+
+.image-preview .v-img {
+  margin: 0.5rem;
+  border-radius: 4px;
+  box-shadow: 0 1rem 5rem rgba(0, 0, 0, 0.1);
+}
 #container {
   width: 100%;
   background-color: #e5e5e5;
@@ -449,7 +493,6 @@ export default {
 #fourth-container {
   width: 100%;
   padding: 2rem;
-  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -466,8 +509,8 @@ export default {
 }
 
 /* responsive media*/
-@media (min-width: 200px) and (max-width: 550px){
-  .v-card{
+@media (min-width: 200px) and (max-width: 550px) {
+  .v-card {
     width: 90%;
   }
 }
