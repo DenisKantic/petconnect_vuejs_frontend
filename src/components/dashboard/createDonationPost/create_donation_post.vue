@@ -13,30 +13,30 @@
       <v-window v-model="step">
         <v-window-item :value="1">
           <p class="text-h6 text-center font-weight-light my-4">
-            Kreiraj oglas za izgubljenog/pronađenog ljubimca
+            Kreiraj donacijski oglas
           </p>
           <v-card-title class="text-h6 pt-5 font-weight-regular">
             <span>{{ currentTitle }}</span>
           </v-card-title>
           <v-card-text>
             <v-text-field
+              v-model="postName"
+              :rules="postNameRules"
               counter
-              :rules="name_rules"
-              v-model="petName"
-              label="Ime ljubimca"
-              placeholder="Unesite ime ljubimca"
+              label="Naziv objave"
+              placeholder="Unesite naziv objave (npr. tablete za mačku...)"
             ></v-text-field>
-            <p>Vrsta životinje</p>
+            <p>Vrsta objave</p>
+            <v-radio-group v-model="postCategory">
+              <v-radio label="Hrana" color="primary" value="hrana"></v-radio>
+              <v-radio label="Lijekovi" color="primary" value="lijek"></v-radio>
+              <v-radio label="Ostalo" color="primary" value="ostalo"></v-radio>
+            </v-radio-group>
+            <p>Za životinju</p>
             <v-radio-group v-model="animalCategory">
               <v-radio label="Pas" color="primary" value="pas"></v-radio>
               <v-radio label="Mačka" color="primary" value="macka"></v-radio>
               <v-radio label="Ostalo" color="primary" value="ostalo"></v-radio>
-            </v-radio-group>
-
-            <p>Spol</p>
-            <v-radio-group v-model="animalGender">
-              <v-radio label="Mužjak" color="primary" value="muzjak"></v-radio>
-              <v-radio label="Ženka" color="error" value="zenka"></v-radio>
             </v-radio-group>
 
             <v-select
@@ -98,30 +98,30 @@
           </h3>
           <div class="text-start pa-4 font-weight-light">
             <p class="pb-2 font-weight-bold">
-              Ime životinje: <br />
-              <span class="font-weight-light">{{ petName }}</span>
+              Naziv objave: <br />
+              <span class="font-weight-light">{{ postName }}</span>
             </p>
-            <p class="pb-2">
-              Vrsta životinje: <br />
-              {{ animalCategory }}
+            <p class="pb-2 font-weight-bold">
+              Vrsta oglasa <br />
+              <span class="font-weight-light">{{ postCategory }}</span>
             </p>
-            <p class="pb-2">
-              Spol: <br />
-              {{ animalGender }}
+
+            <p class="pb-2 font-weight-bold">
+              Za životinju: <br />
+              <span class="font-weight-light">{{ animalCategory }}</span>
             </p>
-            <p class="pb-2">
-              Da li je životinja vakcinisana: <br />
-              {{ vaccinated }}
-            </p>
-            <p class="pb-2">
-              Da li je životinja čipovana: <br />
-              {{ chipped }}
-            </p>
-            <p class="pb-2">
+
+            <p class="pb-2 font-weight-bold">
               Lokacija: <br />
-              {{ location }}
+              <span class="font-weight-light">{{ location }}</span>
             </p>
-            <p>Fotografije:</p>
+
+            <p class="pb-2 font-weight-bold">
+              Detaljan opis: <br />
+              <span class="font-weight-light">{{ animalCategory }}</span>
+            </p>
+
+            <p class="pb-2 font-weight-bold">Fotografije:</p>
             <div class="image-preview">
               <v-img
                 v-for="(url, index) in imageURLs"
@@ -208,7 +208,7 @@ export default {
         color: "success",
       },
       rules: [(v) => v.length <= 1500 || "Maksimalno 1500 karaktera"],
-      name_rules: [(v) => v.length <= 30 || "Maksimalno 30 karaktera"],
+      postNameRules: [(v) => v.length <= 30 || "Maksimalno 30 karaktera"],
       locations: [
         "Banja Luka",
         "Bihać",
@@ -309,11 +309,9 @@ export default {
         "Živinice",
       ],
       location: "",
-      petName: "",
+      postName: "",
       animalCategory: "",
-      animalGender: "",
-      vaccinated: "",
-      chipped: "",
+      postCategory: "",
       description: "",
       uploadedImages: [],
       imageURLs: [],
@@ -353,21 +351,21 @@ export default {
     },
     nextStep() {
       if (this.step === 1) {
-        if (this.description.length > 1500 || this.petName.length > 30) {
+        if (this.description.length > 1500 || this.postName.length > 30) {
           this.showSnackbar("Niste ispravno popunili polja", "error");
           return;
         }
         if (
           this.location &&
-          this.petName &&
+          this.postName &&
           this.animalCategory &&
-          this.animalGender &&
+          this.postCategory &&
           this.description
         ) {
           this.step++;
           window.scrollTo({ top: 0, behavior: "smooth" });
         } else {
-          this.showSnackbar("Niste ispunili sva polja", "error");
+          this.showSnackbar("Niste popunili sva polja.", "error");
         }
       }
 
@@ -427,10 +425,10 @@ export default {
       this.isBtnLoading = true;
       this.isNazadBtnDisabled = true;
 
-      formData.append("category", this.animalCategory);
-      formData.append("name", this.petName);
+      formData.append("animalCategory", this.animalCategory);
+      formData.append("postName", this.postName);
       formData.append("description", this.description);
-      formData.append("sex", this.animalGender);
+      formData.append("postCategory", this.postCategory);
       formData.append("location", this.location);
 
       // Append images correctly
@@ -440,7 +438,7 @@ export default {
 
       setTimeout(() => {
         this.$http
-          .post("http://localhost:8080/create-lost-post", formData, {
+          .post("http://localhost:8080/create-donation-post", formData, {
             withCredentials: true,
           })
           .then((res) => {
@@ -452,7 +450,6 @@ export default {
           })
           .catch((err) => {
             console.log("ERROR", err);
-            this.showSnackbar("Desila se greška", "error");
           });
         this.isCardDisabled = false;
         this.isBtnDisabled = false;

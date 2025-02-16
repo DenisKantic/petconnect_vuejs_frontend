@@ -20,6 +20,7 @@
           </v-card-title>
           <v-card-text>
             <v-text-field
+              counter
               v-model="petName"
               label="Ime ljubimca"
               placeholder="Unesite ime ljubimca"
