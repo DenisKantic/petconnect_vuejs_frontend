@@ -39,8 +39,6 @@
               <v-radio label="Ostalo" color="primary" value="ostalo"></v-radio>
             </v-radio-group>
 
-           
-
             <v-select
               label="Izaberite lokaciju"
               v-model="location"
@@ -101,18 +99,18 @@
           <div class="text-start pa-4 font-weight-light">
             <p class="pb-2 font-weight-bold">
               Naziv objave: <br />
-              <span class="font-weight-light">{{ postName  }}</span>
+              <span class="font-weight-light">{{ postName }}</span>
             </p>
             <p class="pb-2 font-weight-bold">
               Vrsta oglasa <br />
               <span class="font-weight-light">{{ postCategory }}</span>
             </p>
-            
+
             <p class="pb-2 font-weight-bold">
               Za životinju: <br />
               <span class="font-weight-light">{{ animalCategory }}</span>
             </p>
-            
+
             <p class="pb-2 font-weight-bold">
               Lokacija: <br />
               <span class="font-weight-light">{{ location }}</span>
@@ -122,7 +120,6 @@
               Detaljan opis: <br />
               <span class="font-weight-light">{{ animalCategory }}</span>
             </p>
-
 
             <p class="pb-2 font-weight-bold">Fotografije:</p>
             <div class="image-preview">
@@ -211,7 +208,7 @@ export default {
         color: "success",
       },
       rules: [(v) => v.length <= 1500 || "Maksimalno 1500 karaktera"],
-      postNameRules:  [(v) => v.length <= 30 || "Maksimalno 30 karaktera"],
+      postNameRules: [(v) => v.length <= 30 || "Maksimalno 30 karaktera"],
       locations: [
         "Banja Luka",
         "Bihać",
@@ -354,9 +351,9 @@ export default {
     },
     nextStep() {
       if (this.step === 1) {
-        if(this.description.length > 1500 || this.postName.length > 30){
-          this.showSnackbar("Niste ispravno popunili polja", "error")
-          return
+        if (this.description.length > 1500 || this.postName.length > 30) {
+          this.showSnackbar("Niste ispravno popunili polja", "error");
+          return;
         }
         if (
           this.location &&
@@ -431,7 +428,7 @@ export default {
       formData.append("animalCategory", this.animalCategory);
       formData.append("postName", this.postName);
       formData.append("description", this.description);
-      formData.append("postCategory", this.postCategory)
+      formData.append("postCategory", this.postCategory);
       formData.append("location", this.location);
 
       // Append images correctly

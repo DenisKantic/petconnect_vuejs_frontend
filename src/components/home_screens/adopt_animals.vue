@@ -17,12 +17,12 @@
       lg="2"
       xl="2"
     >
-    <v-skeleton-loader
-          class="border"
-          v-if="loading"
-          max-width="300"
-          type="image, article"
-        ></v-skeleton-loader>
+      <v-skeleton-loader
+        class="border"
+        v-if="loading"
+        max-width="300"
+        type="image, article"
+      ></v-skeleton-loader>
       <v-card v-else>
         <img
           :src="
@@ -33,12 +33,36 @@
         />
         <!-- Card content -->
         <v-card-title>
-          <div class="text-h6 font-weight-regular">{{ shorterPostName(post.pet_name) }}</div>
+          <div class="text-h6 font-weight-regular">
+            {{ shorterPostName(post.pet_name) }}
+          </div>
         </v-card-title>
         <v-card-subtitle>
-          <div><v-icon  class="mr-1" color="primary">mdi-map-marker</v-icon>{{ post.location }}</div>
-          <div class="pt-1"><v-icon class="mr-1" color="info">{{ post.category === "macka" ? 'mdi-cat' : post.category=== "pas" ? 'mdi-dog' : 'mdi-paw' }}</v-icon>{{ post.category.charAt(0).toUpperCase() + post.category.slice(1) }}</div>
-          <div class="pt-1"><v-icon  class="mr-1" :color="post.sex === 'muzjak' ? 'primary' : 'red'">{{ post.sex === "muzjak" ? 'mdi-gender-male' : 'mdi-gender-female' }}</v-icon>{{ post.sex === "muzjak" ? "Mužjak" : "Ženka" }}</div>
+          <div>
+            <v-icon class="mr-1" color="primary">mdi-map-marker</v-icon
+            >{{ post.location }}
+          </div>
+          <div class="pt-1">
+            <v-icon class="mr-1" color="info">{{
+              post.category === "macka"
+                ? "mdi-cat"
+                : post.category === "pas"
+                  ? "mdi-dog"
+                  : "mdi-paw"
+            }}</v-icon
+            >{{
+              post.category.charAt(0).toUpperCase() + post.category.slice(1)
+            }}
+          </div>
+          <div class="pt-1">
+            <v-icon
+              class="mr-1"
+              :color="post.sex === 'muzjak' ? 'primary' : 'red'"
+              >{{
+                post.sex === "muzjak" ? "mdi-gender-male" : "mdi-gender-female"
+              }}</v-icon
+            >{{ post.sex === "muzjak" ? "Mužjak" : "Ženka" }}
+          </div>
         </v-card-subtitle>
       </v-card>
     </v-col>
@@ -46,7 +70,6 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -58,8 +81,10 @@ export default {
     this.FetchPost();
   },
   methods: {
-    shorterPostName(postName){
-      return postName.length > 10 ? `${postName.substring(0, 10)}...` : postName;
+    shorterPostName(postName) {
+      return postName.length > 10
+        ? `${postName.substring(0, 10)}...`
+        : postName;
     },
     async FetchPost() {
       try {
@@ -68,10 +93,10 @@ export default {
           "http://localhost:8080/latest-adopt-post",
         );
         this.post = response.data;
-        console.log("ADOPT RESPONSE",response.data);
+        console.log("ADOPT RESPONSE", response.data);
       } catch (error) {
         console.log("error");
-      } finally{
+      } finally {
         this.loading = false;
       }
     },

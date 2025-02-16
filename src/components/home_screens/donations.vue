@@ -8,13 +8,21 @@
     >
   </div>
   <v-row class="pt-5">
-    <v-col v-for="post in post" :key="post.id" cols="12" sm="6" md="4" lg="2" xl="2">
+    <v-col
+      v-for="post in post"
+      :key="post.id"
+      cols="12"
+      sm="6"
+      md="4"
+      lg="2"
+      xl="2"
+    >
       <v-skeleton-loader
-          class="border"
-          v-if="loading"
-          max-width="300"
-          type="image, article"
-        ></v-skeleton-loader>
+        class="border"
+        v-if="loading"
+        max-width="300"
+        type="image, article"
+      ></v-skeleton-loader>
       <v-card v-else>
         <img
           :src="
@@ -28,10 +36,38 @@
           <div class="text-h6">{{ shorterPostName(post.post_name) }}</div>
         </v-card-title>
         <v-card-subtitle>
-          <div><v-icon  class="mr-1" color="primary">mdi-map-marker</v-icon>{{ post.location }}</div>
-          <div>          <div class="pt-1"><v-icon class="mr-1" color="info">{{ post.animal_category === "macka" ? 'mdi-cat' : post.animal_category=== "pas" ? 'mdi-dog' : 'mdi-paw' }}</v-icon>{{ post.animal_category.charAt(0).toUpperCase() + post.animal_category.slice(1) }}</div>
+          <div>
+            <v-icon class="mr-1" color="primary">mdi-map-marker</v-icon
+            >{{ post.location }}
           </div>
-          <div><v-icon class="mr-1" color="primary">{{ post.post_category === "hrana" ? 'mdi-food' : post.post_category === "lijek" ? 'mdi-medical-bag' : 'mdi-view-grid' }}</v-icon>{{ post.post_category }}</div>
+          <div>
+            <div class="pt-1">
+              <v-icon class="mr-1" color="info">{{
+                post.animal_category === "macka"
+                  ? "mdi-cat"
+                  : post.animal_category === "pas"
+                    ? "mdi-dog"
+                    : "mdi-paw"
+              }}</v-icon
+              >{{
+                post.animal_category.charAt(0).toUpperCase() +
+                post.animal_category.slice(1)
+              }}
+            </div>
+          </div>
+          <div>
+            <v-icon class="mr-1" color="primary">{{
+              post.post_category === "hrana"
+                ? "mdi-food"
+                : post.post_category === "lijek"
+                  ? "mdi-medical-bag"
+                  : "mdi-view-grid"
+            }}</v-icon
+            >{{
+              post.post_category.charAt(0).toUpperCase() +
+              post.post_category.slice(1)
+            }}
+          </div>
         </v-card-subtitle>
       </v-card>
     </v-col>
@@ -50,8 +86,10 @@ export default {
     this.FetchPost();
   },
   methods: {
-    shorterPostName(postName){
-      return postName.length > 10 ? `${postName.substring(0, 10)}...` : postName;
+    shorterPostName(postName) {
+      return postName.length > 10
+        ? `${postName.substring(0, 10)}...`
+        : postName;
     },
     async FetchPost() {
       this.loading = true;
@@ -60,11 +98,11 @@ export default {
           "http://localhost:8080/latest-donation-post",
         );
         this.post = response.data;
-        console.log("DONTION RES",response.data);
-        console.log("TESTING", this.post[0].images.length)
+        console.log("DONTION RES", response.data);
+        console.log("TESTING", this.post[0].images.length);
       } catch (error) {
         console.log("error");
-      } finally{
+      } finally {
         this.loading = false;
       }
     },
