@@ -1,13 +1,23 @@
 <template>
   <v-app id="container">
-    <p class="text-center pt-5 text-h6">Kreiraj oglas za udomljavanje</p>
-    <v-card>
-      <v-card-title class="text-h6 pt-5 font-weight-regular">
-        <span>{{ currentTitle }}</span>
-      </v-card-title>
-
+    <v-card :disabled="isCardDisabled">
+      <v-progress-linear
+        min="0"
+        max="4"
+        buffer-color="#2196f3"
+        buffer-opacity="1"
+        color="info"
+        :buffer-value="step"
+        :height="10"
+      ></v-progress-linear>
       <v-window v-model="step">
         <v-window-item :value="1">
+          <p class="text-h6 text-center font-weight-light my-4">
+            Kreiraj oglas za udomljavanje
+          </p>
+          <v-card-title class="text-h6 pt-5 font-weight-regular">
+            <span>{{ currentTitle }}</span>
+          </v-card-title>
           <v-card-text>
             <v-text-field
               v-model="petName"
@@ -39,11 +49,14 @@
               <v-radio label="Ne" color="error" value="ne"></v-radio>
             </v-radio-group>
 
-            <p>Lokacija</p>
-            <v-select v-model="location" :items="locations"></v-select>
+            <v-select
+              label="Izaberite lokaciju"
+              v-model="location"
+              :items="locations"
+            ></v-select>
 
+            <p>Detaljni opis</p>
             <v-textarea
-              label="Opis"
               rows="8"
               no-resize
               counter
@@ -55,6 +68,10 @@
         </v-window-item>
 
         <v-window-item :value="2">
+          <p class="text-h6 text-center font-weight-light my-4">
+            Unesite fotografije <br />
+            (5 fotografija maksimalno)
+          </p>
           <v-card-text>
             <VFileUpload
               class="upload"
@@ -65,75 +82,242 @@
               clearable
               multiple
               @update:model-value="handleFileUpload"
+              :model-value="uploadedImages"
               title="Kliknite ovdje ili prenesite fotografije"
               label="Upload Images"
               prepend-outer-icon="mdi-file"
             >
-              <template v-slot:upload>
-                <v-btn color="primary">Custom Browse File</v-btn>
-                <!-- Custom button label -->
+              <template v-slot:prepend>
+                <v-avatar size="150" rounded></v-avatar>
+              </template>
+              <template v-slot:clear="{ props: clearProps }">
+                <v-btn
+                  size="large"
+                  variant="text"
+                  color="red"
+                  v-bind="clearProps"
+                ></v-btn>
               </template>
             </VFileUpload>
           </v-card-text>
         </v-window-item>
 
-        <v-window-item :value="3">
-          <div class="pa-4 text-center">
-            <h3 class="text-h6 font-weight-light mb-2">
-              Oglas je uspješno kreiran!
-            </h3>
-            <v-btn @click="submitForm" color="primary" variant="flat"
-              >SUBMIT</v-btn
-            >
+        <v-window-item style="width: 100%" :value="3">
+          <h3 class="text-h6 text-center font-weight-light my-4">
+            Pregled oglasa prije objave!
+          </h3>
+          <div class="text-start pa-4 font-weight-light">
+            <p class="pb-2 font-weight-bold">
+              Ime životinje: <br />
+              <span class="font-weight-light">{{ petName }}</span>
+            </p>
+            <p class="pb-2">
+              Vrsta životinje: <br />
+              {{ animalCategory }}
+            </p>
+            <p class="pb-2">
+              Spol: <br />
+              {{ animalGender }}
+            </p>
+            <p class="pb-2">
+              Da li je životinja vakcinisana: <br />
+              {{ vaccinated }}
+            </p>
+            <p class="pb-2">
+              Da li je životinja čipovana: <br />
+              {{ chipped }}
+            </p>
+            <p class="pb-2">
+              Lokacija: <br />
+              {{ location }}
+            </p>
+            <p>Fotografije:</p>
+            <div class="image-preview">
+              <v-img
+                v-for="(url, index) in imageURLs"
+                :key="index"
+                :model-value="imageURLs"
+                :src="url"
+                :lazy-src="url"
+                aspect-ratio="1"
+                class="my-4"
+              >
+                <!--  -->
+                <template v-slot:placeholder>
+                  <v-skeleton-loader
+                    type="image"
+                  ></v-skeleton-loader> </template
+              ></v-img>
+            </div>
+
+            <br />
           </div>
+        </v-window-item>
+
+        <v-window-item id="fourth-container" :value="4">
+          <v-icon size="40" color="green">mdi-check-circle-outline</v-icon>
+          <p>Objava je uspješno kreirana</p>
         </v-window-item>
       </v-window>
 
       <v-divider></v-divider>
 
-      <v-card-actions>
-        <v-btn v-if="step > 1" variant="text" @click="prevStep"> Nazad </v-btn>
+      <v-card-actions v-show="step != 4">
+        <v-btn
+          :disabled="isNazadBtnDisabled"
+          v-if="step >= 1 && step < 4"
+          variant="text"
+          @click="prevStep"
+        >
+          Nazad
+        </v-btn>
         <v-spacer></v-spacer>
+        <v-btn
+          v-if="step === 3"
+          :loading="isBtnLoading"
+          :disabled="isBtnDisabled"
+          @click="submitForm"
+          color="primary"
+          variant="flat"
+          >KREIRAJ OBJAVU</v-btn
+        >
         <v-btn v-if="step < 3" color="primary" variant="flat" @click="nextStep">
           Dalje
         </v-btn>
       </v-card-actions>
     </v-card>
+
+    <v-snackbar
+      v-model="snackbar.visible"
+      :timeout="snackbar.timeout"
+      :color="snackbar.color"
+    >
+      {{ snackbar.message }}
+      <template #action>
+        <v-btn color="white" text @click="snackbar.visible = false"
+          >Zatvori</v-btn
+        >
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
 <script>
 import { VFileUpload } from "vuetify/labs/VFileUpload";
-import { ref } from "vue";
 
 export default {
   components: {
     VFileUpload,
   },
   data() {
-    const step = ref(1);
-
     return {
+      snackbar: {
+        visible: false,
+        message: "",
+        timeout: 2000,
+        color: "success",
+      },
       rules: [(v) => v.length <= 1500 || "Maksimalno 1500 karaktera"],
       locations: [
-        "Tuzla",
-        "Sarajevo",
-        "Zenica",
+        "Banja Luka",
+        "Bihać",
+        "Bijeljina",
+        "Bosanska Gradiška",
+        "Bosanska Krupa",
+        "Bosanski Brod",
+        "Bosanski Novi",
+        "Bosanski Petrovac",
+        "Brčko",
+        "Breza",
+        "Bugojno",
+        "Busovača",
+        "Cazin",
+        "Čapljina",
+        "Čelić",
+        "Čelinac",
+        "Čitluk",
+        "Derventa",
+        "Doboj",
+        "Donji Vakuf",
+        "Drvar",
+        "Fojnica",
+        "Gacko",
+        "Glamoč",
+        "Goražde",
+        "Gornji Vakuf-Uskoplje",
+        "Gračanica",
+        "Gradačac",
+        "Hadžići",
+        "Han Pijesak",
+        "Ilidža",
+        "Ilijaš",
+        "Jablanica",
+        "Jajce",
+        "Kakanj",
+        "Kalesija",
+        "Kalinovik",
+        "Kiseljak",
+        "Kladanj",
+        "Ključ",
+        "Konjic",
+        "Kotor Varoš",
+        "Kreševo",
+        "Kupres",
+        "Laktaši",
+        "Lopare",
+        "Ljubinje",
+        "Ljubuški",
+        "Lukavac",
+        "Maglaj",
+        "Milići",
+        "Modriča",
         "Mostar",
-        "Tuzla",
+        "Mrkonjić Grad",
+        "Neum",
+        "Nevesinje",
+        "Novi Travnik",
+        "Odžak",
+        "Orašje",
+        "Pale",
+        "Posušje",
+        "Prijedor",
+        "Prnjavor",
+        "Prozor-Rama",
+        "Rogatica",
+        "Rudo",
+        "Sanski Most",
+        "Sapna",
         "Sarajevo",
-        "Zenica",
-        "Mostar",
+        "Šamac",
+        "Šekovići",
+        "Šipovo",
+        "Sokolac",
+        "Srebrenica",
+        "Srebrenik",
+        "Široki Brijeg",
+        "Stolac",
+        "Teočak",
+        "Teslić",
+        "Tešanj",
+        "Tomislavgrad",
+        "Travnik",
+        "Trebinje",
+        "Trnovo",
         "Tuzla",
-        "Sarajevo",
+        "Ugljevik",
+        "Vareš",
+        "Velika Kladuša",
+        "Visoko",
+        "Vitez",
+        "Višegrad",
+        "Vogošća",
+        "Zavidovići",
         "Zenica",
-        "Mostar",
-        "Tuzla",
-        "Sarajevo",
-        "Zenica",
-        "Mostar",
+        "Zvornik",
+        "Žepče",
+        "Živinice",
       ],
-      location: "Izaberite",
+      location: "",
       petName: "",
       animalCategory: "",
       animalGender: "",
@@ -141,7 +325,12 @@ export default {
       chipped: "",
       description: "",
       uploadedImages: [],
-      step: 1,
+      imageURLs: [],
+      step: 3,
+      isCardDisabled: false,
+      isBtnDisabled: false,
+      isBtnLoading: false,
+      isNazadBtnDisabled: false,
     };
   },
   computed: {
@@ -157,6 +346,14 @@ export default {
     },
   },
   methods: {
+    //   setLoaded(index) {
+    //   this.imageLoadStates[index] = false; // Set specific image as loaded
+    // },
+    showSnackbar(message, color) {
+      this.snackbar.visible = true;
+      this.snackbar.message = message;
+      this.snackbar.color = color;
+    },
     prevStep() {
       if (this.step > 1) {
         this.step--;
@@ -164,34 +361,78 @@ export default {
       }
     },
     nextStep() {
-      if (this.step < 3) {
-        this.step++;
+      if (this.step === 1) {
+        if (
+          this.location &&
+          this.petName &&
+          this.animalCategory &&
+          this.animalGender &&
+          this.vaccinated &&
+          this.chipped &&
+          this.description
+        ) {
+          this.step++;
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          this.showSnackbar("Niste popunili sva polja.", "error");
+        }
+      }
+
+      // check for second page for images
+      else if (this.step === 2) {
+        // Ensure at least one image has been uploaded
+        if (this.uploadedImages.length > 0) {
+          this.step++;
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          this.showSnackbar("Niste dodali fotografije", "error");
+        }
+      } else if (this.step === 3) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (this.step === 4) {
+        console.log("FUNCTION FIRED UP");
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     },
 
     handleFileUpload(files) {
-      this.uploadedImages = files;
+      const fileArray = Array.from(files);
+      const [validTypes] = ["image/png", "image/jpeg", "image/jpg"];
+      const filteredFiles = fileArray.filter((file) =>
+        validTypes.includes(file.type),
+      );
+
+      if (fileArray.length > 6) {
+        this.showSnackbar("Ne možete objaviti više od 6 fotografija", "error");
+        this.uploadedImages = fileArray.slice(0, 6);
+        this.imageURLs = this.uploadedImages.map((file) =>
+          URL.createObjectURL(file),
+        );
+        console.log("FIRST ARRAY", this.uploadedImages);
+      } else if (filteredFiles.length === 0) {
+        this.showSnackbar(
+          "Molimo odaberite validne formate fotografija (PNG, JPG, JPEG)",
+          "error",
+        );
+        this.uploadedImages = [];
+        this.imageURLs = [];
+      } else {
+        this.uploadedImages = fileArray;
+        this.imageURLs = this.uploadedImages.map((file) =>
+          URL.createObjectURL(file),
+        );
+        console.log("URL IMGES", this.imageURLs);
+      }
+
+      this.$emit("update:model-value", this.uploadedImages);
+      this.$emit("update:model-value", this.imageURLs);
     },
     submitForm() {
       const formData = new FormData();
-
-      console.log(
-        "DATA",
-        "location",
-        this.location,
-        this.petName,
-        "\n",
-        "animal category",this.animalCategory,
-        "\n",
-        "animal gender",this.animalGender,
-        "\n",
-        this.vaccinated,
-        "\n",
-        this.chipped,
-        "\n",
-        this.description,
-      );
+      this.isCardDisabled = true;
+      this.isBtnDisabled = true;
+      this.isBtnLoading = true;
+      this.isNazadBtnDisabled = true;
 
       formData.append("category", this.animalCategory);
       formData.append("petName", this.petName);
@@ -206,45 +447,93 @@ export default {
         formData.append("images", file); // Each file must be appended individually
       });
 
-      this.$http
-        .post("http://localhost:8080/create-adopt-post", formData, {
-          withCredentials: true,
-        })
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((err) => {
-          console.log("ERROR", err);
-        });
+      setTimeout(() => {
+        this.$http
+          .post("http://localhost:8080/create-adopt-post", formData, {
+            withCredentials: true,
+          })
+          .then((res) => {
+            this.step = 4;
+            setTimeout(() => {
+              window.location.replace("/profil");
+            }, 1500);
+            console.log(res.data);
+          })
+          .catch((err) => {
+            console.log("ERROR", err);
+          });
+        this.isCardDisabled = false;
+        this.isBtnDisabled = false;
+        this.isBtnLoading = false;
+        this.isNazadBtnDisabled = false;
+      }, 1500);
+    },
+    onBeforeUnmount() {
+      this.imageURLs.forEach((url) => {
+        URL.revokeObjectURL(url);
+      });
     },
   },
 };
 </script>
 
 <style scoped>
+.image-preview {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 3rem auto;
+}
+
+@media (max-width: 600px) {
+  .image-preview {
+    grid-template-columns: repeat(1, 1fr);
+    margin: auto;
+    width: 100%;
+    background-color: green;
+  }
+}
+
+.image-preview .v-img {
+  margin: 0.5rem;
+  border-radius: 4px;
+  box-shadow: 0 1rem 5rem rgba(0, 0, 0, 0.1);
+}
 #container {
   width: 100%;
   background-color: #e5e5e5;
   min-height: 60vh;
   overflow: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
 }
 .v-card {
-  margin: 2rem auto;
+  margin: 4rem auto;
   width: 50%;
 }
-</style>
 
-<!-- 
-Name        string `form:"name" binding:"required"`
-	Category    string `form:"category" binding:"required"`
-	PetName     string `form:"petName" binding:"required"`
-	Description string `form:"description" binding:"required"`
-	Sex         string `form:"sex" binding:"required"`
-	Vaccinated  bool   `form:"vaccinated"`
-	Chipped     bool   `form:"chipped"`
-	Location    string `form:"location" binding:"required"`
-	Images      []string -->
+#fourth-container {
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#fourth-container .v-icon {
+  padding: 2rem;
+  display: flex;
+}
+
+#delete-btn {
+  padding: 2rem;
+}
+
+/* responsive media*/
+@media (min-width: 200px) and (max-width: 550px) {
+  .v-card {
+    width: 90%;
+  }
+}
+</style>
