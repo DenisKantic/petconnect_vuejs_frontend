@@ -8,11 +8,11 @@
     >
   </div>
   <v-row class="pt-5">
-    <v-col v-for="post in post" :key="post.id" cols="12" sm="6" md="4" xl="2">
+    <v-col v-for="post in post" :key="post.id" cols="12" sm="6" md="4" lg="2" xl="2">
       <v-card>
         <img
           :src="
-            post.images.length > 5
+            post.images.length > 0
               ? `http://localhost:8080/${post.images[0]}`
               : 'https://placehold.co/300x200'
           "
@@ -52,7 +52,8 @@ export default {
           "http://localhost:8080/latest-donation-post",
         );
         this.post = response.data;
-        console.log(response.data);
+        console.log("DONTION RES",response.data);
+        console.log("TESTING", this.post[0].images.length)
       } catch (error) {
         console.log("error");
       }
@@ -83,6 +84,6 @@ export default {
 img {
   object-fit: cover;
   overflow: hidden;
-  height: 25vh;
+  height: 20vh;
 }
 </style>

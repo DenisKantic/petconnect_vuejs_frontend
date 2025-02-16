@@ -12,14 +12,14 @@
       <v-card>
         <img
           :src="
-            post.images.length
+            post.images.length > 0
               ? `http://localhost:8080/${post.images[0]}`
               : 'https://placehold.co/300x200'
           "
         />
         <!-- Card content -->
         <v-card-title>
-          <div class="text-h6">{{ post.name }}</div>
+          <div class="text-h6">{{  shorterPostName(post.name) }}</div>
         </v-card-title>
         <v-card-subtitle>
           <div>{{ post.location }}</div>
@@ -45,7 +45,11 @@ export default {
   mounted() {
     this.FetchPost();
   },
+ 
   methods: {
+    shorterPostName(postName){
+      return postName.length > 10 ? `${postName.substring(0, 10)}...` : postName;
+    },
     async FetchPost() {
       try {
         const response = await this.$http.get(
@@ -70,7 +74,7 @@ export default {
   display: flex;
   flex-direction: column;
   max-height: 100%;
-  padding: 0.8rem;
+  padding-bottom: 0.8rem;
   border-radius: 0.8rem;
 }
 
@@ -83,6 +87,6 @@ export default {
 img {
   object-fit: cover;
   overflow: hidden;
-  height: 25vh;
+  height: 20vh;
 }
 </style>
