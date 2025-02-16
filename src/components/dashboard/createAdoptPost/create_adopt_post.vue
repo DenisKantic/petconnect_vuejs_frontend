@@ -1,6 +1,14 @@
 <template>
   <v-app id="container">
     <v-card :disabled="isCardDisabled">
+      <v-progress-linear
+      min="0"
+      max="4"
+      buffer-color="#2196f3"
+      buffer-opacity="1"
+      color="info"
+      :buffer-value="step"
+      :height="10"></v-progress-linear>
       <v-window v-model="step">
         <v-window-item :value="1">
           <p class="text-h6 text-center font-weight-light my-4">
@@ -93,7 +101,7 @@
           </v-card-text>
         </v-window-item>
 
-        <v-window-item :value="3">
+        <v-window-item style="width: 100%;" :value="3">
           <h3 class="text-h6 text-center font-weight-light my-4">
             Pregled oglasa prije objave!
           </h3>
@@ -129,21 +137,20 @@
                 :key="index"
                 :model-value="imageURLs"
                 :src="url"
+                :lazy-src="url"
                 aspect-ratio="1"
-                class="my-2"
-              ></v-img>
+                class="my-4"
+              >
+              <!--  -->
+              <template v-slot:placeholder>
+          <v-skeleton-loader 
+            type="image"
+          ></v-skeleton-loader>
+        </template></v-img>
             </div>
 
             <br />
 
-            <v-btn
-              :loading="isBtnLoading"
-              :disabled="isBtnDisabled"
-              @click="submitForm"
-              color="primary"
-              variant="flat"
-              >OBJAVI</v-btn
-            >
           </div>
         </v-window-item>
 
@@ -165,6 +172,15 @@
           Nazad
         </v-btn>
         <v-spacer></v-spacer>
+        <v-btn
+              v-if="step===3"
+              :loading="isBtnLoading"
+              :disabled="isBtnDisabled"
+              @click="submitForm"
+              color="primary"
+              variant="flat"
+              >KREIRAJ OBJAVU</v-btn
+            >
         <v-btn v-if="step < 3" color="primary" variant="flat" @click="nextStep">
           Dalje
         </v-btn>
@@ -310,7 +326,7 @@ export default {
       description: "",
       uploadedImages: [],
       imageURLs: [],
-      step: 2,
+      step: 3,
       isCardDisabled: false,
       isBtnDisabled: false,
       isBtnLoading: false,
@@ -330,6 +346,9 @@ export default {
     },
   },
   methods: {
+  //   setLoaded(index) {
+  //   this.imageLoadStates[index] = false; // Set specific image as loaded
+  // },
     showSnackbar(message, color) {
       this.snackbar.visible = true;
       this.snackbar.message = message;
@@ -435,6 +454,9 @@ export default {
           })
           .then((res) => {
             this.step = 4;
+            setTimeout(()=>{
+              window.location.replace("/profil")
+            }, 1500)
             console.log(res.data);
           })
           .catch((err) => {
