@@ -68,7 +68,7 @@ const routes = [
     path: "/profil/kreirajoglas/udomi",
     name: "Kreiraj oglas",
     meta: {
-      title: "Kreiraj oglas",
+      title: "Udomi ljubimca",
       requiresAuth: true,
     },
     component: () =>
@@ -76,13 +76,23 @@ const routes = [
   },
   {
     path: "/profil/kreirajoglas/izgubljeni",
-    name: "Kreiraj oglas",
+    name: "Izgubljeni oglas",
     meta: {
-      title: "Kreiraj oglas",
+      title: "Izgubljeni ljubimci",
       requiresAuth: true,
     },
     component: () =>
       import("@/views/dashboard/createLostPost/create_lost_post.vue"),
+  },
+  {
+    path: "/profil/kreirajoglas/donacije",
+    name: "Donacijski oglas",
+    meta: {
+      title: "Izgubljeni ljubimac",
+      requiresAuth: true,
+    },
+    component: () =>
+      import("@/views/dashboard/createDonationPost/create_donation_post.vue"),
   },
   {
     path: "/profil/postavke",

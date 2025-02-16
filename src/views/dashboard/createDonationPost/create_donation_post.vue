@@ -1,15 +1,15 @@
 <template>
   <MainNavbar />
-  <CreateLostPost />
+  <CreateDonationPost />
 </template>
 
 <script>
-import CreateLostPost from "@/components/dashboard/createLostPost/create_lost_post.vue";
+import CreateDonationPost from "@/components/dashboard/createDonationPost/create_donation_post.vue";
 import MainNavbar from "@/components/navbar/main_navbar.vue";
 
 export default {
   components: {
-    CreateLostPost,
+    CreateDonationPost,
     MainNavbar,
   },
 };

@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-row items-center justify-between">
-    <h1>Udomi ljubimca</h1>
+    <h1 class="font-weight-regular">Udomi ljubimca</h1>
     <router-link to="/udomi"
       ><v-btn variant="outlined" color="primary"
         >Prikaži sve</v-btn
@@ -15,24 +15,54 @@
       sm="6"
       md="4"
       lg="2"
-      xl="4"
+      xl="2"
     >
-      <v-card>
+      <v-skeleton-loader
+        class="border"
+        v-if="loading"
+        max-width="300"
+        type="image, article"
+      ></v-skeleton-loader>
+      <v-card v-else>
         <img
           :src="
-            post.images.length
+            post.images.length > 0
               ? `http://localhost:8080/${post.images[0]}`
               : 'https://placehold.co/300x200'
           "
         />
         <!-- Card content -->
         <v-card-title>
-          <div class="text-h6">{{ post.pet_name }}</div>
+          <div class="text-h6 font-weight-regular">
+            {{ shorterPostName(post.pet_name) }}
+          </div>
         </v-card-title>
         <v-card-subtitle>
-          <div>{{ post.location }}</div>
-          <div>{{ post.category }}</div>
-          <div>{{ post.sex }}</div>
+          <div>
+            <v-icon class="mr-1" color="primary">mdi-map-marker</v-icon
+            >{{ post.location }}
+          </div>
+          <div class="pt-1">
+            <v-icon class="mr-1" color="info">{{
+              post.category === "macka"
+                ? "mdi-cat"
+                : post.category === "pas"
+                  ? "mdi-dog"
+                  : "mdi-paw"
+            }}</v-icon
+            >{{
+              post.category.charAt(0).toUpperCase() + post.category.slice(1)
+            }}
+          </div>
+          <div class="pt-1">
+            <v-icon
+              class="mr-1"
+              :color="post.sex === 'muzjak' ? 'primary' : 'red'"
+              >{{
+                post.sex === "muzjak" ? "mdi-gender-male" : "mdi-gender-female"
+              }}</v-icon
+            >{{ post.sex === "muzjak" ? "Mužjak" : "Ženka" }}
+          </div>
         </v-card-subtitle>
       </v-card>
     </v-col>
@@ -44,25 +74,30 @@ export default {
   data() {
     return {
       post: [],
-      name: "Pet Name",
-      location: "Location",
-      category: "Category",
-      sex: "Male",
+      loading: true,
     };
   },
   mounted() {
     this.FetchPost();
   },
   methods: {
+    shorterPostName(postName) {
+      return postName.length > 10
+        ? `${postName.substring(0, 10)}...`
+        : postName;
+    },
     async FetchPost() {
       try {
+        this.loading = true;
         const response = await this.$http.get(
           "http://localhost:8080/latest-adopt-post",
         );
         this.post = response.data;
-        console.log(response.data);
+        console.log("ADOPT RESPONSE", response.data);
       } catch (error) {
         console.log("error");
+      } finally {
+        this.loading = false;
       }
     },
   },
