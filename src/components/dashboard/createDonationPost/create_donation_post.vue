@@ -7,6 +7,7 @@
         buffer-color="#2196f3"
         buffer-opacity="1"
         color="info"
+        :model-value="step"
         :buffer-value="step"
         :height="10"
       ></v-progress-linear>
@@ -147,6 +148,11 @@
         <v-window-item id="fourth-container" :value="4">
           <v-icon size="40" color="green">mdi-check-circle-outline</v-icon>
           <p>Objava je uspješno kreirana</p>
+          <p>Povratak na profil...</p>
+          <v-progress-circular
+      color="primary"
+      indeterminate
+    ></v-progress-circular>
         </v-window-item>
       </v-window>
 

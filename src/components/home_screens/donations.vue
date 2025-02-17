@@ -33,7 +33,7 @@
         />
         <!-- Card content -->
         <v-card-title>
-          <div class="text-h6">{{ shorterPostName(post.post_name) }}</div>
+          <div class="text-h6 font-weight-regular">{{ shorterPostName(post.post_name) }}</div>
         </v-card-title>
         <v-card-subtitle>
           <div>
