@@ -8,7 +8,14 @@
     <!-- location menu -->
     <v-menu>
       <template v-slot:activator="{ props }">
-        <v-btn  class="mr-4 font-weight-regular" color="primary" variant="outlined" v-bind="props"> Lokacija </v-btn>
+        <v-btn
+          class="mr-4 font-weight-regular"
+          color="primary"
+          variant="outlined"
+          v-bind="props"
+        >
+          Lokacija
+        </v-btn>
       </template>
       <v-list>
         <v-chip
@@ -33,7 +40,14 @@
     <!-- animal choise menu  -->
     <v-menu>
       <template v-slot:activator="{ props }">
-        <v-btn class="mr-4 font-weight-regular"  variant="outlined" color="primary" v-bind="props"> Životinja </v-btn>
+        <v-btn
+          class="mr-4 font-weight-regular"
+          variant="outlined"
+          color="primary"
+          v-bind="props"
+        >
+          Životinja
+        </v-btn>
       </template>
       <v-list>
         <v-chip
@@ -58,7 +72,14 @@
     <!-- sex -->
     <v-menu>
       <template v-slot:activator="{ props }">
-        <v-btn class="mr-4 font-weight-regular"  variant="outlined" color="primary" v-bind="props"> Spol </v-btn>
+        <v-btn
+          class="mr-4 font-weight-regular"
+          variant="outlined"
+          color="primary"
+          v-bind="props"
+        >
+          Spol
+        </v-btn>
       </template>
       <v-list>
         <v-chip
@@ -83,7 +104,14 @@
     <!-- chipped status menu -->
     <v-menu>
       <template v-slot:activator="{ props }">
-        <v-btn class="mr-4 font-weight-regular"  variant="outlined" color="primary" v-bind="props"> Čipovana </v-btn>
+        <v-btn
+          class="mr-4 font-weight-regular"
+          variant="outlined"
+          color="primary"
+          v-bind="props"
+        >
+          Čipovana
+        </v-btn>
       </template>
       <v-list>
         <v-chip
@@ -108,7 +136,14 @@
     <!-- Vakcinisan menu-->
     <v-menu>
       <template v-slot:activator="{ props }">
-        <v-btn class="mr-4 font-weight-regular"  variant="outlined" color="primary" v-bind="props"> Vakcinisan </v-btn>
+        <v-btn
+          class="mr-4 font-weight-regular"
+          variant="outlined"
+          color="primary"
+          v-bind="props"
+        >
+          Vakcinisan
+        </v-btn>
       </template>
       <v-list>
         <v-chip
@@ -129,14 +164,21 @@
         </v-list-item>
       </v-list>
     </v-menu>
-    
-    <v-btn class="font-weight-regular" @click="FetchPost" color="primary">Pretraži</v-btn>
+
+    <v-btn class="font-weight-regular" @click="FetchPost" color="primary"
+      >Pretraži</v-btn
+    >
     <!-- <v-btn color="warning" @click="deleteFilters" v-show="selectedLocation != '' || selectedSex !='' || selectedVaccine != ''">Obriši filtere</v-btn> -->
   </div>
 
-
-  <p class="pt-4 pb-2 font-weight-regular">Ukupno rezultata: <span class="text-h6 font-weight-regular">{{ total_pages.total_count }}</span></p>
+  <p class="pt-4 pb-2 font-weight-regular">
+    Ukupno rezultata:
+    <span class="text-h6 font-weight-regular">{{
+      total_pages.total_count - 1
+    }}</span>
+  </p>
   <p v-if="post.length === 0">Nema pronadjenih zivotinja</p>
+
   <v-row v-else>
     <v-col
       v-for="post in post"
@@ -153,48 +195,55 @@
         max-width="300"
         type="image, article"
       ></v-skeleton-loader>
-      <v-card v-else>
-        <img
-          :src="
-            post.images.length > 0
-              ? `http://localhost:8080/${post.images[0]}`
-              : 'https://placehold.co/300x200'
-          "
-        />
-        <!-- Card content -->
-        <v-card-title>
-          <div class="text-h6 font-weight-regular">
-            {{ shorterPostName(post.pet_name) }}
-          </div>
-        </v-card-title>
-        <v-card-subtitle>
-          <div>
-            <v-icon class="mr-1" color="primary">mdi-map-marker</v-icon
-            >{{ post.location }}
-          </div>
-          <div class="pt-1">
-            <v-icon class="mr-1" color="info">{{
-              post.category === "macka"
-                ? "mdi-cat"
-                : post.category === "pas"
-                  ? "mdi-dog"
-                  : "mdi-paw"
-            }}</v-icon
-            >{{
-              post.category.charAt(0).toUpperCase() + post.category.slice(1)
-            }}
-          </div>
-          <div class="pt-1">
-            <v-icon
-              class="mr-1"
-              :color="post.sex === 'muzjak' ? 'primary' : 'red'"
-              >{{
-                post.sex === "muzjak" ? "mdi-gender-male" : "mdi-gender-female"
+      <router-link
+        v-else
+        :to="{ name: 'Detaljan pregled', params: { id: post.pet_name } }"
+      >
+        <v-card>
+          <img
+            :src="
+              post.images.length > 0
+                ? `http://localhost:8080/${post.images[0]}`
+                : 'https://placehold.co/300x200'
+            "
+          />
+          <!-- Card content -->
+          <v-card-title>
+            <div class="text-h6 font-weight-regular">
+              {{ shorterPostName(post.pet_name) }}
+            </div>
+          </v-card-title>
+          <v-card-subtitle>
+            <div>
+              <v-icon class="mr-1" color="primary">mdi-map-marker</v-icon
+              >{{ post.location }}
+            </div>
+            <div class="pt-1">
+              <v-icon class="mr-1" color="info">{{
+                post.category === "macka"
+                  ? "mdi-cat"
+                  : post.category === "pas"
+                    ? "mdi-dog"
+                    : "mdi-paw"
               }}</v-icon
-            >{{ post.sex === "muzjak" ? "Mužjak" : "Ženka" }}
-          </div>
-        </v-card-subtitle>
-      </v-card>
+              >{{
+                post.category.charAt(0).toUpperCase() + post.category.slice(1)
+              }}
+            </div>
+            <div class="pt-1">
+              <v-icon
+                class="mr-1"
+                :color="post.sex === 'muzjak' ? 'primary' : 'red'"
+                >{{
+                  post.sex === "muzjak"
+                    ? "mdi-gender-male"
+                    : "mdi-gender-female"
+                }}</v-icon
+              >{{ post.sex === "muzjak" ? "Mužjak" : "Ženka" }}
+            </div>
+          </v-card-subtitle>
+        </v-card>
+      </router-link>
     </v-col>
   </v-row>
   <v-pagination
@@ -218,9 +267,16 @@ export default {
       page_size: 12 + 1,
       total_pages: 1,
       location: ["Banja Luka", "Tuzla"],
-      sexGenders: [{title:"Mužjak", value: "muzjak"}, {title:"Ženka", value: "zenka"}],
-      animalList: [{title: "Pas", value: "pas"},{title: "Mačka", value: "macka",}, {title:"Ostalo", value: "ostalo"}],
-      chipList: [{title: ""}],
+      sexGenders: [
+        { title: "Mužjak", value: "muzjak" },
+        { title: "Ženka", value: "zenka" },
+      ],
+      animalList: [
+        { title: "Pas", value: "pas" },
+        { title: "Mačka", value: "macka" },
+        { title: "Ostalo", value: "ostalo" },
+      ],
+      chipList: [{ title: "" }],
       chipOption: [
         {
           title: "Da",
@@ -250,9 +306,7 @@ export default {
   },
   computed: {
     totalPages() {
-      console.log("TOTAL COUNT", this.total_pages.total_count);
       const number = Math.ceil(this.total_pages.total_count / this.page_size);
-      console.log("NUMBER");
       return number;
     },
   },
@@ -263,14 +317,14 @@ export default {
     selectSex(item) {
       this.selectedSex = item;
     },
-    selectVaccineStatus(item){
+    selectVaccineStatus(item) {
       this.selectedVaccine = item;
     },
-    selectAnimal(item){
+    selectAnimal(item) {
       this.selectedAnimal = item;
     },
-    selectChipStatus(item){
-      this.selectedChipStatus = item
+    selectChipStatus(item) {
+      this.selectedChipStatus = item;
     },
     removeLocationChip() {
       this.selectedLocation = "";
@@ -278,14 +332,14 @@ export default {
     removeSexChip() {
       this.selectedSex = "";
     },
-    removeVaccineChip(){
+    removeVaccineChip() {
       this.selectedVaccine = "";
-    },  
-    removeAnimalChip(){
-      this.selectedAnimal = ""
     },
-    removeChippedChip(){
-      this.selectedChipStatus = ""
+    removeAnimalChip() {
+      this.selectedAnimal = "";
+    },
+    removeChippedChip() {
+      this.selectedChipStatus = "";
     },
     // deleteFilters(){
     //   this.selectedVaccine = ""
@@ -306,12 +360,10 @@ export default {
         location: this.selectedLocation,
         sex: this.selectedSex.value,
         vaccinated: this.selectedVaccine.value,
-        chipped: this.selectedChipStatus.value
+        chipped: this.selectedChipStatus.value,
         // animal: this.selectedAnimal.value
       };
-      console.log("SEX", this.selectedSex.value)
-      console.log("PARAMS", params)
-      
+
       try {
         this.loading = true;
         const response = await this.$http.get(
@@ -320,8 +372,6 @@ export default {
         );
         this.post = response.data.posts;
         this.total_pages = response.data.total_count;
-        console.log("ADOPT RESPONSE", response.data);
-        console.log("NEW DATA", this.post);
       } catch (error) {
         console.log("error", error);
       } finally {
@@ -367,14 +417,13 @@ img {
   height: 20vh;
 }
 
-.filter-menu{
+.filter-menu {
   width: 100%;
 }
 
-@media (min-width: 200px) and (max-width: 800px){
-  .filter-menu{
+@media (min-width: 200px) and (max-width: 800px) {
+  .filter-menu {
     overflow-y: scroll;
   }
 }
-
 </style>
