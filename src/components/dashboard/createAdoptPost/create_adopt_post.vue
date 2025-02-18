@@ -1,7 +1,40 @@
 <template>
   <v-app id="container">
     <v-card :disabled="isCardDisabled">
-      <v-progress-linear
+      <v-stepper alt-labels>
+        <v-stepper-header>
+          <v-stepper-item :value="!step === 1 ? 1 : 1" :complete="step >= 2">
+            <template v-slot:title
+              ><span class="d-none d-sm-block">Informacije</span>
+            </template>
+          </v-stepper-item>
+
+          <v-divider></v-divider>
+
+          <v-stepper-item :value="!step === 2 ? 2 : 2" :complete="step >= 3">
+            <template v-slot:title
+              ><span class="d-none d-sm-block">Fotografije</span>
+            </template>
+          </v-stepper-item>
+
+          <v-divider></v-divider>
+
+          <v-stepper-item :value="!step === 3 ? 3 : 3" :complete="step >= 4">
+            <template v-slot:title>
+              <span class="d-none d-sm-block">Pregled objave</span>
+            </template>
+          </v-stepper-item>
+
+          <v-divider></v-divider>
+
+          <v-stepper-item :value="!step === 4 ? 4 : 4" :complete="step === 4">
+            <template v-slot:title>
+              <span class="d-none d-sm-block">Objava</span>
+            </template>
+          </v-stepper-item>
+        </v-stepper-header>
+      </v-stepper>
+      <!-- <v-progress-linear
         min="0"
         max="4"
         buffer-color="#2196f3"
@@ -9,7 +42,7 @@
         color="info"
         :buffer-value="step"
         :height="10"
-      ></v-progress-linear>
+      ></v-progress-linear> -->
       <v-window v-model="step">
         <v-window-item :value="1">
           <p class="text-h6 text-center font-weight-light my-4">
@@ -327,7 +360,7 @@ export default {
       description: "",
       uploadedImages: [],
       imageURLs: [],
-      step: 3,
+      step: 1,
       isCardDisabled: false,
       isBtnDisabled: false,
       isBtnLoading: false,
@@ -532,9 +565,15 @@ export default {
 }
 
 /* responsive media*/
-@media (min-width: 200px) and (max-width: 550px) {
+@media (min-width: 200px) and (max-width: 599px) {
   .v-card {
     width: 90%;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 1000px) {
+  .v-card {
+    width: 80%;
   }
 }
 </style>

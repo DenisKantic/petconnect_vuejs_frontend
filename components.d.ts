@@ -27,6 +27,7 @@ declare module 'vue' {
     Lost_page: typeof import('./src/components/pages/lost_page.vue')['default']
     Main_navbar: typeof import('./src/components/navbar/main_navbar.vue')['default']
     Not_found: typeof import('./src/components/not_found.vue')['default']
+    Post_details: typeof import('./src/components/postDetails/post_details.vue')['default']
     Register: typeof import('./src/components/auth/register.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
