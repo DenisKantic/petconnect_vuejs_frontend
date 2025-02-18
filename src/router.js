@@ -31,6 +31,14 @@ const routes = [
     },
     component: () => import("@/views/pages/adopt_page.vue"),
   },
+  {
+    path: "/udomi/:id",
+    name: "Detaljan pregled",
+    meta: {
+      title: "Detaljni pregled",
+    },
+    component: () => import("@/views/postDetails/post_details.vue"),
+  },
   // {
   //   path: "/sos",
   //   name: "sos oglasi",
