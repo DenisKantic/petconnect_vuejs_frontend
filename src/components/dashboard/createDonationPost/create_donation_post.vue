@@ -150,9 +150,9 @@
           <p>Objava je uspješno kreirana</p>
           <p>Povratak na profil...</p>
           <v-progress-circular
-      color="primary"
-      indeterminate
-    ></v-progress-circular>
+            color="primary"
+            indeterminate
+          ></v-progress-circular>
         </v-window-item>
       </v-window>
 

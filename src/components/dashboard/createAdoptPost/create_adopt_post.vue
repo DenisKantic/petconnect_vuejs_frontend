@@ -1,33 +1,39 @@
 <template>
   <v-app id="container">
-    
     <v-card :disabled="isCardDisabled">
       <v-stepper alt-labels>
         <v-stepper-header>
-      <v-stepper-item :value="!step === 1 ? 1 : 1" :complete="step >= 2">
-        <template v-slot:title><span  class="d-none d-sm-block">Informacije</span> </template>
-      </v-stepper-item>
+          <v-stepper-item :value="!step === 1 ? 1 : 1" :complete="step >= 2">
+            <template v-slot:title
+              ><span class="d-none d-sm-block">Informacije</span>
+            </template>
+          </v-stepper-item>
 
-      <v-divider></v-divider>
+          <v-divider></v-divider>
 
-      <v-stepper-item :value="!step === 2 ? 2 : 2" :complete="step >=3">
-        <template v-slot:title><span  class="d-none d-sm-block">Fotografije</span>  </template>
-      </v-stepper-item>
+          <v-stepper-item :value="!step === 2 ? 2 : 2" :complete="step >= 3">
+            <template v-slot:title
+              ><span class="d-none d-sm-block">Fotografije</span>
+            </template>
+          </v-stepper-item>
 
-      <v-divider></v-divider>
+          <v-divider></v-divider>
 
-      <v-stepper-item :value="!step === 3 ? 3 : 3" :complete="step >=4">
-        <template v-slot:title> <span  class="d-none d-sm-block">Pregled objave</span>  </template>
+          <v-stepper-item :value="!step === 3 ? 3 : 3" :complete="step >= 4">
+            <template v-slot:title>
+              <span class="d-none d-sm-block">Pregled objave</span>
+            </template>
+          </v-stepper-item>
 
-      </v-stepper-item>
+          <v-divider></v-divider>
 
-      <v-divider></v-divider>
-
-      <v-stepper-item :value="!step === 4 ? 4 : 4" :complete="step === 4">
-        <template v-slot:title> <span  class="d-none d-sm-block">Objava</span>  </template>
-      </v-stepper-item>
-    </v-stepper-header>
-  </v-stepper>
+          <v-stepper-item :value="!step === 4 ? 4 : 4" :complete="step === 4">
+            <template v-slot:title>
+              <span class="d-none d-sm-block">Objava</span>
+            </template>
+          </v-stepper-item>
+        </v-stepper-header>
+      </v-stepper>
       <!-- <v-progress-linear
         min="0"
         max="4"
@@ -214,7 +220,6 @@
         </v-btn>
       </v-card-actions>
     </v-card>
-      
 
     <v-snackbar
       v-model="snackbar.visible"
@@ -571,5 +576,4 @@ export default {
     width: 80%;
   }
 }
-
 </style>

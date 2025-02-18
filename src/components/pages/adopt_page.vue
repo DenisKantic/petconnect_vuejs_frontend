@@ -3,23 +3,87 @@
   <SecondNavbar />
 
   <h1>Udomi ljubimca</h1>
-  
- 
-  <div class="text-center">
-    <v-menu open-on-hover>
-      <template v-slot:activator="{ props }">
-        <v-btn color="primary" v-bind="props"> Dropdown </v-btn>
-      </template>
 
+  <div class="text-center">
+    <!-- location menu -->
+    <v-menu>
+      <template v-slot:activator="{ props }">
+        <v-btn color="primary" v-bind="props"> Lokacija </v-btn>
+      </template>
       <v-list>
-        <v-list-item>
-          <v-list-item-title>Test1</v-list-item-title>
+        <v-chip
+          v-show="selectedLocation != ''"
+          class="ma-2"
+          closable
+          @click:close="removeLocationChip"
+        >
+          {{ selectedLocation }}
+        </v-chip>
+
+        <v-list-item
+          v-for="(item, index) in location"
+          :key="index"
+          @click="selectLocation(item)"
+        >
+          <v-list-item-title>{{ item }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
+
+    <!-- sex -->
+    <v-menu>
+      <template v-slot:activator="{ props }">
+        <v-btn color="primary" v-bind="props"> Spol </v-btn>
+      </template>
+      <v-list>
+        <v-chip
+          v-show="selectedSex != ''"
+          class="ma-2"
+          closable
+          @click:close="removeSexChip"
+        >
+          {{ selectedSex.title }}
+        </v-chip>
+
+        <v-list-item
+          v-for="(item, index) in sexGenders"
+          :key="index"
+          @click="selectSex(item)"
+        >
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+
+    <!-- Vakcinisan menu-->
+    <v-menu>
+      <template v-slot:activator="{ props }">
+        <v-btn color="primary" v-bind="props"> Vakcinisan </v-btn>
+      </template>
+      <v-list>
+        <v-chip
+          v-show="selectedVaccine != ''"
+          class="ma-2"
+          closable
+          @click:close="removeVaccineChip"
+        >
+          {{ selectedVaccine.title }}
+        </v-chip>
+
+        <v-list-item
+          v-for="(item, index) in vaccineOption"
+          :key="index"
+          @click="selectVaccineStatus(item)"
+        >
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+    <v-btn @click="FetchPost">Pretrazi</v-btn>
   </div>
 
-  <v-row>
+  <p v-if="post.length === 0">Nema pronadjenih zivotinja</p>
+  <v-row v-else>
     <v-col
       v-for="post in post"
       :key="post.id"
@@ -80,11 +144,12 @@
     </v-col>
   </v-row>
   <v-pagination
-  class="pb-5"
-      v-model="page"
-      :length="20"
-      :total-visible="4"
-    ></v-pagination>
+    class="py-5"
+    v-model="page_number"
+    :length="totalPages"
+    :total-visible="6"
+    @change="FetchPost"
+  ></v-pagination>
 </template>
 
 <script>
@@ -92,49 +157,102 @@ import Navbar from "../navbar/main_navbar.vue";
 import SecondNavbar from "../navbar/second_navbar.vue";
 
 export default {
-  data(){
+  data() {
     return {
       post: [],
-      items: [
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me 2' },
+      page_number: 1,
+      page_size: 12 + 1,
+      total_pages: 1,
+      location: ["Banja Luka", "Tuzla"],
+      sexGenders: [{title:"Mužjak", value: "muzjak"}, {title:"Ženka", value: "zenka"}],
+      vaccineOption: [
+        {
+          title: "Da",
+          value: "true",
+        },
+        { title: "Ne", value: "false" },
       ],
-    
-    }
+      selectedLocation: "",
+      selectedSex: "",
+      selectedVaccine: "",
+      sex: "muzjak",
+      vaccinated: "true",
+    };
   },
   components: {
     Navbar,
     SecondNavbar,
   },
-  mounted() {
-    this.FetchPost();
+  computed: {
+    totalPages() {
+      console.log("TOTAL COUNT", this.total_pages.total_count);
+      const number = Math.ceil(this.total_pages.total_count / this.page_size);
+      console.log("NUMBER");
+      return number;
+    },
   },
   methods: {
+    selectLocation(item) {
+      this.selectedLocation = item;
+    },
+    selectSex(item) {
+      this.selectedSex = item;
+    },
+    selectVaccineStatus(item){
+      this.selectedVaccine = item;
+    },
+    removeLocationChip() {
+      this.selectedLocation = "";
+    },
+    removeSexChip() {
+      this.selectedSex = "";
+    },
+    removeVaccineChip(){
+      this.selectedVaccine = "";
+    },  
     shorterPostName(postName) {
       return postName.length > 10
         ? `${postName.substring(0, 10)}...`
         : postName;
     },
     async FetchPost() {
+      this.post = [];
+      let params = {
+        page: this.page_number,
+        page_size: this.page_size,
+        location: this.selectedLocation,
+        sex: this.selectedSex.value,
+        vaccinated: this.selectedVaccine.value,
+      };
+      console.log("SEX", this.selectedSex.value)
+      console.log("PARAMS", params)
       try {
         this.loading = true;
         const response = await this.$http.get(
           "http://localhost:8080/adopt-post-per-page",
+          { params },
         );
-        this.post = response.data;
+        this.post = response.data.posts;
+        this.total_pages = response.data.total_count;
         console.log("ADOPT RESPONSE", response.data);
+        console.log("NEW DATA", this.post);
       } catch (error) {
-        console.log("error");
+        console.log("error", error);
       } finally {
         this.loading = false;
       }
     },
   },
+  watch: {
+    page_number() {
+      this.FetchPost();
+    },
+  },
+  mounted() {
+    this.FetchPost();
+  },
 };
 </script>
-
 
 <style scoped>
 .v-row {
