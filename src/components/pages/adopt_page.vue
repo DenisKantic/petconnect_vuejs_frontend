@@ -4,11 +4,11 @@
 
   <h1>Udomi ljubimca</h1>
 
-  <div class="text-center">
+  <div class="filter-menu pt-4">
     <!-- location menu -->
     <v-menu>
       <template v-slot:activator="{ props }">
-        <v-btn color="primary" v-bind="props"> Lokacija </v-btn>
+        <v-btn  class="mr-4 font-weight-regular" color="primary" variant="outlined" v-bind="props"> Lokacija </v-btn>
       </template>
       <v-list>
         <v-chip
@@ -30,10 +30,35 @@
       </v-list>
     </v-menu>
 
+    <!-- animal choise menu  -->
+    <v-menu>
+      <template v-slot:activator="{ props }">
+        <v-btn class="mr-4 font-weight-regular"  variant="outlined" color="primary" v-bind="props"> Životinja </v-btn>
+      </template>
+      <v-list>
+        <v-chip
+          v-show="selectedAnimal != ''"
+          class="ma-2"
+          closable
+          @click:close="removeAnimalChip"
+        >
+          {{ selectedAnimal.title }}
+        </v-chip>
+
+        <v-list-item
+          v-for="(item, index) in animalList"
+          :key="index"
+          @click="selectAnimal(item)"
+        >
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+
     <!-- sex -->
     <v-menu>
       <template v-slot:activator="{ props }">
-        <v-btn color="primary" v-bind="props"> Spol </v-btn>
+        <v-btn class="mr-4 font-weight-regular"  variant="outlined" color="primary" v-bind="props"> Spol </v-btn>
       </template>
       <v-list>
         <v-chip
@@ -55,10 +80,35 @@
       </v-list>
     </v-menu>
 
+    <!-- chipped status menu -->
+    <v-menu>
+      <template v-slot:activator="{ props }">
+        <v-btn class="mr-4 font-weight-regular"  variant="outlined" color="primary" v-bind="props"> Čipovana </v-btn>
+      </template>
+      <v-list>
+        <v-chip
+          v-show="selectedChipStatus != ''"
+          class="ma-2"
+          closable
+          @click:close="removeChippedChip"
+        >
+          {{ selectedChipStatus.title }}
+        </v-chip>
+
+        <v-list-item
+          v-for="(item, index) in chipOption"
+          :key="index"
+          @click="selectChipStatus(item)"
+        >
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+
     <!-- Vakcinisan menu-->
     <v-menu>
       <template v-slot:activator="{ props }">
-        <v-btn color="primary" v-bind="props"> Vakcinisan </v-btn>
+        <v-btn class="mr-4 font-weight-regular"  variant="outlined" color="primary" v-bind="props"> Vakcinisan </v-btn>
       </template>
       <v-list>
         <v-chip
@@ -79,9 +129,13 @@
         </v-list-item>
       </v-list>
     </v-menu>
-    <v-btn @click="FetchPost">Pretrazi</v-btn>
+    
+    <v-btn class="font-weight-regular" @click="FetchPost" color="primary">Pretraži</v-btn>
+    <!-- <v-btn color="warning" @click="deleteFilters" v-show="selectedLocation != '' || selectedSex !='' || selectedVaccine != ''">Obriši filtere</v-btn> -->
   </div>
 
+
+  <p class="pt-4 pb-2 font-weight-regular">Ukupno rezultata: <span class="text-h6 font-weight-regular">{{ total_pages.total_count }}</span></p>
   <p v-if="post.length === 0">Nema pronadjenih zivotinja</p>
   <v-row v-else>
     <v-col
@@ -165,6 +219,15 @@ export default {
       total_pages: 1,
       location: ["Banja Luka", "Tuzla"],
       sexGenders: [{title:"Mužjak", value: "muzjak"}, {title:"Ženka", value: "zenka"}],
+      animalList: [{title: "Pas", value: "pas"},{title: "Mačka", value: "macka",}, {title:"Ostalo", value: "ostalo"}],
+      chipList: [{title: ""}],
+      chipOption: [
+        {
+          title: "Da",
+          value: "true",
+        },
+        { title: "Ne", value: "false" },
+      ],
       vaccineOption: [
         {
           title: "Da",
@@ -175,8 +238,10 @@ export default {
       selectedLocation: "",
       selectedSex: "",
       selectedVaccine: "",
+      selectedChipStatus: "",
       sex: "muzjak",
       vaccinated: "true",
+      loading: true,
     };
   },
   components: {
@@ -201,6 +266,12 @@ export default {
     selectVaccineStatus(item){
       this.selectedVaccine = item;
     },
+    selectAnimal(item){
+      this.selectedAnimal = item;
+    },
+    selectChipStatus(item){
+      this.selectedChipStatus = item
+    },
     removeLocationChip() {
       this.selectedLocation = "";
     },
@@ -210,6 +281,17 @@ export default {
     removeVaccineChip(){
       this.selectedVaccine = "";
     },  
+    removeAnimalChip(){
+      this.selectedAnimal = ""
+    },
+    removeChippedChip(){
+      this.selectedChipStatus = ""
+    },
+    // deleteFilters(){
+    //   this.selectedVaccine = ""
+    //   this.selectedLocation = "",
+    //   this.selectedSex = ""
+    // },
     shorterPostName(postName) {
       return postName.length > 10
         ? `${postName.substring(0, 10)}...`
@@ -217,15 +299,19 @@ export default {
     },
     async FetchPost() {
       this.post = [];
+      this.loading = true;
       let params = {
         page: this.page_number,
         page_size: this.page_size,
         location: this.selectedLocation,
         sex: this.selectedSex.value,
         vaccinated: this.selectedVaccine.value,
+        chipped: this.selectedChipStatus.value
+        // animal: this.selectedAnimal.value
       };
       console.log("SEX", this.selectedSex.value)
       console.log("PARAMS", params)
+      
       try {
         this.loading = true;
         const response = await this.$http.get(
@@ -280,4 +366,15 @@ img {
   overflow: hidden;
   height: 20vh;
 }
+
+.filter-menu{
+  width: 100%;
+}
+
+@media (min-width: 200px) and (max-width: 800px){
+  .filter-menu{
+    overflow-y: scroll;
+  }
+}
+
 </style>
