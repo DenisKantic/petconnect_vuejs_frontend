@@ -211,7 +211,7 @@ export default {
         username: this.username,
         email: this.email,
         password: this.password,
-        is_valid: this.is_checked,
+        is_terms_accepted: this.is_checked,
       };
 
       this.$http

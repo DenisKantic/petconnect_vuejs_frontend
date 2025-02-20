@@ -52,7 +52,7 @@ export default {
         "red lighten-1",
         "deep-purple accent-4",
       ],
-      subtitleCard:"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publish",
+      subtitleCard:"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publish. rem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publish",
       slides: ["First", "Second", "Third", "Fourth", "Fifth"],
       cards: [
         { title: "Naziv ljubimca", subtitle: "Simba" },
@@ -81,10 +81,7 @@ export default {
 
 <style scoped>
 .v-container {
-  
-  justify-content: space-between;
-  align-items: start;
-  min-height: 60vh;
+  min-height: 40vh;
 }
 
 .left-side {
@@ -101,7 +98,7 @@ export default {
     padding: 2rem;
 }
 
-@media (max-width: 900px){
+@media (max-width: 980px){
     .left-side,
     .right-side{
         width: 100%;
