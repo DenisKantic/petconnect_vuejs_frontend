@@ -154,8 +154,10 @@ router.beforeEach(async (to, from, next) => {
     authStore.isAuthenticated = false;
   }
 
-  // If the route requires authentication and user is not authenticated, redirect
-  if (
+  // If the user is authenticated and trying to access the login page, redirect them to home
+  if (to.name === "login" && authStore.isAuthenticated) {
+    next({ name: "home" });
+  } else if (
     to.matched.some((record) => record.meta.requiresAuth) &&
     !authStore.isAuthenticated
   ) {
