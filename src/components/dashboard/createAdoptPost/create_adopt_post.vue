@@ -34,18 +34,10 @@
           </v-stepper-item>
         </v-stepper-header>
       </v-stepper>
-      <!-- <v-progress-linear
-        min="0"
-        max="4"
-        buffer-color="#2196f3"
-        buffer-opacity="1"
-        color="info"
-        :buffer-value="step"
-        :height="10"
-      ></v-progress-linear> -->
+
       <v-window v-model="step">
         <v-window-item :value="1">
-          <v-card-title class="text-h6 pt-5 font-weight-regular">
+          <v-card-title class="text-h6 pz-5 text-center font-weight-regular">
             <span>{{ currentTitle }}</span>
           </v-card-title>
           <v-card-text>
@@ -187,10 +179,7 @@
 
 
         <v-window-item id="fourth-container" :value="4">
-          <!-- <v-icon size="40" color="green">mdi-check-circle-outline</v-icon>
-          <p>Objava je uspješno kreirana</p> -->
-<!--
-        </v-window-item> -->
+
         </v-window-item>
       </v-window>
 
@@ -385,7 +374,7 @@ export default {
       description: "",
       uploadedImages: [],
       imageURLs: [],
-      step: 1,
+      step:1,
       isCardDisabled: false,
       isBtnDisabled: false,
       isBtnLoading: false,
@@ -396,7 +385,7 @@ export default {
     currentTitle() {
       switch (this.step) {
         case 1:
-          return "Upišite informacije";
+          return "Udomi ljubimca";
         case 2:
           return "Postavite fotografije";
         default:
@@ -545,7 +534,7 @@ export default {
   align-items: center;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
-  margin: 3rem auto;
+  margin: 1rem auto;
 }
 
 @media (max-width: 600px) {
@@ -553,7 +542,6 @@ export default {
     grid-template-columns: repeat(1, 1fr);
     margin: auto;
     width: 100%;
-    background-color: green;
   }
 }
 

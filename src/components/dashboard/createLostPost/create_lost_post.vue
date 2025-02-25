@@ -1,21 +1,42 @@
 <template>
   <v-app id="container">
     <v-card :disabled="isCardDisabled">
-      <v-progress-linear
-        min="0"
-        max="4"
-        buffer-color="#2196f3"
-        buffer-opacity="1"
-        color="info"
-        :buffer-value="step"
-        :height="10"
-      ></v-progress-linear>
+      <v-stepper alt-labels v-show="step !== 4">
+        <v-stepper-header>
+          <v-stepper-item :value="!step === 1 ? 1 : 1" :complete="step >= 2">
+            <template v-slot:title
+              ><span class="d-none d-sm-block">Informacije</span>
+            </template>
+          </v-stepper-item>
+
+          <v-divider></v-divider>
+
+          <v-stepper-item :value="!step === 2 ? 2 : 2" :complete="step >= 3">
+            <template v-slot:title
+              ><span class="d-none d-sm-block">Fotografije</span>
+            </template>
+          </v-stepper-item>
+
+          <v-divider></v-divider>
+
+          <v-stepper-item :value="!step === 3 ? 3 : 3" :complete="step >= 4">
+            <template v-slot:title>
+              <span class="d-none d-sm-block">Pregled objave</span>
+            </template>
+          </v-stepper-item>
+
+          <v-divider></v-divider>
+
+          <v-stepper-item :value="!step === 4 ? 4 : 4" :complete="step === 4">
+            <template v-slot:title>
+              <span class="d-none d-sm-block">Objava</span>
+            </template>
+          </v-stepper-item>
+        </v-stepper-header>
+      </v-stepper>
       <v-window v-model="step">
         <v-window-item :value="1">
-          <p class="text-h6 text-center font-weight-light my-4">
-            Kreiraj oglas za izgubljenog/pronađenog ljubimca
-          </p>
-          <v-card-title class="text-h6 pt-5 font-weight-regular">
+          <v-card-title class="text-h6 py-5 text-center font-weight-regular">
             <span>{{ currentTitle }}</span>
           </v-card-title>
           <v-card-text>
@@ -60,7 +81,7 @@
         <v-window-item :value="2">
           <p class="text-h6 text-center font-weight-light my-4">
             Unesite fotografije <br />
-            (5 fotografija maksimalno)
+            (6 fotografija maksimalno)
           </p>
           <v-card-text>
             <VFileUpload
@@ -101,27 +122,19 @@
               Ime životinje: <br />
               <span class="font-weight-light">{{ petName }}</span>
             </p>
-            <p class="pb-2">
+            <p class="pb-2 font-weight-bold">
               Vrsta životinje: <br />
-              {{ animalCategory }}
+                <span class="font-weight-light">{{ animalCategory }}</span>
             </p>
-            <p class="pb-2">
+            <p class="pb-2 font-weight-bold">
               Spol: <br />
-              {{ animalGender }}
+              <span class="font-weight-light">{{ animalGender }}</span>
             </p>
-            <p class="pb-2">
-              Da li je životinja vakcinisana: <br />
-              {{ vaccinated }}
-            </p>
-            <p class="pb-2">
-              Da li je životinja čipovana: <br />
-              {{ chipped }}
-            </p>
-            <p class="pb-2">
+            <p class="font-weight-bold">
               Lokacija: <br />
-              {{ location }}
+              <span class="font-weight-light">{{ location }}</span>
             </p>
-            <p>Fotografije:</p>
+            <p class="font-weight-bold text-center">Fotografije:</p>
             <div class="image-preview">
               <v-img
                 v-for="(url, index) in imageURLs"
@@ -130,7 +143,6 @@
                 :src="url"
                 :lazy-src="url"
                 aspect-ratio="1"
-                class="my-4"
               >
                 <!--  -->
                 <template v-slot:placeholder>
@@ -144,13 +156,10 @@
           </div>
         </v-window-item>
 
-        <v-window-item id="fourth-container" :value="4">
-          <v-icon size="40" color="green">mdi-check-circle-outline</v-icon>
-          <p>Objava je uspješno kreirana</p>
+        <v-window-item :value="4">
+
         </v-window-item>
       </v-window>
-
-      <v-divider></v-divider>
 
       <v-card-actions v-show="step != 4">
         <v-btn
@@ -176,6 +185,34 @@
         </v-btn>
       </v-card-actions>
     </v-card>
+
+    <v-sheet
+    :value ="4"
+            v-show="step === 4"
+            class="pa-4 text-center mx-auto"
+            elevation="12"
+            max-width="600"
+            rounded="lg"
+            width="100%"
+          >
+            <v-icon
+              class="mb-5"
+              color="success"
+              icon="mdi-check-circle"
+              size="112"
+            ></v-icon>
+
+            <h2 class="text-h5 mb-6">Uspješno ste kreirali oglas</h2>
+
+            <p class="mb-4 text-medium-emphasis text-body-2">
+              Automatska redirekcija na Vaš profil...
+
+              <br />
+
+              Ukoliko Vas ne prebaci, <router-link to="/profil">kliknite ovdje</router-link>
+            </p>
+
+          </v-sheet>
 
     <v-snackbar
       v-model="snackbar.visible"
@@ -328,7 +365,7 @@ export default {
     currentTitle() {
       switch (this.step) {
         case 1:
-          return "Upišite informacije";
+          return "Oglas za izgubljenog ljubimca";
         case 2:
           return "Postavite fotografije";
         default:
@@ -447,7 +484,7 @@ export default {
             this.step = 4;
             setTimeout(() => {
               window.location.replace("/profil");
-            }, 1500);
+            }, 2500);
             console.log(res.data);
           })
           .catch((err) => {
@@ -476,7 +513,7 @@ export default {
   align-items: center;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
-  margin: 3rem auto;
+  margin: 1rem auto;
 }
 
 @media (max-width: 600px) {
@@ -484,7 +521,6 @@ export default {
     grid-template-columns: repeat(1, 1fr);
     margin: auto;
     width: 100%;
-    background-color: green;
   }
 }
 
@@ -502,20 +538,6 @@ export default {
 .v-card {
   margin: 4rem auto;
   width: 50%;
-}
-
-#fourth-container {
-  width: 100%;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-#fourth-container .v-icon {
-  padding: 2rem;
-  display: flex;
 }
 
 #delete-btn {
