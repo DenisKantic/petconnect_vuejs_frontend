@@ -44,7 +44,13 @@
     >
   </v-card>
 
-  <v-card id="container" :loading="deleteCardLoading" :disabled="deleteCardLoading" class="mt-10" color="error">
+  <v-card
+    id="container"
+    :loading="deleteCardLoading"
+    :disabled="deleteCardLoading"
+    class="mt-10"
+    color="error"
+  >
     <v-card-title class="d-flex items-center">Obriši profil </v-card-title>
 
     <v-card-text
@@ -54,9 +60,8 @@
     <v-dialog max-width="500">
       <template v-slot:activator="{ props: activatorProps }">
         <v-btn
-        :disabled="deleteCardLoading"
-        :loading="deleteCardLoading"
-    
+          :disabled="deleteCardLoading"
+          :loading="deleteCardLoading"
           class="ml-4 mb-4"
           v-bind="activatorProps"
           color="red"
@@ -76,7 +81,14 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn @click="deleteUser" :loading="deleteCardLoading" :disabled="deleteCardLoading" text="Obriši" color="error" variant="flat"></v-btn>
+            <v-btn
+              @click="deleteUser"
+              :loading="deleteCardLoading"
+              :disabled="deleteCardLoading"
+              text="Obriši"
+              color="error"
+              variant="flat"
+            ></v-btn>
             <v-btn
               :disabled="deleteCardLoading"
               color="primary"
@@ -149,21 +161,22 @@ export default {
       this.snackbar.color = color;
     },
 
-    deleteUser(){
-      this.$http.get("http://localhost:8080/delete-user", {
-        withCredentials: true
-      })
-      .then((response)=>{
-        this.deleteCardLoading = true;
-        this.showSnackbar("Profil uspješno obrisan", "success")
-        console.log(response.data)
-        Cookies.remove("auth_token")
-        window.location.replace("/")
-      })
-      .catch((error)=>{
-        this.showSnackbar(error.data.error, "error")
-        this.deleteCardLoading
-      })
+    deleteUser() {
+      this.$http
+        .get("http://localhost:8080/delete-user", {
+          withCredentials: true,
+        })
+        .then((response) => {
+          this.deleteCardLoading = true;
+          this.showSnackbar("Profil uspješno obrisan", "success");
+          console.log(response.data);
+          Cookies.remove("auth_token");
+          window.location.replace("/");
+        })
+        .catch((error) => {
+          this.showSnackbar(error.data.error, "error");
+          this.deleteCardLoading;
+        });
 
       this.deleteCardLoading;
     },

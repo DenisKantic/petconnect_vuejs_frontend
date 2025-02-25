@@ -74,6 +74,16 @@ const routes = [
     component: () => import("@/views/dashboard/home_page.vue"),
   },
   {
+    path: "/profil/kreirajoglas",
+    name: "Izaberi oglas",
+    meta: {
+      title: "Izaberi oglas",
+      requiresAuth: true,
+    },
+    component: () =>
+      import("@/views/dashboard/choosePostType/choose_post_type.vue"),
+  },
+  {
     path: "/profil/kreirajoglas/udomi",
     name: "Kreiraj oglas",
     meta: {
@@ -145,7 +155,10 @@ router.beforeEach(async (to, from, next) => {
   }
 
   // If the route requires authentication and user is not authenticated, redirect
-  if (to.matched.some((record) => record.meta.requiresAuth) && !authStore.isAuthenticated) {
+  if (
+    to.matched.some((record) => record.meta.requiresAuth) &&
+    !authStore.isAuthenticated
+  ) {
     next({ name: "login" });
   } else {
     next();

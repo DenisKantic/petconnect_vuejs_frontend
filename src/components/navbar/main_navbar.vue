@@ -37,7 +37,11 @@
       </template>
       <v-list style="padding: 0">
         <v-list-item v-for="(item, index) in items" :key="index">
-          <v-list-item-title><router-link :to="item.to" class="text-decoration-none">{{ item.title }}</router-link></v-list-item-title>
+          <v-list-item-title
+            ><router-link :to="item.to" class="text-decoration-none">{{
+              item.title
+            }}</router-link></v-list-item-title
+          >
         </v-list-item>
         <v-btn
           style="width: 100%; border-radius: 0"
@@ -114,9 +118,9 @@ export default {
         color: "success",
       },
       items: [
-        { title: "Objavi oglas", to: "/kreirajoglas"},
-        { title: "Moj profil", to: "/profil"},
-        { title: "Postavke", to: "/profil/postavke"},
+        { title: "Objavi oglas", to: "/profil/kreirajoglas" },
+        { title: "Moj profil", to: "/profil" },
+        { title: "Postavke", to: "/profil/postavke" },
       ],
       links: [
         { title: "Početna" },
@@ -173,7 +177,7 @@ export default {
     },
   },
   mounted() {
-    console.log("NAVBAR AUTH TEST", this.isUserLoggedIn.isAuthenticated)
+    console.log("NAVBAR AUTH TEST", this.isUserLoggedIn.isAuthenticated);
     // this.checkAuth(); // Check authentication status when the component mounts
   },
 };
