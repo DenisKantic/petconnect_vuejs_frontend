@@ -25,7 +25,7 @@
       <v-btn text class="ml-2">Kontakt</v-btn>
     </template>
 
-    <v-menu v-if="isLoggedIn">
+    <v-menu v-if="isUserLoggedIn.isAuthenticated">
       <template v-slot:activator="{ props }">
         <v-btn v-bind="props">
           <v-avatar
@@ -37,7 +37,11 @@
       </template>
       <v-list style="padding: 0">
         <v-list-item v-for="(item, index) in items" :key="index">
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
+          <v-list-item-title
+            ><router-link :to="item.to" class="text-decoration-none">{{
+              item.title
+            }}</router-link></v-list-item-title
+          >
         </v-list-item>
         <v-btn
           style="width: 100%; border-radius: 0"
@@ -99,10 +103,13 @@
 <script>
 import Cookies from "js-cookie";
 import axios from "axios";
+import { useAuthStore } from "@/stores/authStore";
 
 export default {
   data() {
+    const isUserLoggedIn = useAuthStore();
     return {
+      isUserLoggedIn,
       isLoggedIn: false,
       drawer: false,
       snackbar: {
@@ -111,9 +118,9 @@ export default {
         color: "success",
       },
       items: [
-        { title: "Objavi oglas" },
-        { title: "Moj profil" },
-        { title: "Postavke" },
+        { title: "Objavi oglas", to: "/profil/kreirajoglas" },
+        { title: "Moj profil", to: "/profil" },
+        { title: "Postavke", to: "/profil/postavke" },
       ],
       links: [
         { title: "Početna" },
@@ -125,27 +132,27 @@ export default {
   },
   computed: {},
   methods: {
-    async checkAuth() {
-      this.isLoggedIn = false;
-      console.log("IS LOGGED IN STATE", this.isLoggedIn);
+    // async checkAuth() {
+    //   this.isLoggedIn = false;
+    //   console.log("IS LOGGED IN STATE", this.isLoggedIn);
 
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/validate-token",
-          {
-            withCredentials: true, // Ensure cookies are sent
-          },
-        );
-        console.log("RES", response);
-        if (response.status == 200) {
-          this.isLoggedIn = true;
-        }
-      } catch (error) {
-        console.error("Authentication error:", error);
-        this.isLoggedIn = false;
-        Cookies.remove("auth_token", { path: "/" });
-      }
-    },
+    //   try {
+    //     const response = await axios.get(
+    //       `http://localhost:8080/validate-token?refresh=${new Date().getTime()}`,
+    //       {
+    //         withCredentials: true, // Ensure cookies are sent
+    //       },
+    //     );
+    //     console.log("RES", response);
+    //     if (response.status == 200) {
+    //       this.isLoggedIn = true;
+    //     }
+    //   } catch (error) {
+    //     console.error("Authentication error:", error);
+    //     this.isLoggedIn = false;
+    //     Cookies.remove("auth_token", { path: "/" });
+    //   }
+    // },
     showSnackbar(message, color) {
       this.snackbar.visible = true;
       this.snackbar.message = message;
@@ -157,19 +164,21 @@ export default {
       this.isLoggedIn = false;
       this.$router.push("/");
 
-      setTimeout(() => {
-        window.location.reload();
-      }, 100);
-      axios
-        .post("http://localhost:8080/logout", {}, { withCredentials: true })
-        .catch((error) => {
-          console.error("Logout error:", error);
-          this.showSnackbar("Greška prilikom odjavivanja", "error");
-        });
+      window.location.reload();
+      axios.post(
+        `http://localhost:8080/logout?refresh=${new Date().getTime()}`,
+        {},
+        { withCredentials: true },
+      );
+      Cookies.remove("auth_token").catch((error) => {
+        console.error("Logout error");
+        this.showSnackbar("Greška prilikom odjavljivanja", "error");
+      });
     },
   },
   mounted() {
-    this.checkAuth(); // Check authentication status when the component mounts
+    console.log("NAVBAR AUTH TEST", this.isUserLoggedIn.isAuthenticated);
+    // this.checkAuth(); // Check authentication status when the component mounts
   },
 };
 </script>

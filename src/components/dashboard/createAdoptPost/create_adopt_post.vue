@@ -443,22 +443,24 @@ export default {
           URL.createObjectURL(file),
         );
         console.log("FIRST ARRAY", this.uploadedImages);
-      } else if (filteredFiles.length === 0) {
-        this.showSnackbar(
-          "Molimo odaberite validne formate fotografija (PNG, JPG, JPEG)",
-          "error",
-        );
-        this.uploadedImages = [];
-        this.imageURLs = [];
+        // } else if (filteredFiles.length === 0) {
+        //   this.showSnackbar(
+        //     "Molimo odaberite validne formate fotografija (PNG, JPG, JPEG)",
+        //     "error",
+        //   );
+        //   this.uploadedImages = [];
+        //   this.imageURLs = [];
       } else {
         this.uploadedImages = fileArray;
         this.imageURLs = this.uploadedImages.map((file) =>
           URL.createObjectURL(file),
         );
+
         console.log("URL IMGES", this.imageURLs);
       }
 
       this.$emit("update:model-value", this.uploadedImages);
+      console.log("FILTER TEST", filteredFiles);
       this.$emit("update:model-value", this.imageURLs);
     },
     submitForm() {

@@ -11,6 +11,7 @@ declare module 'vue' {
     Adopt_page: typeof import('./src/components/pages/adopt_page.vue')['default']
     Adopt_post: typeof import('./src/components/dashboard/adopt_post.vue')['default']
     AdoptPost: typeof import('./src/components/dashboard/createAdoptPost/adoptPost.vue')['default']
+    Choose_post_type: typeof import('./src/components/dashboard/choose_post_type.vue')['default']
     copy: typeof import('./src/components/dashboard/sos_post copy.vue')['default']
     Create_adopt_post: typeof import('./src/components/dashboard/createAdoptPost/create_adopt_post.vue')['default']
     Create_donation_post: typeof import('./src/components/dashboard/createDonationPost/create_donation_post.vue')['default']
