@@ -34,7 +34,7 @@
       </v-stepper>
       <v-window v-model="step">
         <v-window-item :value="1">
-          <v-card-title class="text-h6 pt-5 font-weight-regular">
+          <v-card-title class="text-h6 py-5 text-center font-weight-regular">
             <span>{{ currentTitle }}</span>
           </v-card-title>
           <v-card-text>
@@ -370,7 +370,7 @@ export default {
     currentTitle() {
       switch (this.step) {
         case 1:
-          return "Upišite informacije";
+          return "Oglas za donacije";
         case 2:
           return "Postavite fotografije";
         default:
@@ -489,7 +489,7 @@ export default {
             this.step = 4;
             setTimeout(() => {
               window.location.replace("/profil");
-            }, 1500);
+            }, 2500);
             console.log(res.data);
           })
           .catch((err) => {
@@ -517,7 +517,7 @@ export default {
   align-items: center;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
-  margin: 3rem auto;
+  margin: 1rem auto;
 }
 
 @media (max-width: 600px) {
@@ -525,7 +525,6 @@ export default {
     grid-template-columns: repeat(1, 1fr);
     margin: auto;
     width: 100%;
-    background-color: green;
   }
 }
 
