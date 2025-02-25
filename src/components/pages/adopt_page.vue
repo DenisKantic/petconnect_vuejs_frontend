@@ -174,7 +174,11 @@
   <p class="pt-4 pb-2 font-weight-regular">
     Ukupno rezultata:
     <span class="text-h6 font-weight-regular">{{
-      total_pages.total_count - 1
+      isNaN(total_pages.total_count - 1)
+        ? 0
+          ? totalPages.total_count - 1 < 0
+          : 0
+        : total_pages.total_count - 1
     }}</span>
   </p>
   <p v-if="post.length === 0">Nema pronadjenih zivotinja</p>
@@ -373,7 +377,7 @@ export default {
         this.post = response.data.posts;
         this.total_pages = response.data.total_count;
       } catch (error) {
-        console.log("error", error);
+        console.log("error");
       } finally {
         this.loading = false;
       }

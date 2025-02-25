@@ -60,57 +60,73 @@
           >
 
           <v-dialog max-width="500">
-  <template v-slot:activator="{ props: activatorProps }">
-    <v-btn
-      v-bind="activatorProps"
-      color="surface-variant"
-      text="Zaboravili ste šifru?"
-      variant="text"
-      class="px-0 text-none"
-    ></v-btn>
-  </template>
+            <template v-slot:activator="{ props: activatorProps }">
+              <v-btn
+                v-bind="activatorProps"
+                color="surface-variant"
+                text="Zaboravili ste šifru?"
+                variant="text"
+                class="px-0 text-none"
+              ></v-btn>
+            </template>
 
-  <template v-slot:default="{ isActive }">
-    <v-card :loading="is_card_loading" :disabled="is_card_disabled" style="min-height: 20vh;" title="Resetuj šifru">
-      <v-card-text class="text-justify text-subtitle-2">Da bi se generisala nova šifra, molimo vas 
-        da upišete ispod vašu email adresu, s kojom ste 
-        kreirali vaš korisnički nalog. Nova šifra će biti poslana na vašu email adresu.</v-card-text>
-      <v-text-field
-            outlined
-            label="Email"
-            placeholder="Upišite vaš email"
-            class="px-4"
-            v-model="reset_email"
-            :rules="computed_reset_email_rules"
-            required
-            variant="outlined"
-            @blur="validate_reset_email"
-          ></v-text-field>
-          <p v-show="reset_email_error" class="pb-2 text-red font-weight-bold text-center">Korisnički nalog ne postoji.</p>
-          <p v-show="reset_email_okay" class="pb-4 px-4 text-green font-weight-regular text-center">Nova šifra je kreirana. Provjerite svoju email adresu</p>
+            <template v-slot:default="{ isActive }">
+              <v-card
+                :loading="is_card_loading"
+                :disabled="is_card_disabled"
+                style="min-height: 20vh"
+                title="Resetuj šifru"
+              >
+                <v-card-text class="text-justify text-subtitle-2"
+                  >Da bi se generisala nova šifra, molimo vas da upišete ispod
+                  vašu email adresu, s kojom ste kreirali vaš korisnički nalog.
+                  Nova šifra će biti poslana na vašu email adresu.</v-card-text
+                >
+                <v-text-field
+                  outlined
+                  label="Email"
+                  placeholder="Upišite vaš email"
+                  class="px-4"
+                  v-model="reset_email"
+                  :rules="computed_reset_email_rules"
+                  required
+                  variant="outlined"
+                  @blur="validate_reset_email"
+                ></v-text-field>
+                <p
+                  v-show="reset_email_error"
+                  class="pb-2 text-red font-weight-bold text-center"
+                >
+                  Korisnički nalog ne postoji.
+                </p>
+                <p
+                  v-show="reset_email_okay"
+                  class="pb-4 px-4 text-green font-weight-regular text-center"
+                >
+                  Nova šifra je kreirana. Provjerite svoju email adresu
+                </p>
 
-      <v-card-actions>
-        <v-spacer></v-spacer>
-      
+                <v-card-actions>
+                  <v-spacer></v-spacer>
 
-        <v-btn
-        color="primary"
-        variant="elevated"
-        @click="submit_password_reset"
-        >
-          Reset
-        </v-btn>
-        <v-btn
-          text="Zatvori"
-          variant="outlined"
-          color="error"
-          class="mr-2"
-          @click="isActive.value = false"
-        ></v-btn>
-      </v-card-actions>
-    </v-card>
-  </template>
-</v-dialog>
+                  <v-btn
+                    color="primary"
+                    variant="elevated"
+                    @click="submit_password_reset"
+                  >
+                    Reset
+                  </v-btn>
+                  <v-btn
+                    text="Zatvori"
+                    variant="outlined"
+                    color="error"
+                    class="mr-2"
+                    @click="isActive.value = false"
+                  ></v-btn>
+                </v-card-actions>
+              </v-card>
+            </template>
+          </v-dialog>
 
           <v-btn
             @click="submit"
@@ -202,7 +218,9 @@ export default {
         : [];
     },
     computed_reset_email_rules() {
-      return this.email_reset_touched ? [this.rules.required, this.rules.reset_email] : [];
+      return this.email_reset_touched
+        ? [this.rules.required, this.rules.reset_email]
+        : [];
     },
   },
   methods: {
@@ -212,43 +230,43 @@ export default {
     validatePassword() {
       this.passwordTouched = true; // Mark the password field as touched
     },
-    validate_reset_email(){
+    validate_reset_email() {
       this.email_reset_touched = true;
-    },    
+    },
     toggle_password() {
       this.show_password = !this.show_password;
     },
-   
+
     showSnackbar(message, color) {
       this.snackbar.visible = true;
       this.snackbar.message = message;
       this.snackbar.color = color;
     },
-    submit_password_reset(){
+    submit_password_reset() {
       this.is_card_disabled = true;
       this.is_card_loading = true;
 
-   
-        const form_object = {
-          email: this.reset_email
-        }
+      const form_object = {
+        email: this.reset_email,
+      };
 
-        this.$http.post('http://localhost:8080/password-reset', form_object)
-        .then((response)=>{
-          this.showSnackbar("Nova šifra kreirana","success")
+      this.$http
+        .post("http://localhost:8080/password-reset", form_object)
+        .then((response) => {
+          this.showSnackbar("Nova šifra kreirana", "success");
           console.log(response.data);
         })
-        .catch((error)=>{
-          console.log("ERROR", error)
-          this.showSnackbar("Desila se greška", "error")
+        .catch((error) => {
+          console.log("ERROR", error);
+          this.showSnackbar(error.response.data.error, "error");
           this.is_card_disabled = false;
           this.is_card_loading = false;
         })
-        .finally(()=>{
+        .finally(() => {
           this.is_card_disabled = false;
           this.is_card_loading = false;
-        })
-      },
+        });
+    },
     submit() {
       if (this.password == "" || this.email == "") {
         this.showSnackbar("Niste popunili sva polja!", "error");

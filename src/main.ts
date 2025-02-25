@@ -7,11 +7,13 @@ import axios from "axios";
 
 // Composables
 import { createApp } from "vue";
+import { createPinia } from "pinia";
 
 const app = createApp(App);
 const vuetify = createVuetify();
 app.config.globalProperties.$http = axios; // defining axios globaly, this.$http.get/post/....
 
+app.use(createPinia());
 app.use(router);
 app.use(vuetify);
 app.mount("#app");

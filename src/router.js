@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import axios from "axios";
+import { useAuthStore } from "./stores/authStore";
 
 const routes = [
   {
@@ -125,27 +126,29 @@ const router = createRouter({
 
 // Global navigation guard to update the document title and check authentication
 router.beforeEach(async (to, from, next) => {
-  // Update the document title
-  document.title = to.meta.title || "PetConnect"; // Fallback title
+  document.title = to.meta.title || "PetConnect"; // Set page title
 
-  // Check if the route requires authentication
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    try {
-      const response = await axios.get("http://localhost:8080/validate-token", {
-        withCredentials: true, // Ensure cookies are sent
-      });
-      console.log("RESPONSE", response.status);
-      if (response.status) {
-        next(); // User is authenticated, proceed to route
-      } else {
-        next({ name: "login" }); // User is not authenticated, redirect to login
-      }
-    } catch (error) {
-      console.error("Authentication check failed:", error);
-      next({ name: "login" }); // In case of error during auth, redirect to login
+  const authStore = useAuthStore(); // accessing store for storing global state if user is logged in
+  try {
+    // Always check authentication status (even for public routes)
+    const response = await axios.get(`http://localhost:8080/validate-token`, {
+      withCredentials: true,
+    });
+
+    if (response.status === 200) {
+      authStore.isAuthenticated = true;
+    } else {
+      authStore.isAuthenticated = false;
     }
+  } catch (error) {
+    authStore.isAuthenticated = false;
+  }
+
+  // If the route requires authentication and user is not authenticated, redirect
+  if (to.matched.some((record) => record.meta.requiresAuth) && !authStore.isAuthenticated) {
+    next({ name: "login" });
   } else {
-    next(); // Route doesn't require auth, proceed as normal
+    next();
   }
 });
 

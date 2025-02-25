@@ -1,5 +1,10 @@
 <template>
-  <v-card :disabled="passwordCardLoading" :loading="passwordCardLoading" class="px-5 py-5 mt-10" id="container" >
+  <v-card
+    :disabled="passwordCardLoading"
+    :loading="passwordCardLoading"
+    class="px-5 py-5 mt-10"
+    id="container"
+  >
     <v-card-title class="px-0 pb-4 text-h5">Promijeni šifru</v-card-title>
     <label>Nova šifra</label>
     <v-text-field
@@ -31,64 +36,71 @@
       }}</v-icon></v-text-field
     >
 
-    <v-btn color="primary" @click="submit_password" :loading="changePassBtnLoading">Promijeni</v-btn>
-    </v-card>
-
-    <v-card id="container" class="mt-10" color="error">
-      <v-card-title class="d-flex items-center">Obriši profil
-      </v-card-title>
-
-      <v-card-text>Obrišite vaš profil u potpunosti sa svim oglasima i server podacima
-        <br><span>PAŽNJA: Ovaj postupan je nepovratan!</span>
-      </v-card-text>
-      <v-dialog max-width="500">
-  <template v-slot:activator="{ props: activatorProps }">
     <v-btn
-      class="ml-4 mb-4"
-      v-bind="activatorProps"
-      color="red"
-      variant="flat"
+      color="primary"
+      @click="submit_password"
+      :loading="changePassBtnLoading"
+      >Promijeni</v-btn
     >
-    Obriši profil
-    <v-icon size="25" class="ml-2">mdi-alert</v-icon>
-  </v-btn>
-  </template>
+  </v-card>
 
-  <template v-slot:default="{ isActive }">
-    <v-card  title="Obriši profil">
-      <v-card-text>
-        Da li ste sigurni da želite obrisati profil kao i sve podatke?
-      </v-card-text>
+  <v-card id="container" :loading="deleteCardLoading" :disabled="deleteCardLoading" class="mt-10" color="error">
+    <v-card-title class="d-flex items-center">Obriši profil </v-card-title>
 
-      <v-card-actions>
-        <v-spacer></v-spacer>
-
+    <v-card-text
+      >Obrišite vaš profil u potpunosti sa svim oglasima i server podacima
+      <br /><span>PAŽNJA: Ovaj postupan je nepovratan!</span>
+    </v-card-text>
+    <v-dialog max-width="500">
+      <template v-slot:activator="{ props: activatorProps }">
         <v-btn
-        text="Obriši"
-        color="error"
-        variant="flat"
-        ></v-btn>
-        <v-btn
-        color="primary"
-          text="Odustani"
+        :disabled="deleteCardLoading"
+        :loading="deleteCardLoading"
+    
+          class="ml-4 mb-4"
+          v-bind="activatorProps"
+          color="red"
           variant="flat"
-          @click="isActive.value = false"
-        ></v-btn>
-      </v-card-actions>
-    </v-card>
-  </template>
-</v-dialog>
-     
-    </v-card>
-    <v-snackbar
-      v-model="snackbar.visible"
-      :timeout="snackbar.timeout"
-      :color="snackbar.color"
-    >
-      {{ snackbar.message }}</v-snackbar>
+        >
+          Obriši profil
+          <v-icon size="25" class="ml-2">mdi-alert</v-icon>
+        </v-btn>
+      </template>
+
+      <template v-slot:default="{ isActive }">
+        <v-card :loading="deleteCardLoading" title="Obriši profil">
+          <v-card-text>
+            Da li ste sigurni da želite obrisati profil kao i sve podatke?
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+
+            <v-btn @click="deleteUser" :loading="deleteCardLoading" :disabled="deleteCardLoading" text="Obriši" color="error" variant="flat"></v-btn>
+            <v-btn
+              :disabled="deleteCardLoading"
+              color="primary"
+              text="Odustani"
+              variant="flat"
+              @click="isActive.value = false"
+            ></v-btn>
+          </v-card-actions>
+        </v-card>
+      </template>
+    </v-dialog>
+  </v-card>
+  <v-snackbar
+    v-model="snackbar.visible"
+    :timeout="snackbar.timeout"
+    :color="snackbar.color"
+  >
+    {{ snackbar.message }}</v-snackbar
+  >
 </template>
 
 <script>
+import Cookies from "js-cookie";
+
 export default {
   data() {
     return {
@@ -100,6 +112,7 @@ export default {
       },
       show_password: false,
       show_check_pass: false,
+      deleteCardLoading: false,
       text: "",
       password: "",
       changePassBtnLoading: false,
@@ -136,35 +149,54 @@ export default {
       this.snackbar.color = color;
     },
 
-    submit_password(){
-
-      this.changePassBtnLoading = true;
-      this.passwordCardLoading = true;
-      if (this.password != this.confirm_password){
-        this.showSnackbar("Šifre se ne poklapaju", "error")
-        this.changePassBtnLoading = false;
-        this.passwordCardLoading = false;
-        return
-      }
-
-      const params = {
-        password: this.password
-      }
-
-      this.$http.post('http://localhost:8080/change-password', params, {
+    deleteUser(){
+      this.$http.get("http://localhost:8080/delete-user", {
         withCredentials: true
       })
       .then((response)=>{
-        console.log("RESPONSE HERRE",response.data.success)
-        this.showSnackbar(response.data.success, "success")
+        this.deleteCardLoading = true;
+        this.showSnackbar("Profil uspješno obrisan", "success")
+        console.log(response.data)
+        Cookies.remove("auth_token")
+        window.location.replace("/")
       })
       .catch((error)=>{
-        this.showSnackbar(response.data.error, "error")
+        this.showSnackbar(error.data.error, "error")
+        this.deleteCardLoading
       })
 
-      this.changePassBtnLoading = false
+      this.deleteCardLoading;
+    },
+
+    submit_password() {
+      this.changePassBtnLoading = true;
+      this.passwordCardLoading = true;
+      if (this.password != this.confirm_password) {
+        this.showSnackbar("Šifre se ne poklapaju", "error");
+        this.changePassBtnLoading = false;
+        this.passwordCardLoading = false;
+        return;
+      }
+
+      const params = {
+        password: this.password,
+      };
+
+      this.$http
+        .post("http://localhost:8080/change-password", params, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          console.log("RESPONSE HERRE", response.data.success);
+          this.showSnackbar(response.data.success, "success");
+        })
+        .catch((error) => {
+          this.showSnackbar(response.data.error, "error");
+        });
+
+      this.changePassBtnLoading = false;
       this.passwordCardLoading = false;
-    }
+    },
   },
 };
 </script>
@@ -185,7 +217,6 @@ export default {
   position: relative;
 }
 
-
 label {
   font-size: 1.2rem;
 }
@@ -205,8 +236,8 @@ label {
   }
 }
 
-@media (min-width: 1025px){
-  #container{
+@media (min-width: 1025px) {
+  #container {
     width: 50%;
     margin: auto;
   }
