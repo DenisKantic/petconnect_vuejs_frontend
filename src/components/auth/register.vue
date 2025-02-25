@@ -211,7 +211,7 @@ export default {
         username: this.username,
         email: this.email,
         password: this.password,
-        is_valid: this.is_checked,
+        is_terms_accepted: this.is_checked,
       };
 
       this.$http
@@ -222,8 +222,7 @@ export default {
           this.showSnackbar("Registracija uspješna", "success");
         })
         .catch((error) => {
-          this.showSnackbar("Desila se greška", "error");
-          console.error("ERROR", error);
+          this.showSnackbar(error.response.data.error, "error");
           this.error_msg = "";
           this.$refs.form.reset();
         });
