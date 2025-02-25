@@ -187,10 +187,7 @@
 
 
         <v-window-item id="fourth-container" :value="4">
-          <!-- <v-icon size="40" color="green">mdi-check-circle-outline</v-icon>
-          <p>Objava je uspješno kreirana</p> -->
-<!--
-        </v-window-item> -->
+
         </v-window-item>
       </v-window>
 
