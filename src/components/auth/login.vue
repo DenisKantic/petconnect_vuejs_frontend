@@ -251,7 +251,10 @@ export default {
       };
 
       this.$http
-        .post("http://localhost:8080/password-reset", form_object)
+        .post(
+          "https://www.petconnectbosnia.com/petapi/password-reset",
+          form_object
+        )
         .then((response) => {
           this.showSnackbar("Nova šifra kreirana", "success");
           console.log(response.data);
@@ -278,7 +281,7 @@ export default {
       };
 
       this.$http
-        .post("http://localhost:8080/login", form_object, {
+        .post("https://www.petconnectbosnia.com/petapi/login", form_object, {
           withCredentials: true,
         })
         .then((response) => {
