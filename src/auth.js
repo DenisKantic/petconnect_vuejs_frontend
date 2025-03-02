@@ -20,11 +20,11 @@ export const stopTokenValidation = () => {
 const validateToken = async (callback) => {
   try {
     const response = await axios.get(
-      "http://localhost:8080/validate-token",
+      "https://www.petconnectbosnia.com/petapi/validate-token",
       null,
       {
         withCredentials: true, // Ensure cookies are sent
-      },
+      }
     );
     if (response.status === 200) {
       callback(true); // Call the callback with true if the token is valid

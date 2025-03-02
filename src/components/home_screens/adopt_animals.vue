@@ -47,8 +47,8 @@
               post.category === "macka"
                 ? "mdi-cat"
                 : post.category === "pas"
-                  ? "mdi-dog"
-                  : "mdi-paw"
+                ? "mdi-dog"
+                : "mdi-paw"
             }}</v-icon
             >{{
               post.category.charAt(0).toUpperCase() + post.category.slice(1)
@@ -90,7 +90,7 @@ export default {
       try {
         this.loading = true;
         const response = await this.$http.get(
-          "http://localhost:8080/latest-adopt-post",
+          "https://www.petconnectbosnia.com/petapi/latest-adopt-post"
         );
         this.post = response.data;
         console.log("ADOPT RESPONSE", response.data);
