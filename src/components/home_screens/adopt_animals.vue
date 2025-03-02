@@ -27,7 +27,7 @@
         <img
           :src="
             post.images.length > 0
-              ? `http://localhost:8080/${post.images[0]}`
+              ? `https://www.petconnectbosnia.com/petapi/${post.images[0]}`
               : 'https://placehold.co/300x200'
           "
         />

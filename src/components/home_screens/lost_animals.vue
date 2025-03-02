@@ -19,7 +19,7 @@
         <img
           :src="
             post.images.length > 0
-              ? `http://localhost:8080/${post.images[0]}`
+              ? `https://www.petconnectbosnia.com/petapi/${post.images[0]}`
               : 'https://placehold.co/300x200'
           "
         />
@@ -39,8 +39,8 @@
               post.category === "macka"
                 ? "mdi-cat"
                 : post.category === "pas"
-                  ? "mdi-dog"
-                  : "mdi-paw"
+                ? "mdi-dog"
+                : "mdi-paw"
             }}</v-icon
             >{{ post.category }}
           </div>
@@ -73,7 +73,7 @@ export default {
       this.loading = true;
       try {
         const response = await this.$http.get(
-          "http://localhost:8080/latest-lost-post",
+          "https://www.petconnectbosnia.com/petapi/latest-lost-post"
         );
         this.post = response.data;
         console.log("IZGUBLJENI RES", response.data);

@@ -27,7 +27,7 @@
         <img
           :src="
             post.images.length > 0
-              ? `http://localhost:8080/${post.images[0]}`
+              ? `https://www.petconnectbosnia.com/petapi/${post.images[0]}`
               : 'https://placehold.co/300x200'
           "
         />
@@ -48,8 +48,8 @@
                 post.animal_category === "macka"
                   ? "mdi-cat"
                   : post.animal_category === "pas"
-                    ? "mdi-dog"
-                    : "mdi-paw"
+                  ? "mdi-dog"
+                  : "mdi-paw"
               }}</v-icon
               >{{
                 post.animal_category.charAt(0).toUpperCase() +
@@ -62,8 +62,8 @@
               post.post_category === "hrana"
                 ? "mdi-food"
                 : post.post_category === "lijek"
-                  ? "mdi-medical-bag"
-                  : "mdi-view-grid"
+                ? "mdi-medical-bag"
+                : "mdi-view-grid"
             }}</v-icon
             >{{
               post.post_category.charAt(0).toUpperCase() +
@@ -97,7 +97,7 @@ export default {
       this.loading = true;
       try {
         const response = await this.$http.get(
-          "http://localhost:8080/latest-donation-post",
+          "https://www.petconnectbosnia.com/petapi/latest-donation-post"
         );
         this.post = response.data;
         console.log("DONTION RES", response.data);
