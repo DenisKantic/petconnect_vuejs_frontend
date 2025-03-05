@@ -26,14 +26,14 @@
               Podijeli <v-icon class="ml-1">mdi-facebook</v-icon>
             </v-btn>
             <v-btn color="primary" class="flex-grow-1">Uredi</v-btn>
-            <v-btn color="red" class="flex-grow-1">Obriši</v-btn>
+            <v-btn color="red" class="flex-grow-1" @click="confirmDelete(adoptPost[index-1].id)">Obriši</v-btn>
           </div>
         </v-card>
       </template>
 
       <template v-else>
         <!-- Create Post Button in Empty Slot -->
-        <v-card class="d-flex align-center justify-center flex-grow-1" height="100%">
+        <v-card class="d-flex align-center justify-center flex-grow-1" height="100%" style="min-height: 20vh;">
           <router-link to="/profil/kreirajoglas/udomi"><v-btn color="primary" size="large">
             + Dodaj Oglas
           </v-btn>
@@ -42,6 +42,20 @@
       </template>
     </v-col>
   </v-row>
+
+  <v-dialog v-model="dialog" hide-overlay>
+    <v-card max-width="500" class="mx-auto">
+      <v-card-title class="text-center">
+        Da li ste sigurni da želite obrisati objavu?
+      </v-card-title>
+      <v-divider></v-divider>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+      <v-btn color="red" variant="flat" @click="deletePost(post_to_delete)">Obriši</v-btn>
+      <v-btn color="primary" @click="dialog = false" variant="outlined">Odustani</v-btn>
+    </v-card-actions>
+    </v-card>
+  </v-dialog>
 </v-container>
 </template>
 
@@ -54,12 +68,32 @@ export default {
       location: "Location",
       category: "Category",
       sex: "Male",
-      adoptPost: []
+      adoptPost: [],
+      dialog: false,
+      post_to_delete: null,
     };
   },
   methods:{
+    confirmDelete(postID){
+        this.post_to_delete = postID;
+        this.dialog = true;
+    },
+    deletePost(postID){
+         axios.delete(`http://localhost:8080/delete-post/${postID}`, {withCredentials: true},
+         )
+         .then((response)=>{
+          console.log(response.data)
+          this.dialog = false;
+          console.log("FIRING FUNCTION")
+          this.getAdoptPost();
+          console.log("EXITING FUNCTION")
+         })
+         .catch((error)=>{
+          console.log("ERROR", error)
+         })
+    },
       async getAdoptPost(){
-        await axios.get('http://localhost:8080/my-adopt-post', {withCredentials: true})
+        await axios.get(`http://localhost:8080/my-adopt-post`, {withCredentials: true})
         .then((response)=>{
           this.adoptPost = response.data
         })
