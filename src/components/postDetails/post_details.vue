@@ -43,6 +43,7 @@
           </v-sheet>
         </v-carousel-item>
       </v-carousel>
+      <p class="text-center mt-5">Za pregled fotografija preko čitavog ekrana, kliknite na fotografiju</p>
     </div>
     <div class="right-side">
       <p class="text-h4 pb-4">Detalji ljubimca</p>
