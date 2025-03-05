@@ -158,7 +158,7 @@ router.beforeEach(async (to, from, next) => {
     } else {
       authStore.isAuthenticated = false;
     }
-  } catch (error) {
+  } catch (err) {
     authStore.isAuthenticated = false;
   }
 
