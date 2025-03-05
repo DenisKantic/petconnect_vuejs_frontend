@@ -43,6 +43,7 @@
           </v-sheet>
         </v-carousel-item>
       </v-carousel>
+      <p class="text-center mt-5">Za pregled fotografija preko čitavog ekrana, kliknite na fotografiju</p>
     </div>
     <div class="right-side">
       <p class="text-h4 pb-4">Detalji ljubimca</p>
@@ -127,8 +128,11 @@
         <v-card-text>
           <v-textarea
             v-model="message"
+            :rules="rules"
+            counter
             label="Vaša poruka"
-            rows="4"
+            rows="8"
+            no-resize
             outlined
           ></v-textarea>
         </v-card-text>
@@ -193,6 +197,7 @@ export default {
         "deep-purple accent-4",
       ],
       new_data: [],
+      rules: [(v) => v.length <= 1500 || "Maksimalno 1500 karaktera"],
       dialog: false,
       subtitleCard:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publish. rem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publish",
@@ -204,7 +209,7 @@ export default {
         { title: "Starost", subtitle: "N/A" },
         { title: "Spol", subtitle: "N/A" },
         { title: "Vakcinisan", subtitle: "N/A" },
-        { title: "Pasoš", subtitle: "N/A" },
+        { title: "Datum objave", subtitle: "N/A" },
         { title: "Čipovan", subtitle: "N/A" },
       ],
     };
@@ -253,8 +258,8 @@ export default {
             { title: "Starost", subtitle: this.new_data.age || "N/A" },
             { title: "Spol", subtitle: this.new_data.sex },
             { title: "Vakcinisan", subtitle: this.new_data.vaccinated },
-            { title: "Pasoš", subtitle: this.new_data.passport || "N/A" },
             { title: "Čipovan", subtitle: this.new_data.chipped },
+            { title: "Datum objave", subtitle: this.format_date(this.new_data.created_at) || "N/A" },
           ];
 
           this.subtitleCard = this.new_data.description;
@@ -266,6 +271,15 @@ export default {
           this.is_loading = false;
         });
       this.is_loading = false;
+    },
+
+    format_date(dateString){
+      const date = new Date(dateString);
+      const day = String(date.getDate()).padStart(2,'0')
+      const month = String(date.getMonth()+1).padStart(2,'0')
+      const year = String(date.getFullYear()).slice()
+
+      return `${day}/${month}/${year}`
     },
     openDialog() {
       this.dialog = true;
