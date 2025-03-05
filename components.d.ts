@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Activate_account: typeof import('./src/components/activateAccount/activate_account.vue')['default']
     Adopt_animals: typeof import('./src/components/home_screens/adopt_animals.vue')['default']
     Adopt_page: typeof import('./src/components/pages/adopt_page.vue')['default']
     Adopt_post: typeof import('./src/components/dashboard/adopt_post.vue')['default']

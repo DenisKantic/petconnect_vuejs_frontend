@@ -201,7 +201,7 @@
       ></v-skeleton-loader>
       <router-link
         v-else
-        :to="{ name: 'Detaljan pregled', params: { id: post.pet_name } }"
+        :to="{ name: 'Detaljan pregled', params: { id: post.id } }"
       >
         <v-card>
           <img
