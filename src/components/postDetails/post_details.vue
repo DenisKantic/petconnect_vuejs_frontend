@@ -83,7 +83,7 @@
       <v-card>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn @click="dialog = false" icon>
+          <v-btn @click="dialog = false" color="red" variant="flat" icon>
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-card-actions>
@@ -143,6 +143,32 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+
+    <!-- dialog if user is not logged in for contact -->
+    <v-dialog class="contact_dialog" v-model="not_logged_contact_dialog">
+      <v-card>
+        <v-card-title class="text-center">
+          <span class="headline">Upozorenje!</span>
+        </v-card-title>
+        <v-card-text class="text-justify">
+          Zbog zaštite privatnosti podataka, kontakt informacije vlasnika oglasa
+          je <span class="font-weight-bold">skriveno!</span>
+          Da bi mogli poslati upit vlasniku oglasa, morate imati registrovan korisnički profil.
+        </v-card-text>
+        <v-card-text class="d-flex flex-column items-center text-h6">
+        <p class="text-center">Registrujte se ovdje</p> <br>
+        <router-link class="mx-auto" to="/registracija"><v-btn color="primary">Registracija</v-btn></router-link>
+      </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn @click="not_logged_contact_dialog = false" color="red" variant="flat"
+            >Odustani</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -155,8 +181,10 @@ export default {
     return {
       is_user_loggedIn: useAuthStore(),
       post: null,
+      message: "",
       is_loading: true,
       contact_dialog: false,
+      not_logged_contact_dialog: false,
       colors: [
         "indigo",
         "warning",
@@ -170,14 +198,14 @@ export default {
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publish. rem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publish",
       slides: ["First", "Second", "Third", "Fourth", "Fifth"],
       cards: [
-        { title: "Naziv ljubimca", subtitle: "Simba" },
-        { title: "Lokacija", subtitle: "Sarajevo" },
-        { title: "Vrsta životinje", subtitle: "Pas" },
-        { title: "Starost", subtitle: "Stariji" },
-        { title: "Spol", subtitle: "Musko" },
-        { title: "Vakcinisan", subtitle: "Ne" },
-        { title: "Pasoš", subtitle: "Da" },
-        { title: "Čipovan", subtitle: "Ne" },
+        { title: "Naziv ljubimca", subtitle: "N/A" },
+        { title: "Lokacija", subtitle: "N/A" },
+        { title: "Vrsta životinje", subtitle: "N/A" },
+        { title: "Starost", subtitle: "N/A" },
+        { title: "Spol", subtitle: "N/A" },
+        { title: "Vakcinisan", subtitle: "N/A" },
+        { title: "Pasoš", subtitle: "N/A" },
+        { title: "Čipovan", subtitle: "N/A" },
       ],
     };
   },
@@ -193,6 +221,7 @@ export default {
       const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=http://petconnectbosnia.com/udomi/${postID}`;
       window.open(shareUrl, "_blank");
     },
+    sendMessage(){},
     async fetch_post() {
       const postID = this.$route.params.id;
 
@@ -215,11 +244,11 @@ export default {
           }
 
           this.cards = [
-            { title: "Naziv ljubimca", subtitle: this.new_data.pet_name.charAt(0).toUpperCase() + pet_name.slice(1) },
+            { title: "Naziv ljubimca", subtitle: this.new_data.pet_name.charAt(0).toUpperCase() + this.new_data.pet_name.slice(1) },
             { title: "Lokacija", subtitle: this.new_data.location },
             {
               title: "Vrsta životinje",
-              subtitle: this.new_data.category.toUpperCase(),
+              subtitle: this.new_data.category,
             },
             { title: "Starost", subtitle: this.new_data.age || "N/A" },
             { title: "Spol", subtitle: this.new_data.sex },
@@ -242,7 +271,11 @@ export default {
       this.dialog = true;
     },
     openContactDialog() {
+      if (this.is_user_loggedIn.isAuthenticated === false){
+        this.not_logged_contact_dialog = true;
+      } else {
       this.contact_dialog = true;
+      }
     },
   },
   mounted() {
