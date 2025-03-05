@@ -123,6 +123,14 @@ const routes = [
     component: () => import("@/views/settings/settings.vue"),
   },
   {
+    path: "/aktiviraj-profil",
+    name: "Aktivacija profila",
+    meta: {
+      title: "Aktivacija profila",
+    },
+    component: () => import("@/views/activateAccount/activate_account.vue"),
+  },
+  {
     path: "/:pathMatch(.*)*",
     name: "not-found",
     component: () => import("@/views/not_found.vue"),
@@ -153,7 +161,7 @@ router.beforeEach(async (to, from, next) => {
     } else {
       authStore.isAuthenticated = false;
     }
-  } catch (error) {
+  } catch (err) {
     authStore.isAuthenticated = false;
   }
 

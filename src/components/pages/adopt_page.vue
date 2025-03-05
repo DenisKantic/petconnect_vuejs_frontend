@@ -168,17 +168,64 @@
     <v-btn class="font-weight-regular" @click="FetchPost" color="primary"
       >Pretraži</v-btn
     >
-    <!-- <v-btn color="warning" @click="deleteFilters" v-show="selectedLocation != '' || selectedSex !='' || selectedVaccine != ''">Obriši filtere</v-btn> -->
+
+    <v-btn color="primary" class="ml-2" variant="outlined" v-show="selectedLocation != '' || selectedSex !='' || selectedVaccine != ''">Obriši filtere</v-btn>
+
+    <div class="pt-4">
+      <v-chip
+        v-if="selectedLocation != ''"
+        closable
+        size="large"
+        variant="elevated"
+        @click:close="removeLocationChip"
+      >
+        {{ selectedLocation }}
+      </v-chip>
+
+      <v-chip
+        v-if="selectedSex != ''"
+        class="ma-2"
+        closable
+        size="large"
+        variant="elevated"
+        @click:close="removeSexChip"
+      >
+        {{ selectedSex.title }}
+      </v-chip>
+
+
+      <v-chip
+        v-if="selectedVaccine != ''"
+        class="ma-2"
+        closable
+        @click:close="removeVaccineChip"
+      >
+        {{ selectedVaccine.title }}
+      </v-chip>
+
+      <v-chip
+        v-if="selectedChipStatus != ''"
+        class="ma-2"
+        closable
+        variant="elevated"
+        size="large"
+        @click:close="removeChippedChip"
+      >
+      Čipovan: {{ selectedChipStatus.title }}
+      </v-chip>
+    </div>
+
   </div>
+
 
   <p class="pt-4 pb-2 font-weight-regular">
     Ukupno rezultata:
     <span class="text-h6 font-weight-regular">{{
-      isNaN(total_pages.total_count - 1)
+      isNaN(total_pages.total_count)
         ? 0
-          ? totalPages.total_count - 1 < 0
+          ? totalPages.total_count < 0
           : 0
-        : total_pages.total_count - 1
+        : total_pages.total_count
     }}</span>
   </p>
   <p v-if="post.length === 0">Nema pronadjenih zivotinja</p>
@@ -201,7 +248,7 @@
       ></v-skeleton-loader>
       <router-link
         v-else
-        :to="{ name: 'Detaljan pregled', params: { id: post.pet_name } }"
+        :to="{ name: 'Detaljan pregled', params: { id: post.id } }"
       >
         <v-card>
           <img
@@ -268,7 +315,7 @@ export default {
     return {
       post: [],
       page_number: 1,
-      page_size: 12 + 1,
+      page_size: 20,
       total_pages: 1,
       location: ["Banja Luka", "Tuzla"],
       sexGenders: [
@@ -368,12 +415,15 @@ export default {
         // animal: this.selectedAnimal.value
       };
 
+      console.log("PARAMS", params)
+
       try {
         this.loading = true;
         const response = await this.$http.get(
           "http://localhost:8080/adopt-post-per-page",
           { params },
         );
+        console.log("RESPONSE", response.data)
         this.post = response.data.posts;
         this.total_pages = response.data.total_count;
       } catch (error) {

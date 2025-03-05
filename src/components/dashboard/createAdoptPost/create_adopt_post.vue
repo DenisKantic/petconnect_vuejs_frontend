@@ -177,10 +177,7 @@
           </div>
         </v-window-item>
 
-
-        <v-window-item id="fourth-container" :value="4">
-
-        </v-window-item>
+        <v-window-item id="fourth-container" :value="4"> </v-window-item>
       </v-window>
 
       <v-card-actions v-show="step != 4">
@@ -208,32 +205,32 @@
       </v-card-actions>
     </v-card>
     <v-sheet
-    :value ="4"
-            v-show="step === 4"
-            class="pa-4 text-center mx-auto"
-            elevation="12"
-            max-width="600"
-            rounded="lg"
-            width="100%"
-          >
-            <v-icon
-              class="mb-5"
-              color="success"
-              icon="mdi-check-circle"
-              size="112"
-            ></v-icon>
+      :value="4"
+      v-show="step === 4"
+      class="pa-4 text-center mx-auto"
+      elevation="12"
+      max-width="600"
+      rounded="lg"
+      width="100%"
+    >
+      <v-icon
+        class="mb-5"
+        color="success"
+        icon="mdi-check-circle"
+        size="112"
+      ></v-icon>
 
-            <h2 class="text-h5 mb-6">Uspješno ste kreirali oglas</h2>
+      <h2 class="text-h5 mb-6">Uspješno ste kreirali oglas</h2>
 
-            <p class="mb-4 text-medium-emphasis text-body-2">
-              Automatska redirekcija na Vaš profil...
+      <p class="mb-4 text-medium-emphasis text-body-2">
+        Automatska redirekcija na Vaš profil...
 
-              <br />
+        <br />
 
-              Ukoliko Vas ne prebaci, <router-link to="/profil">kliknite ovdje</router-link>
-            </p>
-
-          </v-sheet>
+        Ukoliko Vas ne prebaci,
+        <router-link to="/profil">kliknite ovdje</router-link>
+      </p>
+    </v-sheet>
 
     <v-snackbar
       v-model="snackbar.visible"
@@ -374,7 +371,7 @@ export default {
       description: "",
       uploadedImages: [],
       imageURLs: [],
-      step:1,
+      step: 1,
       isCardDisabled: false,
       isBtnDisabled: false,
       isBtnLoading: false,
