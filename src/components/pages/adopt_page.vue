@@ -2,7 +2,7 @@
   <Navbar />
   <SecondNavbar />
 
-  <h1>Udomi ljubimca</h1>
+  <h1 class="font-weight-regular">Udomi ljubimca</h1>
 
   <div class="pt-4" width="300px">
     <!-- Combined filter button -->
@@ -338,16 +338,12 @@ export default {
     },
     async FetchPost() {
       this.total_pages = "";
-      console.log("SELECTED SEX", this.selectedSex);
-      console.log("SELECTED LOCATION", this.location);
-      console.log("SELECTED ANIMAL", this.selectedAnimal)
-      console.log("CIPOVANA", this.selectedChipStatus)
       this.post = [];
       this.loading = true;
       let params = {
         page: this.page_number,
         page_size: this.page_size,
-        location: this.selectedLocation,
+        location: this.location,
         sex: this.selectedSex,
         vaccinated: this.selectedVaccine,
         chipped: this.selectedChipStatus,
