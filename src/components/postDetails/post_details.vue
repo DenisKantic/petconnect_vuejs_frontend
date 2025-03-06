@@ -43,7 +43,9 @@
           </v-sheet>
         </v-carousel-item>
       </v-carousel>
-      <p class="text-center mt-5">Za pregled fotografija preko čitavog ekrana, kliknite na fotografiju</p>
+      <p class="text-center mt-5">
+        Za pregled fotografija preko čitavog ekrana, kliknite na fotografiju
+      </p>
     </div>
     <div class="right-side">
       <p class="text-h4 pb-4">Detalji ljubimca</p>
@@ -61,20 +63,22 @@
         </v-card-text>
       </v-card>
 
-      <div class="d-flex flex-column flex-md-row" style="gap:1rem;">
+      <div class="d-flex flex-column flex-md-row" style="gap: 1rem">
         <v-btn
           color="primary"
           @click="openContactDialog"
           class="mt-6 flex-grow-1"
           variant="outlined"
-          >Kontaktiraj me <v-icon class="ml-2" size="22">mdi-email</v-icon></v-btn
+          >Kontaktiraj me
+          <v-icon class="ml-2" size="22">mdi-email</v-icon></v-btn
         >
         <v-btn
           color="primary"
           @click="shareOnFacebook"
           class="mt-6 flex-grow-1"
           variant="outlined"
-          >Podijeli na facebook <v-icon class="ml-2" size="22">mdi-facebook</v-icon></v-btn
+          >Podijeli na facebook
+          <v-icon class="ml-2" size="22">mdi-facebook</v-icon></v-btn
         >
       </div>
     </div>
@@ -148,7 +152,6 @@
       </v-card>
     </v-dialog>
 
-
     <!-- dialog if user is not logged in for contact -->
     <v-dialog class="contact_dialog" v-model="not_logged_contact_dialog">
       <v-card>
@@ -158,16 +161,23 @@
         <v-card-text class="text-justify">
           Zbog zaštite privatnosti podataka, kontakt informacije vlasnika oglasa
           je <span class="font-weight-bold">skriveno!</span>
-          Da bi mogli poslati upit vlasniku oglasa, morate imati registrovan korisnički profil.
+          Da bi mogli poslati upit vlasniku oglasa, morate imati registrovan
+          korisnički profil.
         </v-card-text>
         <v-card-text class="d-flex flex-column items-center text-h6">
-        <p class="text-center">Registrujte se ovdje</p> <br>
-        <router-link class="mx-auto" to="/registracija"><v-btn color="primary">Registracija</v-btn></router-link>
-      </v-card-text>
+          <p class="text-center">Registrujte se ovdje</p>
+          <br />
+          <router-link class="mx-auto" to="/registracija"
+            ><v-btn color="primary">Registracija</v-btn></router-link
+          >
+        </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn @click="not_logged_contact_dialog = false" color="red" variant="flat"
+          <v-btn
+            @click="not_logged_contact_dialog = false"
+            color="red"
+            variant="flat"
             >Odustani</v-btn
           >
         </v-card-actions>
@@ -226,7 +236,7 @@ export default {
       const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=http://petconnectbosnia.com/udomi/${postID}`;
       window.open(shareUrl, "_blank");
     },
-    sendMessage(){},
+    sendMessage() {},
     async fetch_post() {
       const postID = this.$route.params.id;
 
@@ -249,7 +259,12 @@ export default {
           }
 
           this.cards = [
-            { title: "Naziv ljubimca", subtitle: this.new_data.pet_name.charAt(0).toUpperCase() + this.new_data.pet_name.slice(1) },
+            {
+              title: "Naziv ljubimca",
+              subtitle:
+                this.new_data.pet_name.charAt(0).toUpperCase() +
+                this.new_data.pet_name.slice(1),
+            },
             { title: "Lokacija", subtitle: this.new_data.location },
             {
               title: "Vrsta životinje",
@@ -259,7 +274,10 @@ export default {
             { title: "Spol", subtitle: this.new_data.sex },
             { title: "Vakcinisan", subtitle: this.new_data.vaccinated },
             { title: "Čipovan", subtitle: this.new_data.chipped },
-            { title: "Datum objave", subtitle: this.format_date(this.new_data.created_at) || "N/A" },
+            {
+              title: "Datum objave",
+              subtitle: this.format_date(this.new_data.created_at) || "N/A",
+            },
           ];
 
           this.subtitleCard = this.new_data.description;
@@ -273,22 +291,22 @@ export default {
       this.is_loading = false;
     },
 
-    format_date(dateString){
+    format_date(dateString) {
       const date = new Date(dateString);
-      const day = String(date.getDate()).padStart(2,'0')
-      const month = String(date.getMonth()+1).padStart(2,'0')
-      const year = String(date.getFullYear()).slice()
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const year = String(date.getFullYear()).slice();
 
-      return `${day}/${month}/${year}`
+      return `${day}/${month}/${year}`;
     },
     openDialog() {
       this.dialog = true;
     },
     openContactDialog() {
-      if (this.is_user_loggedIn.isAuthenticated === false){
+      if (this.is_user_loggedIn.isAuthenticated === false) {
         this.not_logged_contact_dialog = true;
       } else {
-      this.contact_dialog = true;
+        this.contact_dialog = true;
       }
     },
   },

@@ -132,7 +132,6 @@ export default {
   },
   computed: {},
   methods: {
-
     showSnackbar(message, color) {
       this.snackbar.visible = true;
       this.snackbar.message = message;
