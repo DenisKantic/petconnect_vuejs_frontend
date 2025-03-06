@@ -27,6 +27,7 @@ declare module 'vue' {
     Lost_animal_page: typeof import('./src/components/dashboard/lost_animal_page.vue')['default']
     Lost_animals: typeof import('./src/components/home_screens/lost_animals.vue')['default']
     Lost_page: typeof import('./src/components/pages/lost_page.vue')['default']
+    Lost_post_details: typeof import('./src/components/postDetails/lost_post_details.vue')['default']
     Main_navbar: typeof import('./src/components/navbar/main_navbar.vue')['default']
     Not_found: typeof import('./src/components/not_found.vue')['default']
     Post_details: typeof import('./src/components/postDetails/post_details.vue')['default']

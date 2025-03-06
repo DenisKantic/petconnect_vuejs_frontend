@@ -1,5 +1,5 @@
 <template>
-  <router-link to="/udomi"
+  <router-link to="/izgubljeni"
     ><v-btn class="ml-16 mt-10" color="primary"
       >Nazad <v-icon class="ml-2">mdi-arrow-left</v-icon></v-btn
     ></router-link
@@ -230,6 +230,7 @@ export default {
 
       if (postID === "") {
         window.location.replace("/");
+        console.log("NO ID FOUND");
       }
 
       const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=http://petconnectbosnia.com/udomi/${postID}`;
@@ -241,11 +242,14 @@ export default {
 
       if (postID === "") {
         window.location.replace("/");
+        console.log("NO ID FOUND");
       }
 
       await axios(`http://localhost:8080/one-adopt-post/${postID}`)
         .then((response) => {
+          console.log("response", response.data[0]);
           this.new_data = response.data[0];
+          console.log("NEW data", this.new_data);
           this.is_loading = false;
 
           for (const key in this.new_data) {
@@ -278,9 +282,10 @@ export default {
 
           this.subtitleCard = this.new_data.description;
 
+          console.log("New loop data:", this.new_data);
         })
         .catch((error) => {
-          console.log("error");
+          console.log("error", error);
           this.is_loading = false;
         });
       this.is_loading = false;
@@ -307,6 +312,7 @@ export default {
   },
   mounted() {
     this.fetch_post();
+    console.log("IS USER LOGGED", this.is_user_loggedIn.isAuthenticated);
   },
 };
 </script>

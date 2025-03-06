@@ -100,8 +100,6 @@ export default {
           "http://localhost:8080/latest-donation-post",
         );
         this.post = response.data;
-        console.log("DONTION RES", response.data);
-        console.log("TESTING", this.post[0].images.length);
       } catch (error) {
         console.log("error");
       } finally {
