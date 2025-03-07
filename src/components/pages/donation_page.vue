@@ -33,8 +33,8 @@
         <v-select
           label="Vrsta objave"
           variant="outlined"
-          v-model="selectedSex"
-          :items="sexGenders"
+          v-model="selectedPostCategory"
+          :items="postCategory"
           clearable
             color="primary"
           @click.stop
@@ -93,7 +93,7 @@
       <router-link
       class="text-decoration-none"
         v-else
-        :to="{ name: 'Detaljan pregled', params: { id: post.id } }"
+        :to="{ name: 'Donacije pregled', params: { id: post.id } }"
       >
         <v-card>
           <img
@@ -106,7 +106,7 @@
           <!-- Card content -->
           <v-card-title>
             <div class="text-h6 font-weight-regular">
-              {{ shorterPostName(post.pet_name) }}
+              {{ shorterPostName(post.post_name) }}
             </div>
           </v-card-title>
           <v-card-subtitle>
@@ -116,26 +116,19 @@
             </div>
             <div class="pt-1">
               <v-icon class="mr-1" color="info">{{
-                post.category === "macka"
+                post.animal_category === "macka"
                   ? "mdi-cat"
-                  : post.category === "pas"
+                  : post.animal_category === "pas"
                     ? "mdi-dog"
                     : "mdi-paw"
               }}</v-icon
               >{{
-                post.category.charAt(0).toUpperCase() + post.category.slice(1)
+                post.animal_category.charAt(0).toUpperCase() + post.animal_category.slice(1)
               }}
             </div>
-            <div class="pt-1">
-              <v-icon
-                class="mr-1"
-                :color="post.sex === 'muzjak' ? 'primary' : 'red'"
-                >{{
-                  post.sex === "muzjak"
-                    ? "mdi-gender-male"
-                    : "mdi-gender-female"
-                }}</v-icon
-              >{{ post.sex === "muzjak" ? "Mužjak" : "Ženka" }}
+            <div>
+              <v-icon class="mr-1" color="primary">mdi-post</v-icon
+              >{{ post.post_category.charAt(0).toUpperCase() + post.post_category.slice(1) }}
             </div>
           </v-card-subtitle>
         </v-card>
@@ -262,34 +255,18 @@ export default {
         "Živinice",
       ],
       location: "",
-      sexGenders: [
-        { title: "Mužjak", value: "muzjak" },
-        { title: "Ženka", value: "zenka" },
-      ],
       animalList: [
         { title: "Pas", value: "pas" },
         { title: "Mačka", value: "macka" },
         { title: "Ostalo", value: "ostalo" },
       ],
-      chipList: [{ title: "" }],
-      chipOption: [
-        {
-          title: "Da",
-          value: "true",
-        },
-        { title: "Ne", value: "false" },
+      postCategory:[
+        {title: "Lijek", value: "lijek"},
+        {title: "Hrana", value: "hrana"},
+        {title: "Ostalo", value: "ostalo"}
       ],
-      vaccineOption: [
-        {
-          title: "Da",
-          value: "true",
-        },
-        { title: "Ne", value: "false" },
-      ],
+      selectedPostCategory: "",
       selectedLocation: "",
-      selectedSex: "",
-      selectedVaccine: "",
-      selectedChipStatus: "",
       selectedAnimal: "",
       vaccinated: "true",
       loading: true,
@@ -324,18 +301,18 @@ export default {
         page: this.page_number,
         page_size: this.page_size,
         location: this.location,
-        sex: this.selectedSex,
-        vaccinated: this.selectedVaccine,
-        chipped: this.selectedChipStatus,
-        animal: this.selectedAnimal
+        animal_category: this.selectedAnimal,
+        post_category: this.selectedPostCategory
       };
 
+      console.log("PARAMS", params)
       try {
         this.loading = true;
         const response = await this.$http.get(
-          "http://localhost:8080/adopt-post-per-page",
+          "http://localhost:8080/donation-post-per-page",
           { params },
         );
+        console.log("RESPONSE", response.data.posts)
         this.post = response.data.posts;
         this.total_pages = response.data.total_count;
       } catch (error) {

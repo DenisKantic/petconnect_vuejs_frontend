@@ -62,7 +62,7 @@
         : total_pages.total_count
     }}</span>
   </p>
-  <p v-if="post.length === 0">Nema pronađenih životinja</p>
+  <p v-if="post?.length === 0">Nema pronađenih životinja</p>
 
   <v-row v-else>
     <v-col
@@ -96,7 +96,7 @@
           <!-- Card content -->
           <v-card-title>
             <div class="text-h6 font-weight-regular">
-              {{ shorterPostName(post.pet_name) }}
+              {{ shorterPostName(post.name) }}
             </div>
           </v-card-title>
           <v-card-subtitle>

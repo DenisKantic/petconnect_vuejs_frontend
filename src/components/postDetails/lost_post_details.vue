@@ -241,25 +241,20 @@ export default {
         console.log("NO ID FOUND");
       }
 
-      await axios(`http://localhost:8080/one-adopt-post/${postID}`)
+      await axios(`http://localhost:8080/one-lost-post/${postID}`)
         .then((response) => {
           console.log("RESPONSE", response.data[0]);
           this.new_data = response.data[0];
           console.log("NEW data", this.new_data);
           this.is_loading = false;
 
-          for (const key in this.new_data) {
-            if (typeof this.new_data[key] === "boolean") {
-              this.new_data[key] = this.new_data[key] ? "Da" : "Ne";
-            }
-          }
 
           this.cards = [
             {
               title: "Naziv ljubimca",
               subtitle:
-                this.new_data.pet_name.charAt(0).toUpperCase() +
-                this.new_data.pet_name.slice(1),
+                this.new_data.name.charAt(0).toUpperCase() +
+                this.new_data.name.slice(1),
             },
             { title: "Lokacija", subtitle: this.new_data.location },
             {
@@ -274,7 +269,6 @@ export default {
 
           this.subtitleCard = this.new_data.description;
 
-          console.log("New loop data:", this.new_data);
         })
         .catch((error) => {
           console.log("error", error);
