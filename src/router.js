@@ -73,6 +73,14 @@ const routes = [
     component: () => import("@/views/pages/donation_page.vue"),
   },
   {
+    path: "/donacije/:id",
+    name: "Donacije pregled",
+    meta: {
+      title: "Donacijski oglas",
+    },
+    component: () => import("@/views/postDetails/donation_post_details.vue"),
+  },
+  {
     path: "/profil",
     name: "moji oglasi",
     meta: {

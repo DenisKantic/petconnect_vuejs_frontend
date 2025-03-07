@@ -1,12 +1,12 @@
 <template>
-  <router-link to="/izgubljeni"
+  <router-link to="/donacije"
     ><v-btn class="ml-16 mt-10" color="primary"
       >Nazad <v-icon class="ml-2">mdi-arrow-left</v-icon></v-btn
     ></router-link
   >
   <v-container class="d-flex flex-column flex-lg-row">
     <div class="left-side">
-      <p class="text-h4 pb-4">Detalji oglasa</p>
+      <p class="text-h4 pb-4">Detaljni pregled</p>
       <v-carousel
         color="primary"
         height="400"
@@ -48,7 +48,7 @@
       </p>
     </div>
     <div class="right-side">
-      <p class="text-h4 pb-4">Detalji ljubimca</p>
+      <p class="text-h6 pb-4">Detalji oglasa</p>
       <v-row>
         <v-col v-for="(card, index) in cards" :key="index" cols="12" md="6">
           <v-card class="mx-auto" :title="card.title" :subtitle="card.subtitle">
@@ -216,7 +216,11 @@ export default {
         { title: "Naziv ljubimca", subtitle: "N/A" },
         { title: "Lokacija", subtitle: "N/A" },
         { title: "Vrsta životinje", subtitle: "N/A" },
+        { title: "Starost", subtitle: "N/A" },
+        { title: "Spol", subtitle: "N/A" },
+        { title: "Vakcinisan", subtitle: "N/A" },
         { title: "Datum objave", subtitle: "N/A" },
+        { title: "Čipovan", subtitle: "N/A" },
       ],
     };
   },
@@ -241,9 +245,9 @@ export default {
         console.log("NO ID FOUND");
       }
 
-      await axios(`http://localhost:8080/one-adopt-post/${postID}`)
+      await axios(`http://localhost:8080/one-donation-post/${postID}`)
         .then((response) => {
-          console.log("RESPONSE", response.data[0]);
+          console.log("response", response.data[0]);
           this.new_data = response.data[0];
           console.log("NEW data", this.new_data);
           this.is_loading = false;
@@ -256,15 +260,16 @@ export default {
 
           this.cards = [
             {
-              title: "Naziv ljubimca",
+              title: "Vrsta oglasa",
               subtitle:
-                this.new_data.pet_name.charAt(0).toUpperCase() +
-                this.new_data.pet_name.slice(1),
+                this.new_data.post_category.charAt(0).toUpperCase() +
+                this.new_data.post_category.slice(1),
             },
             { title: "Lokacija", subtitle: this.new_data.location },
             {
-              title: "Vrsta životinje",
-              subtitle: this.new_data.category,
+              title: "Za životinju",
+              subtitle: this.new_data.animal_category.charAt(0).toUpperCase() +
+              this.new_data.animal_category.slice(1),
             },
             {
               title: "Datum objave",

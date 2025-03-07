@@ -39,15 +39,6 @@
           @click.stop
         ></v-select>
 
-        <v-select
-          label="Spol"
-          variant="outlined"
-          v-model="selectedSex"
-          :items="sexGenders"
-          clearable
-            color="primary"
-          @click.stop
-        ></v-select>
 
 
 
@@ -92,7 +83,7 @@
       <router-link
       class="text-decoration-none"
         v-else
-        :to="{ name: 'Izgubljeni oglas', params: { id: post.id } }"
+        :to="{ name: 'Izgubljeni ljubimac', params: { id: post.id } }"
       >
         <v-card>
           <img
@@ -261,36 +252,13 @@ export default {
         "Živinice",
       ],
       location: "",
-      sexGenders: [
-        { title: "Mužjak", value: "muzjak" },
-        { title: "Ženka", value: "zenka" },
-      ],
       animalList: [
         { title: "Pas", value: "pas" },
         { title: "Mačka", value: "macka" },
         { title: "Ostalo", value: "ostalo" },
       ],
-      chipList: [{ title: "" }],
-      chipOption: [
-        {
-          title: "Da",
-          value: "true",
-        },
-        { title: "Ne", value: "false" },
-      ],
-      vaccineOption: [
-        {
-          title: "Da",
-          value: "true",
-        },
-        { title: "Ne", value: "false" },
-      ],
       selectedLocation: "",
-      selectedSex: "",
-      selectedVaccine: "",
-      selectedChipStatus: "",
       selectedAnimal: "",
-      vaccinated: "true",
       loading: true,
     };
   },
@@ -323,18 +291,16 @@ export default {
         page: this.page_number,
         page_size: this.page_size,
         location: this.location,
-        sex: this.selectedSex,
-        vaccinated: this.selectedVaccine,
-        chipped: this.selectedChipStatus,
         animal: this.selectedAnimal
       };
 
       try {
         this.loading = true;
         const response = await this.$http.get(
-          "http://localhost:8080/adopt-post-per-page",
+          "http://localhost:8080/lost-post-per-page",
           { params },
         );
+        console.log("RESPONSE", response.data)
         this.post = response.data.posts;
         this.total_pages = response.data.total_count;
       } catch (error) {

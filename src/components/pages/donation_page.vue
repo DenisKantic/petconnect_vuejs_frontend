@@ -41,7 +41,7 @@
         ></v-select>
 
         <v-select
-          label="Za životinjeu"
+          label="Za životinju"
           variant="outlined"
           v-model="selectedAnimal"
           :items="animalList"

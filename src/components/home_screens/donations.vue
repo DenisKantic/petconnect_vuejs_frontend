@@ -23,7 +23,8 @@
         max-width="300"
         type="image, article"
       ></v-skeleton-loader>
-      <v-card v-else>
+      <router-link class="text-decoration-none" v-else :to="`/donacije/${post.id}`" >
+      <v-card>
         <img
           :src="
             post.images.length > 0
@@ -72,6 +73,7 @@
           </div>
         </v-card-subtitle>
       </v-card>
+      </router-link>
     </v-col>
   </v-row>
 </template>
