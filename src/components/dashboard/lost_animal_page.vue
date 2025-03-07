@@ -3,7 +3,7 @@
     <h1 class="pt-10">Izgubljeni ljubimci</h1>
     <span class="text-body-1 text-blue">
       Dostupan broj oglasa:
-      {{ adoptPost?.length === 0 ? 0 : 3 - adoptPost.length }}
+      {{ lostPost?.length === 0 ? 0 : 3 - lostPost.length }}
     </span>
     <v-row class="pt-5">
       <!-- Loop to create up to 3 cards -->
@@ -16,30 +16,25 @@
         md="4"
         xl="4"
       >
-        <template v-if="index <= adoptPost.length">
+        <template v-if="index <= lostPost.length">
           <!-- Existing Post Card -->
           <v-card>
             <v-img
-              :src="`http://localhost:8080/${adoptPost[index - 1].images[0]}`"
+              :src="`http://localhost:8080/${lostPost[index - 1].images[0]}`"
               aspect-ratio="2"
             ></v-img>
 
             <v-card-title>
-              <div class="text-h6">{{ adoptPost[index - 1].pet_name }}</div>
+              <div class="text-h6">{{ shortPostName(lostPost[index - 1].name) }}</div>
             </v-card-title>
             <v-card-subtitle class="pb-2 text-body-1">
               <div>
                 <v-icon color="primary" class="mr-1">mdi-map-marker</v-icon
-                >{{ adoptPost[index - 1].location }}
+                >{{ lostPost[index - 1].location }}
               </div>
               <div>
                 <v-icon color="primary" class="mr-1">mdi-paw</v-icon
-                >{{ adoptPost[index - 1].category }}
-              </div>
-              <div>
-                <v-icon color="primary" class="mr-1"
-                  >mdi-gender-male-female</v-icon
-                >{{ adoptPost[index - 1].sex }}
+                >{{ lostPost[index - 1].category }}
               </div>
             </v-card-subtitle>
             <v-divider></v-divider>
@@ -81,15 +76,23 @@ export default {
       location: "Location",
       category: "Category",
       sex: "Male",
-      adoptPost: [],
+      lostPost: [],
     };
   },
   methods: {
-    async getAdoptPost() {
+    shortPostName(name){
+      if(name.length > 10){
+        return `${name.substring(0,10)}...`
+      } else {
+        return name
+      }
+    },
+    async getlostPost() {
       await axios
-        .get("http://localhost:8080/my-adopt-post", { withCredentials: true })
+        .get("http://localhost:8080/my-lost-post", { withCredentials: true })
         .then((response) => {
-          this.adoptPost = response.data;
+          console.log("LOST RESPONSE", response.data)
+          this.lostPost = response.data;
         })
         .catch((error) => {
           console.log("ERROR");
@@ -97,7 +100,7 @@ export default {
     },
   },
   mounted() {
-    this.getAdoptPost();
+    this.getlostPost();
   },
 };
 </script>

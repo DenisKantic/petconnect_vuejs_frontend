@@ -28,11 +28,7 @@
     <v-menu v-if="isUserLoggedIn.isAuthenticated">
       <template v-slot:activator="{ props }">
         <v-btn v-bind="props">
-          <v-avatar
-            color="surface-light"
-            image="https://cdn.vuetifyjs.com/images/john.png"
-            size="35"
-          />
+          <v-icon size="35" color="primary" icon>mdi-account-circle</v-icon>
         </v-btn>
       </template>
       <v-list style="padding: 0">

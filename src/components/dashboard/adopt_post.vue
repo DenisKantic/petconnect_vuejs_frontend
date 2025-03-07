@@ -25,7 +25,7 @@
             ></v-img>
 
             <v-card-title>
-              <div class="text-h6">{{ adoptPost[index - 1].pet_name }}</div>
+              <div class="text-h6">{{ shortPostName(adoptPost[index - 1].pet_name) }}</div>
             </v-card-title>
             <v-card-subtitle class="pb-2 text-body-1">
               <div>
@@ -111,6 +111,13 @@ export default {
     };
   },
   methods: {
+    shortPostName(name){
+      if(name.length > 10){
+        return `${name.substring(0,10)}...`
+      } else {
+        return name
+      }
+    },
     confirmDelete(postID) {
       this.post_to_delete = postID;
       this.dialog = true;

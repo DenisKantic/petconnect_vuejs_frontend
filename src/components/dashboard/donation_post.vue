@@ -3,7 +3,7 @@
     <h1 class="pt-10">Donacijski oglasi</h1>
     <span class="text-body-1 text-blue">
       Dostupan broj oglasa:
-      {{ adoptPost?.length === 0 ? 0 : 3 - adoptPost.length }}
+      {{ donationPost?.length === 0 ? 0 : 3 - donationPost.length }}
     </span>
     <v-row class="pt-5">
       <!-- Loop to create up to 3 cards -->
@@ -16,30 +16,30 @@
         md="4"
         xl="4"
       >
-        <template v-if="index <= adoptPost.length">
+        <template v-if="index <= donationPost.length">
           <!-- Existing Post Card -->
           <v-card>
             <v-img
-              :src="`http://localhost:8080/${adoptPost[index - 1].images[0]}`"
+              :src="`http://localhost:8080/${donationPost[index - 1].images[0]}`"
               aspect-ratio="2"
             ></v-img>
 
             <v-card-title>
-              <div class="text-h6">{{ adoptPost[index - 1].pet_name }}</div>
+              <div class="text-h6">{{ shortPostName(donationPost[index - 1].post_name) }}</div>
             </v-card-title>
             <v-card-subtitle class="pb-2 text-body-1">
               <div>
                 <v-icon color="primary" class="mr-1">mdi-map-marker</v-icon
-                >{{ adoptPost[index - 1].location }}
+                >{{ donationPost[index - 1].location }}
               </div>
               <div>
                 <v-icon color="primary" class="mr-1">mdi-paw</v-icon
-                >{{ adoptPost[index - 1].category }}
+                >{{ donationPost[index - 1].animal_category }}
               </div>
               <div>
                 <v-icon color="primary" class="mr-1"
-                  >mdi-gender-male-female</v-icon
-                >{{ adoptPost[index - 1].sex }}
+                  >mdi-post</v-icon
+                >{{ donationPost[index - 1].post_category }}
               </div>
             </v-card-subtitle>
             <v-divider></v-divider>
@@ -81,15 +81,22 @@ export default {
       location: "Location",
       category: "Category",
       sex: "Male",
-      adoptPost: [],
+      donationPost: [],
     };
   },
   methods: {
+    shortPostName(name){
+      if(name.length > 10){
+        return `${name.substring(0,10)}...`
+      } else {
+        return name
+      }
+    },
     async getAdoptPost() {
       await axios
-        .get("http://localhost:8080/my-adopt-post", { withCredentials: true })
+        .get("http://localhost:8080/my-donation-post", { withCredentials: true })
         .then((response) => {
-          this.adoptPost = response.data;
+          this.donationPost = response.data;
         })
         .catch((error) => {
           console.log("ERROR");
