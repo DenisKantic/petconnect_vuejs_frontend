@@ -19,7 +19,7 @@
     <v-spacer></v-spacer>
 
     <template v-if="$vuetify.display.mdAndUp">
-      <v-btn text class="ml-2">Početna</v-btn>
+      <router-link to="/"><v-btn text class="ml-2">Početna</v-btn></router-link>
       <v-btn text class="ml-2">O nama</v-btn>
       <v-btn text class="ml-2">Politika privatnosti</v-btn>
       <v-btn text class="ml-2">Kontakt</v-btn>

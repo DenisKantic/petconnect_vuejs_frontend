@@ -119,7 +119,7 @@
 
     <!-- Dialog for Contact -->
     <v-dialog class="contact_dialog" v-model="contact_dialog">
-      <v-card>
+      <v-card :loading="isMsgLoading" :disabled="isMsgLoading">
         <v-card-title class="text-center">
           <span class="headline">Kontaktiraj vlasnika</span>
         </v-card-title>
@@ -142,7 +142,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn @click="sendMessage" color="primary" variant="outlined"
+          <v-btn @click="sendMessage(new_data.post_name, new_data.user_email)" color="primary" variant="outlined"
             >Pošalji</v-btn
           >
           <v-btn @click="contact_dialog = false" color="red" variant="flat"
@@ -196,6 +196,7 @@ export default {
       is_user_loggedIn: useAuthStore(),
       post: null,
       message: "",
+      isMsgLoading: false,
       is_loading: true,
       contact_dialog: false,
       not_logged_contact_dialog: false,
@@ -236,9 +237,32 @@ export default {
       const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=http://petconnectbosnia.com/udomi/${postID}`;
       window.open(shareUrl, "_blank");
     },
-    sendMessage() {},
+    async sendMessage(post_name, owner_email) {
+      const postURL = window.location.href
+
+      this.isMsgLoading = true;
+      const param_object = {
+        message: this.message,
+        subject: post_name,
+        email: owner_email,
+        post_url: postURL
+      }
+      await axios.post('http://localhost:8080/send-message', param_object, {withCredentials: true})
+      .then((response) =>{
+          console.log(response)
+          setTimeout(()=>{
+            this.isMsgLoading = false;
+            this.contact_dialog = false;
+          })
+      })
+      .catch((error)=>{
+        console.log("ERROR")
+        this.isMsgLoading = false
+      })
+    },
     async fetch_post() {
       const postID = this.$route.params.id;
+
 
       if (postID === "") {
         window.location.replace("/");
@@ -247,7 +271,7 @@ export default {
 
       await axios(`http://localhost:8080/one-donation-post/${postID}`)
         .then((response) => {
-          console.log("response", response.data[0]);
+          console.log("response donation", response.data[0]);
           this.new_data = response.data[0];
           console.log("NEW data", this.new_data);
           this.is_loading = false;
@@ -309,7 +333,6 @@ export default {
   },
   mounted() {
     this.fetch_post();
-    console.log("IS USER LOGGED", this.is_user_loggedIn.isAuthenticated);
   },
 };
 </script>

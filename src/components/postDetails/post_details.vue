@@ -119,7 +119,7 @@
 
     <!-- Dialog for Contact -->
     <v-dialog class="contact_dialog" v-model="contact_dialog">
-      <v-card>
+      <v-card :loading="isMsgLoading" :disabled="isMsgLoading">
         <v-card-title class="text-center">
           <span class="headline">Kontaktiraj vlasnika</span>
         </v-card-title>
@@ -142,10 +142,10 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn @click="sendMessage" color="primary" variant="outlined"
+          <v-btn :loading="isMsgLoading"  @click="sendMessage(new_data.pet_name, new_data.user_email)" color="primary" variant="outlined"
             >Pošalji</v-btn
           >
-          <v-btn @click="contact_dialog = false" color="red" variant="flat"
+          <v-btn @click="contact_dialog = false, message = ''" color="red" variant="flat"
             >Odustani</v-btn
           >
         </v-card-actions>
@@ -197,6 +197,7 @@ export default {
       post: null,
       message: "",
       is_loading: true,
+      isMsgLoading: false,
       contact_dialog: false,
       not_logged_contact_dialog: false,
       colors: [
@@ -235,7 +236,30 @@ export default {
       const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=http://petconnectbosnia.com/udomi/${postID}`;
       window.open(shareUrl, "_blank");
     },
-    sendMessage() {},
+    async sendMessage(post_name, owner_email) {
+      const postURL = window.location.href
+
+      this.isMsgLoading = true;
+      const param_object = {
+        message: this.message,
+        subject: post_name,
+        email: owner_email,
+        post_url: postURL
+      }
+      await axios.post('http://localhost:8080/send-message', param_object, {withCredentials: true})
+      .then((response) =>{
+          console.log(response)
+          setTimeout(()=>{
+            this.isMsgLoading = false;
+            this.contact_dialog = false;
+          }, 2000)
+
+      })
+      .catch((error)=>{
+        console.log("ERROR", error)
+        this.isMsgLoading = true;
+      })
+    },
     async fetch_post() {
       const postID = this.$route.params.id;
 
@@ -247,6 +271,7 @@ export default {
         .then((response) => {
           this.new_data = response.data[0];
           this.is_loading = false;
+          console.log("RESP",response)
 
           for (const key in this.new_data) {
             if (typeof this.new_data[key] === "boolean") {

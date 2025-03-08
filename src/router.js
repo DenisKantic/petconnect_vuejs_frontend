@@ -169,6 +169,7 @@ router.beforeEach(async (to, from, next) => {
       withCredentials: true,
     });
 
+    console.log("ROUTER RESPONSE", response)
     if (response.status === 200) {
       authStore.isAuthenticated = true;
     } else {
