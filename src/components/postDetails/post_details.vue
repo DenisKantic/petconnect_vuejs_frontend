@@ -1,12 +1,12 @@
 <template>
   <router-link to="/udomi"
-    ><v-btn class="ml-16 mt-10" color="primary"
+    ><v-btn class="ml-16 mt-10" color="primary" variant="outlined"
       >Nazad <v-icon class="ml-2">mdi-arrow-left</v-icon></v-btn
     ></router-link
   >
   <v-container class="d-flex flex-column flex-lg-row">
     <div class="left-side">
-      <p class="text-h4 pb-4">Detalji oglasa</p>
+      <p class="text-h4 pb-4">{{ new_data.pet_name }}</p>
       <v-carousel
         color="primary"
         height="400"
@@ -217,7 +217,6 @@ export default {
         { title: "Naziv ljubimca", subtitle: "N/A" },
         { title: "Lokacija", subtitle: "N/A" },
         { title: "Vrsta životinje", subtitle: "N/A" },
-        { title: "Starost", subtitle: "N/A" },
         { title: "Spol", subtitle: "N/A" },
         { title: "Vakcinisan", subtitle: "N/A" },
         { title: "Datum objave", subtitle: "N/A" },
@@ -289,10 +288,9 @@ export default {
             { title: "Lokacija", subtitle: this.new_data.location },
             {
               title: "Vrsta životinje",
-              subtitle: this.new_data.category,
+              subtitle: this.format_animal_category(this.new_data.category),
             },
-            { title: "Starost", subtitle: this.new_data.age || "N/A" },
-            { title: "Spol", subtitle: this.new_data.sex },
+            { title: "Spol", subtitle: this.format_gender_string(this.new_data.sex) },
             { title: "Vakcinisan", subtitle: this.new_data.vaccinated },
             { title: "Čipovan", subtitle: this.new_data.chipped },
             {
@@ -311,6 +309,22 @@ export default {
       this.is_loading = false;
     },
 
+    format_gender_string(gender){
+      if(gender === "muzjak"){
+        return "Mužjak"
+      } else {
+        return "Ženka"
+      }
+    },
+    format_animal_category(animal){
+      if(animal === "pas"){
+        return "Pas"
+      } else if (animal === "macka"){
+        return "Mačka"
+      } else {
+        return "Ostalo"
+      }
+    },
     format_date(dateString) {
       const date = new Date(dateString);
       const day = String(date.getDate()).padStart(2, "0");

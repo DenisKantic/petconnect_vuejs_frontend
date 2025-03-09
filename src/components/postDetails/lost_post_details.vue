@@ -1,12 +1,12 @@
 <template>
   <router-link to="/izgubljeni"
-    ><v-btn class="ml-16 mt-10" color="primary"
+    ><v-btn class="ml-16 mt-10" color="primary" variant="outlined"
       >Nazad <v-icon class="ml-2">mdi-arrow-left</v-icon></v-btn
     ></router-link
   >
   <v-container class="d-flex flex-column flex-lg-row">
     <div class="left-side">
-      <p class="text-h4 pb-4">Detalji oglasa</p>
+      <p class="text-h4 pb-4">{{ new_data.name }}</p>
       <v-carousel
         color="primary"
         height="400"
@@ -283,7 +283,7 @@ export default {
             { title: "Lokacija", subtitle: this.new_data.location },
             {
               title: "Vrsta životinje",
-              subtitle: this.new_data.category,
+              subtitle: this.format_animal_category(this.new_data.category),
             },
             {
               title: "Datum objave",
@@ -301,6 +301,15 @@ export default {
       this.is_loading = false;
     },
 
+    format_animal_category(animal){
+      if(animal === "pas"){
+        return "Pas"
+      } else if (animal === "macka"){
+        return "Mačka"
+      } else {
+        return "Ostalo"
+      }
+    },
     format_date(dateString) {
       const date = new Date(dateString);
       const day = String(date.getDate()).padStart(2, "0");

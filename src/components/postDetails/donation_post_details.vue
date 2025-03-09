@@ -1,12 +1,12 @@
 <template>
   <router-link to="/donacije"
-    ><v-btn class="ml-16 mt-10" color="primary"
+    ><v-btn class="ml-16 mt-10" color="primary" variant="outlined"
       >Nazad <v-icon class="ml-2">mdi-arrow-left</v-icon></v-btn
     ></router-link
   >
   <v-container class="d-flex flex-column flex-lg-row">
     <div class="left-side">
-      <p class="text-h4 pb-4">Detaljni pregled</p>
+      <p class="text-h4 pb-4">{{ new_data.post_name }}</p>
       <v-carousel
         color="primary"
         height="400"
@@ -234,7 +234,7 @@ export default {
         console.log("NO ID FOUND");
       }
 
-      const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=http://petconnectbosnia.com/udomi/${postID}`;
+      const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=http://petconnectbosnia.com/donacije/${postID}`;
       window.open(shareUrl, "_blank");
     },
     async sendMessage(post_name, owner_email) {
