@@ -2,221 +2,85 @@
   <Navbar />
   <SecondNavbar />
 
-  <h1>Udomi ljubimca</h1>
+  <h1 class="font-weight-regular">Udomi ljubimca</h1>
 
-  <div class="filter-menu pt-4">
-    <!-- location menu -->
+  <div class="pt-4" width="300px">
+    <!-- Combined filter button -->
     <v-menu>
       <template v-slot:activator="{ props }">
-        <v-btn
-          class="mr-4 font-weight-regular"
-          color="primary"
-          variant="outlined"
-          v-bind="props"
-        >
-          Lokacija
+        <v-btn color="primary" variant="outlined" v-bind="props">
+          <v-icon class="mr-1">mdi-filter</v-icon>Filteri
         </v-btn>
       </template>
-      <v-list>
-        <v-chip
-          v-show="selectedLocation != ''"
-          class="ma-2"
-          closable
-          @click:close="removeLocationChip"
-        >
-          {{ selectedLocation }}
-        </v-chip>
 
-        <v-list-item
-          v-for="(item, index) in location"
-          :key="index"
-          @click="selectLocation(item)"
-        >
-          <v-list-item-title>{{ item }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
+      <!-- Location filter -->
 
-    <!-- animal choise menu  -->
-    <v-menu>
-      <template v-slot:activator="{ props }">
-        <v-btn
-          class="mr-4 font-weight-regular"
+      <v-card width="250px" class="pa-4">
+        <v-card-title class="text-center pb-5">Filteri</v-card-title>
+
+        <v-select
+        title="Lokacija"
+          label="Lokacija"
+          v-model="location"
+          :items="locations"
           variant="outlined"
-          color="primary"
-          v-bind="props"
-        >
-          Životinja
-        </v-btn>
-      </template>
-      <v-list>
-        <v-chip
-          v-show="selectedAnimal != ''"
-          class="ma-2"
-          closable
-          @click:close="removeAnimalChip"
-        >
-          {{ selectedAnimal.title }}
-        </v-chip>
+          clearable
+            color="primary"
+          @click.stop
+        ></v-select>
 
-        <v-list-item
-          v-for="(item, index) in animalList"
-          :key="index"
-          @click="selectAnimal(item)"
-        >
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
-
-    <!-- sex -->
-    <v-menu>
-      <template v-slot:activator="{ props }">
-        <v-btn
-          class="mr-4 font-weight-regular"
+        <v-select
+          label="Vrsta životinje"
           variant="outlined"
-          color="primary"
-          v-bind="props"
-        >
-          Spol
-        </v-btn>
-      </template>
-      <v-list>
-        <v-chip
-          v-show="selectedSex != ''"
-          class="ma-2"
-          closable
-          @click:close="removeSexChip"
-        >
-          {{ selectedSex.title }}
-        </v-chip>
+          v-model="selectedAnimal"
+          :items="animalList"
+          clearable
+            color="primary"
+          @click.stop
+        ></v-select>
 
-        <v-list-item
-          v-for="(item, index) in sexGenders"
-          :key="index"
-          @click="selectSex(item)"
-        >
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
-
-    <!-- chipped status menu -->
-    <v-menu>
-      <template v-slot:activator="{ props }">
-        <v-btn
-          class="mr-4 font-weight-regular"
+        <v-select
+          label="Spol"
           variant="outlined"
-          color="primary"
-          v-bind="props"
-        >
-          Čipovana
-        </v-btn>
-      </template>
-      <v-list>
-        <v-chip
-          v-show="selectedChipStatus != ''"
-          class="ma-2"
-          closable
-          @click:close="removeChippedChip"
-        >
-          {{ selectedChipStatus.title }}
-        </v-chip>
+          v-model="selectedSex"
+          :items="sexGenders"
+          clearable
+            color="primary"
+          @click.stop
+        ></v-select>
 
-        <v-list-item
-          v-for="(item, index) in chipOption"
-          :key="index"
-          @click="selectChipStatus(item)"
-        >
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
-
-    <!-- Vakcinisan menu-->
-    <v-menu>
-      <template v-slot:activator="{ props }">
-        <v-btn
-          class="mr-4 font-weight-regular"
+        <v-select
+          label="Čipovana"
           variant="outlined"
+          v-model="selectedChipStatus"
+          :items="chipOption"
+          clearable
+            color="primary"
+          @click.stop
+        ></v-select>
+
+        <v-select
+          label="Vakcinisana"
+          variant="outlined"
+          v-model="selectedVaccine"
+          :items="vaccineOption"
+          clearable
           color="primary"
-          v-bind="props"
-        >
-          Vakcinisan
-        </v-btn>
-      </template>
-      <v-list>
-        <v-chip
-          v-show="selectedVaccine != ''"
-          class="ma-2"
-          closable
-          @click:close="removeVaccineChip"
-        >
-          {{ selectedVaccine.title }}
-        </v-chip>
+          @click.stop
+        ></v-select>
 
-        <v-list-item
-          v-for="(item, index) in vaccineOption"
-          :key="index"
-          @click="selectVaccineStatus(item)"
-        >
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
 
-    <v-btn class="font-weight-regular" @click="FetchPost" color="primary"
+
+
+        <v-btn class="font-weight-regular" @click="FetchPost" color="primary"
       >Pretraži</v-btn
     >
-
-    <v-btn color="primary" class="ml-2" variant="outlined" v-show="selectedLocation != '' || selectedSex !='' || selectedVaccine != ''">Obriši filtere</v-btn>
-
-    <div class="pt-4">
-      <v-chip
-        v-if="selectedLocation != ''"
-        closable
-        size="large"
-        variant="elevated"
-        @click:close="removeLocationChip"
-      >
-        {{ selectedLocation }}
-      </v-chip>
-
-      <v-chip
-        v-if="selectedSex != ''"
-        class="ma-2"
-        closable
-        size="large"
-        variant="elevated"
-        @click:close="removeSexChip"
-      >
-        {{ selectedSex.title }}
-      </v-chip>
+      </v-card>
+    </v-menu>
 
 
-      <v-chip
-        v-if="selectedVaccine != ''"
-        class="ma-2"
-        closable
-        @click:close="removeVaccineChip"
-      >
-        {{ selectedVaccine.title }}
-      </v-chip>
-
-      <v-chip
-        v-if="selectedChipStatus != ''"
-        class="ma-2"
-        closable
-        variant="elevated"
-        size="large"
-        @click:close="removeChippedChip"
-      >
-      Čipovan: {{ selectedChipStatus.title }}
-      </v-chip>
-    </div>
 
   </div>
-
 
   <p class="pt-4 pb-2 font-weight-regular">
     Ukupno rezultata:
@@ -228,7 +92,7 @@
         : total_pages.total_count
     }}</span>
   </p>
-  <p v-if="post.length === 0">Nema pronadjenih zivotinja</p>
+  <p v-if="post.length === 0">Nema pronađenih životinja</p>
 
   <v-row v-else>
     <v-col
@@ -247,6 +111,7 @@
         type="image, article"
       ></v-skeleton-loader>
       <router-link
+      class="text-decoration-none"
         v-else
         :to="{ name: 'Detaljan pregled', params: { id: post.id } }"
       >
@@ -317,7 +182,106 @@ export default {
       page_number: 1,
       page_size: 20,
       total_pages: 1,
-      location: ["Banja Luka", "Tuzla"],
+      locations: [
+        "Banja Luka",
+        "Bihać",
+        "Bijeljina",
+        "Bosanska Gradiška",
+        "Bosanska Krupa",
+        "Bosanski Brod",
+        "Bosanski Novi",
+        "Bosanski Petrovac",
+        "Brčko",
+        "Breza",
+        "Bugojno",
+        "Busovača",
+        "Cazin",
+        "Čapljina",
+        "Čelić",
+        "Čelinac",
+        "Čitluk",
+        "Derventa",
+        "Doboj",
+        "Donji Vakuf",
+        "Drvar",
+        "Fojnica",
+        "Gacko",
+        "Glamoč",
+        "Goražde",
+        "Gornji Vakuf-Uskoplje",
+        "Gračanica",
+        "Gradačac",
+        "Hadžići",
+        "Han Pijesak",
+        "Ilidža",
+        "Ilijaš",
+        "Jablanica",
+        "Jajce",
+        "Kakanj",
+        "Kalesija",
+        "Kalinovik",
+        "Kiseljak",
+        "Kladanj",
+        "Ključ",
+        "Konjic",
+        "Kotor Varoš",
+        "Kreševo",
+        "Kupres",
+        "Laktaši",
+        "Lopare",
+        "Ljubinje",
+        "Ljubuški",
+        "Lukavac",
+        "Maglaj",
+        "Milići",
+        "Modriča",
+        "Mostar",
+        "Mrkonjić Grad",
+        "Neum",
+        "Nevesinje",
+        "Novi Travnik",
+        "Odžak",
+        "Orašje",
+        "Pale",
+        "Posušje",
+        "Prijedor",
+        "Prnjavor",
+        "Prozor-Rama",
+        "Rogatica",
+        "Rudo",
+        "Sanski Most",
+        "Sapna",
+        "Sarajevo",
+        "Šamac",
+        "Šekovići",
+        "Šipovo",
+        "Sokolac",
+        "Srebrenica",
+        "Srebrenik",
+        "Široki Brijeg",
+        "Stolac",
+        "Teočak",
+        "Teslić",
+        "Tešanj",
+        "Tomislavgrad",
+        "Travnik",
+        "Trebinje",
+        "Trnovo",
+        "Tuzla",
+        "Ugljevik",
+        "Vareš",
+        "Velika Kladuša",
+        "Visoko",
+        "Vitez",
+        "Višegrad",
+        "Vogošća",
+        "Zavidovići",
+        "Zenica",
+        "Zvornik",
+        "Žepče",
+        "Živinice",
+      ],
+      location: "",
       sexGenders: [
         { title: "Mužjak", value: "muzjak" },
         { title: "Ženka", value: "zenka" },
@@ -346,7 +310,7 @@ export default {
       selectedSex: "",
       selectedVaccine: "",
       selectedChipStatus: "",
-      sex: "muzjak",
+      selectedAnimal: "",
       vaccinated: "true",
       loading: true,
     };
@@ -357,65 +321,34 @@ export default {
   },
   computed: {
     totalPages() {
-      const number = Math.ceil(this.total_pages.total_count / this.page_size);
-      return number;
+      // Check if total_count exists and ensure it's a number
+      const totalCount =
+        this.total_pages && this.total_pages.total_count
+          ? this.total_pages.total_count
+          : 0;
+      // Calculate total pages, ensuring it's at least 1
+      return Math.max(1, Math.ceil(totalCount / this.page_size));
     },
   },
   methods: {
-    selectLocation(item) {
-      this.selectedLocation = item;
-    },
-    selectSex(item) {
-      this.selectedSex = item;
-    },
-    selectVaccineStatus(item) {
-      this.selectedVaccine = item;
-    },
-    selectAnimal(item) {
-      this.selectedAnimal = item;
-    },
-    selectChipStatus(item) {
-      this.selectedChipStatus = item;
-    },
-    removeLocationChip() {
-      this.selectedLocation = "";
-    },
-    removeSexChip() {
-      this.selectedSex = "";
-    },
-    removeVaccineChip() {
-      this.selectedVaccine = "";
-    },
-    removeAnimalChip() {
-      this.selectedAnimal = "";
-    },
-    removeChippedChip() {
-      this.selectedChipStatus = "";
-    },
-    // deleteFilters(){
-    //   this.selectedVaccine = ""
-    //   this.selectedLocation = "",
-    //   this.selectedSex = ""
-    // },
     shorterPostName(postName) {
       return postName.length > 10
         ? `${postName.substring(0, 10)}...`
         : postName;
     },
     async FetchPost() {
+      this.total_pages = "";
       this.post = [];
       this.loading = true;
       let params = {
         page: this.page_number,
         page_size: this.page_size,
-        location: this.selectedLocation,
-        sex: this.selectedSex.value,
-        vaccinated: this.selectedVaccine.value,
-        chipped: this.selectedChipStatus.value,
-        // animal: this.selectedAnimal.value
+        location: this.location,
+        sex: this.selectedSex,
+        vaccinated: this.selectedVaccine,
+        chipped: this.selectedChipStatus,
+        animal: this.selectedAnimal
       };
-
-      console.log("PARAMS", params)
 
       try {
         this.loading = true;
@@ -423,7 +356,6 @@ export default {
           "http://localhost:8080/adopt-post-per-page",
           { params },
         );
-        console.log("RESPONSE", response.data)
         this.post = response.data.posts;
         this.total_pages = response.data.total_count;
       } catch (error) {
@@ -469,10 +401,6 @@ img {
   object-fit: cover;
   overflow: hidden;
   height: 20vh;
-}
-
-.filter-menu {
-  width: 100%;
 }
 
 @media (min-width: 200px) and (max-width: 800px) {

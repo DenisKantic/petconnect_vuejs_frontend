@@ -23,7 +23,8 @@
         max-width="300"
         type="image, article"
       ></v-skeleton-loader>
-      <v-card v-else>
+      <router-link :to="`/udomi/${post.id}`" v-else class="text-decoration-none">
+      <v-card >
         <img
           :src="
             post.images.length > 0
@@ -65,6 +66,7 @@
           </div>
         </v-card-subtitle>
       </v-card>
+    </router-link>
     </v-col>
   </v-row>
 </template>
@@ -93,7 +95,6 @@ export default {
           "https://www.petconnectbosnia.com/petapi/latest-adopt-post"
         );
         this.post = response.data;
-        console.log("ADOPT RESPONSE", response.data);
       } catch (error) {
         console.log("error");
       } finally {

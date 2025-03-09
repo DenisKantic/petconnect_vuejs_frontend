@@ -15,7 +15,8 @@
         max-width="300"
         type="image, article"
       ></v-skeleton-loader>
-      <v-card v-else>
+      <router-link class="text-decoration-none" v-else :to="`/izgubljeni/${post.id}`" >
+      <v-card>
         <img
           :src="
             post.images.length > 0
@@ -47,6 +48,7 @@
           <div>{{ post.sex }}</div>
         </v-card-subtitle>
       </v-card>
+      </router-link>
     </v-col>
   </v-row>
 </template>
@@ -76,7 +78,6 @@ export default {
           "https://www.petconnectbosnia.com/petapi/latest-lost-post"
         );
         this.post = response.data;
-        console.log("IZGUBLJENI RES", response.data);
       } catch (error) {
         console.log("error");
       } finally {

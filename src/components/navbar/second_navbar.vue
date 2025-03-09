@@ -39,6 +39,7 @@
 }
 
 .v-btn:hover {
-  color: aqua;
+  background-color: white;
+  color: #1D3A5F;
 }
 </style>

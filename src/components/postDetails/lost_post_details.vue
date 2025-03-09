@@ -1,12 +1,12 @@
 <template>
-  <router-link to="/udomi"
+  <router-link to="/izgubljeni"
     ><v-btn class="ml-16 mt-10" color="primary" variant="outlined"
       >Nazad <v-icon class="ml-2">mdi-arrow-left</v-icon></v-btn
     ></router-link
   >
   <v-container class="d-flex flex-column flex-lg-row">
     <div class="left-side">
-      <p class="text-h4 pb-4">{{ new_data.pet_name }}</p>
+      <p class="text-h4 pb-4">{{ new_data.name }}</p>
       <v-carousel
         color="primary"
         height="400"
@@ -119,7 +119,7 @@
 
     <!-- Dialog for Contact -->
     <v-dialog class="contact_dialog" v-model="contact_dialog">
-      <v-card :loading="isMsgLoading" :disabled="isMsgLoading">
+      <v-card :disabled="isMsgLoading" :loading="isMsgLoading">
         <v-card-title class="text-center">
           <span class="headline">Kontaktiraj vlasnika</span>
         </v-card-title>
@@ -142,10 +142,10 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn :loading="isMsgLoading"  @click="sendMessage(new_data.pet_name, new_data.user_email)" color="primary" variant="outlined"
+          <v-btn :loading="isMsgLoading"  @click="sendMessage(new_data.name, new_data.user_email)" color="primary" variant="outlined"
             >Pošalji</v-btn
           >
-          <v-btn @click="contact_dialog = false, message = ''" color="red" variant="flat"
+          <v-btn @click="contact_dialog = false" color="red" variant="flat"
             >Odustani</v-btn
           >
         </v-card-actions>
@@ -196,8 +196,8 @@ export default {
       is_user_loggedIn: useAuthStore(),
       post: null,
       message: "",
-      is_loading: true,
       isMsgLoading: false,
+      is_loading: true,
       contact_dialog: false,
       not_logged_contact_dialog: false,
       colors: [
@@ -217,10 +217,7 @@ export default {
         { title: "Naziv ljubimca", subtitle: "N/A" },
         { title: "Lokacija", subtitle: "N/A" },
         { title: "Vrsta životinje", subtitle: "N/A" },
-        { title: "Spol", subtitle: "N/A" },
-        { title: "Vakcinisan", subtitle: "N/A" },
         { title: "Datum objave", subtitle: "N/A" },
-        { title: "Čipovan", subtitle: "N/A" },
       ],
     };
   },
@@ -230,6 +227,7 @@ export default {
 
       if (postID === "") {
         window.location.replace("/");
+        console.log("NO ID FOUND");
       }
 
       const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=http://petconnectbosnia.com/udomi/${postID}`;
@@ -264,35 +262,29 @@ export default {
 
       if (postID === "") {
         window.location.replace("/");
+        console.log("NO ID FOUND");
       }
 
-      await axios(`http://localhost:8080/one-adopt-post/${postID}`)
+      await axios(`http://localhost:8080/one-lost-post/${postID}`)
         .then((response) => {
+          console.log("RESPONSE", response.data[0]);
           this.new_data = response.data[0];
+          console.log("NEW data", this.new_data);
           this.is_loading = false;
-          console.log("RESP",response)
 
-          for (const key in this.new_data) {
-            if (typeof this.new_data[key] === "boolean") {
-              this.new_data[key] = this.new_data[key] ? "Da" : "Ne";
-            }
-          }
 
           this.cards = [
             {
               title: "Naziv ljubimca",
               subtitle:
-                this.new_data.pet_name.charAt(0).toUpperCase() +
-                this.new_data.pet_name.slice(1),
+                this.new_data.name.charAt(0).toUpperCase() +
+                this.new_data.name.slice(1),
             },
             { title: "Lokacija", subtitle: this.new_data.location },
             {
               title: "Vrsta životinje",
               subtitle: this.format_animal_category(this.new_data.category),
             },
-            { title: "Spol", subtitle: this.format_gender_string(this.new_data.sex) },
-            { title: "Vakcinisan", subtitle: this.new_data.vaccinated },
-            { title: "Čipovan", subtitle: this.new_data.chipped },
             {
               title: "Datum objave",
               subtitle: this.format_date(this.new_data.created_at) || "N/A",
@@ -303,19 +295,12 @@ export default {
 
         })
         .catch((error) => {
-          console.log("error");
+          console.log("error", error);
           this.is_loading = false;
         });
       this.is_loading = false;
     },
 
-    format_gender_string(gender){
-      if(gender === "muzjak"){
-        return "Mužjak"
-      } else {
-        return "Ženka"
-      }
-    },
     format_animal_category(animal){
       if(animal === "pas"){
         return "Pas"
@@ -346,6 +331,7 @@ export default {
   },
   mounted() {
     this.fetch_post();
+    console.log("IS USER LOGGED", this.is_user_loggedIn.isAuthenticated);
   },
 };
 </script>

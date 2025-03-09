@@ -57,12 +57,28 @@ const routes = [
     component: () => import("@/views/pages/lost_page.vue"),
   },
   {
+    path: "/izgubljeni/:id",
+    name: "Izgubljeni ljubimac",
+    meta: {
+      title: "Izgubljeni ljubimac",
+    },
+    component: () => import("@/views/postDetails/lost_post_details.vue"),
+  },
+  {
     path: "/donacije",
     name: "donacijski oglasi",
     meta: {
       title: "Donacijski oglasi",
     },
     component: () => import("@/views/pages/donation_page.vue"),
+  },
+  {
+    path: "/donacije/:id",
+    name: "Donacije pregled",
+    meta: {
+      title: "Donacijski oglas",
+    },
+    component: () => import("@/views/postDetails/donation_post_details.vue"),
   },
   {
     path: "/profil",
@@ -156,6 +172,7 @@ router.beforeEach(async (to, from, next) => {
       }
     );
 
+    console.log("ROUTER RESPONSE", response)
     if (response.status === 200) {
       authStore.isAuthenticated = true;
     } else {
