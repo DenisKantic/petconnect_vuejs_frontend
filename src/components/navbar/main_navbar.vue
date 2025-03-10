@@ -11,17 +11,19 @@
           <img src="@/assets/logo.svg" alt="Logo" />
         </v-avatar>
       </router-link>
-      <v-btn text class="ml-2" v-if="$vuetify.display.lgAndUp"
+      <router-link  to="/">
+      <v-btn style="color: black" text class="ml-2" v-if="$vuetify.display.lgAndUp"
         >PetConnect</v-btn
       >
+    </router-link>
     </v-app-bar-title>
 
     <v-spacer></v-spacer>
 
     <template v-if="$vuetify.display.mdAndUp">
-      <router-link to="/"><v-btn text class="ml-2">Početna</v-btn></router-link>
+      <router-link style="color: black" class="text-decoration-none"  to="/"><v-btn variant="tonal" color="primary" text class="ml-2">Početna</v-btn></router-link>
       <v-btn text class="ml-2">O nama</v-btn>
-      <v-btn text class="ml-2">Politika privatnosti</v-btn>
+      <router-link style="color: black" class="text-decoration-none" to="/pravila"><v-btn text class="ml-2">Politika privatnosti</v-btn></router-link>
       <v-btn text class="ml-2">Kontakt</v-btn>
     </template>
 
@@ -122,7 +124,7 @@ export default {
         { title: "Početna", to: "/" },
         { title: "O nama" ,to: "/o-nama" },
         { title: "Politika privatnosti", to: "/pravila" },
-        { title: "Kontakt" },
+        { title: "Kontakt", to: "/" },
       ],
     };
   },

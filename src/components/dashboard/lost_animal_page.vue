@@ -3,7 +3,7 @@
     <h1 class="pt-10">Izgubljeni ljubimci</h1>
     <span class="text-body-1 text-blue">
       Dostupan broj oglasa:
-      {{ lostPost?.length === 0 ? 0 : 3 - lostPost.length }}
+      {{ lostPost.length === 0 ? 0 : 3 - lostPost.length }}
     </span>
     <v-row class="pt-5">
       <!-- Loop to create up to 3 cards -->
@@ -16,7 +16,7 @@
         md="4"
         xl="4"
       >
-        <template v-if="index <= lostPost.length">
+        <template v-if="index <= lostPost?.length">
           <!-- Existing Post Card -->
           <v-card>
             <v-img
@@ -91,8 +91,11 @@ export default {
       await axios
         .get("http://localhost:8080/my-lost-post", { withCredentials: true })
         .then((response) => {
-          console.log("LOST RESPONSE", response.data)
+          if(response.data.length > 0){
           this.lostPost = response.data;
+          } else {
+            this.lostPost = ""
+          }
         })
         .catch((error) => {
           console.log("ERROR");

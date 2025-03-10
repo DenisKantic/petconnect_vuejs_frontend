@@ -3,7 +3,7 @@
     <h1 class="pt-10">Donacijski oglasi</h1>
     <span class="text-body-1 text-blue">
       Dostupan broj oglasa:
-      {{ donationPost?.length === 0 ? 0 : 3 - donationPost.length }}
+      {{ donationPost?.length === 0 ? 0 : 3 - donationPost?.length }}
     </span>
     <v-row class="pt-5">
       <!-- Loop to create up to 3 cards -->
@@ -16,7 +16,7 @@
         md="4"
         xl="4"
       >
-        <template v-if="index <= donationPost.length">
+        <template v-if="index <= donationPost?.length">
           <!-- Existing Post Card -->
           <v-card>
             <v-img
@@ -96,7 +96,11 @@ export default {
       await axios
         .get("http://localhost:8080/my-donation-post", { withCredentials: true })
         .then((response) => {
+          if(response.data.length > 0){
           this.donationPost = response.data;
+          } else {
+            this.donationPost = ""
+          }
         })
         .catch((error) => {
           console.log("ERROR");

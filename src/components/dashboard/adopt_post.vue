@@ -3,7 +3,7 @@
     <h1 class="pt-10">Oglasi udomljavanja</h1>
     <span class="text-body-1 text-blue">
       Dostupan broj oglasa:
-      {{ adoptPost?.length === 0 ? 0 : 3 - adoptPost.length }}
+      {{ adoptPost.length === 0 ? 0 : 3 - adoptPost.length }}
     </span>
     <v-row class="pt-5">
       <!-- Loop to create up to 3 cards -->
@@ -64,6 +64,7 @@
         <template v-else>
           <!-- Create Post Button in Empty Slot -->
           <v-card
+
             class="d-flex align-center justify-center flex-grow-1"
             height="100%"
             style="min-height: 20vh"
@@ -130,19 +131,21 @@ export default {
         .then((response) => {
           console.log(response.data);
           this.dialog = false;
-          console.log("FIRING FUNCTION");
           this.getAdoptPost();
-          console.log("EXITING FUNCTION");
         })
         .catch((error) => {
-          console.log("ERROR", error);
+          console.log("ERROR");
         });
     },
     async getAdoptPost() {
       await axios
         .get(`http://localhost:8080/my-adopt-post`, { withCredentials: true })
         .then((response) => {
+          if(response.data.length > 0){
           this.adoptPost = response.data;
+          } else {
+            this.adoptPost = ""
+          }
         })
         .catch((error) => {
           console.log("ERROR");
