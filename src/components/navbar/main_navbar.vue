@@ -160,7 +160,7 @@ export default {
 
       window.location.reload();
       axios.post(
-        `http://localhost:8080/logout?refresh=${new Date().getTime()}`,
+        `/petapi/logout?refresh=${new Date().getTime()}`,
         {},
         { withCredentials: true },
       );

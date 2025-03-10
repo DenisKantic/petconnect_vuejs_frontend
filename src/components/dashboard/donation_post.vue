@@ -120,7 +120,7 @@ export default {
     },
     deletePost(postID) {
       axios
-        .delete(`http://localhost:8080/delete-donation-post/${postID}`, {
+        .delete(`/petapi/delete-donation-post/${postID}`, {
           withCredentials: true,
         })
         .then((response) => {
@@ -134,7 +134,7 @@ export default {
     },
     async getAdoptPost() {
       await axios
-        .get("http://localhost:8080/my-donation-post", {
+        .get("/petapi/my-donation-post", {
           withCredentials: true,
         })
         .then((response) => {

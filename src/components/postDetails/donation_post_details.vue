@@ -35,7 +35,7 @@
         >
           <v-sheet height="100%" class="d-flex items-center justify-center">
             <v-img
-              :src="`http://localhost:8080/${image}`"
+              :src="`/petapi/${image}`"
               @click="openDialog(image)"
               aspect-ratio="1"
             >
@@ -105,7 +105,7 @@
           >
             <v-sheet height="80vh" class="d-flex items-center justify-center">
               <v-img
-                :src="`http://localhost:8080/${img}`"
+                :src="`/petapi/${img}`"
                 aspect-ratio="1"
                 contain
                 max-height="100%"
@@ -237,7 +237,7 @@ export default {
         console.log("NO ID FOUND");
       }
 
-      const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=http://petconnectbosnia.com/donacije/${postID}`;
+      const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=https://petconnectbosnia.com/donacije/${postID}`;
       window.open(shareUrl, "_blank");
     },
     async sendMessage(post_name, owner_email) {
@@ -274,7 +274,7 @@ export default {
         console.log("NO ID FOUND");
       }
 
-      await axios(`http://localhost:8080/one-donation-post/${postID}`)
+      await axios(`/petapi/one-donation-post/${postID}`)
         .then((response) => {
           console.log("response donation", response.data[0]);
           this.new_data = response.data[0];

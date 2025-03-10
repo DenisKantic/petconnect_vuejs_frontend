@@ -32,7 +32,7 @@
           <img
             :src="
               post.images.length > 0
-                ? `http://localhost:8080/${post.images[0]}`
+                ? `/petapi/${post.images[0]}`
                 : 'https://placehold.co/300x200'
             "
           />
@@ -103,7 +103,7 @@ export default {
       this.loading = true;
       try {
         const response = await this.$http.get(
-          "http://localhost:8080/latest-donation-post",
+          "/petapi/latest-donation-post",
         );
         this.post = response.data;
       } catch (error) {

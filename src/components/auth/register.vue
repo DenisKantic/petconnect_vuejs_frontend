@@ -215,7 +215,7 @@ export default {
       };
 
       this.$http
-        .post("http://localhost:8080/register", form_object)
+        .post("/petapi/register", form_object)
         .then((response) => {
           console.log("success", response.data);
           this.$router.push("/profil");

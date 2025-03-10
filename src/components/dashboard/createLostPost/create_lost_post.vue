@@ -500,7 +500,7 @@ export default {
 
       setTimeout(() => {
         this.$http
-          .post("http://localhost:8080/create-lost-post", formData, {
+          .post("/petapi/create-lost-post", formData, {
             withCredentials: true,
           })
           .then((res) => {

@@ -163,7 +163,7 @@ export default {
 
     deleteUser() {
       this.$http
-        .get("http://localhost:8080/delete-user", {
+        .get("/petapi/delete-user", {
           withCredentials: true,
         })
         .then((response) => {
@@ -196,7 +196,7 @@ export default {
       };
 
       this.$http
-        .post("http://localhost:8080/change-password", params, {
+        .post("/petapi/change-password", params, {
           withCredentials: true,
         })
         .then((response) => {

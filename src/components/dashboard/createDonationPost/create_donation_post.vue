@@ -504,7 +504,7 @@ export default {
 
       setTimeout(() => {
         this.$http
-          .post("http://localhost:8080/create-donation-post", formData, {
+          .post("/petapi/create-donation-post", formData, {
             withCredentials: true,
           })
           .then((res) => {

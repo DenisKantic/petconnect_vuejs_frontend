@@ -113,7 +113,7 @@
           <img
             :src="
               post.images.length > 0
-                ? `http://localhost:8080/${post.images[0]}`
+                ? `/petapi/${post.images[0]}`
                 : 'https://placehold.co/300x200'
             "
           />
@@ -347,7 +347,7 @@ export default {
       try {
         this.loading = true;
         const response = await this.$http.get(
-          "http://localhost:8080/adopt-post-per-page",
+          "/petapi/adopt-post-per-page",
           { params },
         );
         this.post = response.data.posts;

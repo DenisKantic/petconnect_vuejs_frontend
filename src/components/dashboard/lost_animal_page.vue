@@ -116,7 +116,7 @@ export default {
     },
     deletePost(postID) {
       axios
-        .delete(`http://localhost:8080/delete-lost-post/${postID}`, {
+        .delete(`/petapi/delete-lost-post/${postID}`, {
           withCredentials: true,
         })
         .then((response) => {
@@ -130,7 +130,7 @@ export default {
     },
     async getlostPost() {
       await axios
-        .get("http://localhost:8080/my-lost-post", { withCredentials: true })
+        .get("/petapi/my-lost-post", { withCredentials: true })
         .then((response) => {
           if (response.data.length > 0) {
             this.lostPost = response.data;

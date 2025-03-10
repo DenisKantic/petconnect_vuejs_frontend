@@ -251,7 +251,7 @@ export default {
       };
 
       this.$http
-        .post("https://petapi/password-reset", form_object)
+        .post("/petapi/password-reset", form_object)
         .then((response) => {
           this.showSnackbar("Nova šifra kreirana", "success");
           console.log(response.data);
@@ -278,7 +278,7 @@ export default {
       };
 
       this.$http
-        .post("https://petapi/login", form_object, {
+        .post("/petapi/login", form_object, {
           withCredentials: true,
         })
         .then((response) => {
