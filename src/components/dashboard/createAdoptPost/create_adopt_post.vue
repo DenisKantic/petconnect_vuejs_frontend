@@ -190,7 +190,7 @@
         >
           Nazad
         </v-btn>
-        <v-btn color="red" variant="outlined">Odustani</v-btn>
+        <v-btn to="/profil" color="red" variant="outlined">Odustani</v-btn>
         <v-spacer></v-spacer>
         <v-btn
           v-if="step === 3"
