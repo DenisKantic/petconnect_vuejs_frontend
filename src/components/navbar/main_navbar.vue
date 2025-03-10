@@ -64,7 +64,7 @@
     >
       <v-list id="first-list">
         <v-list-item v-for="(item, index) in links" :key="index">
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
+          <router-link class="text-decoration-none" :to="item.to"><v-list-item-title>{{ item.title }}</v-list-item-title></router-link>
         </v-list-item>
       </v-list>
 
@@ -119,9 +119,9 @@ export default {
         { title: "Postavke", to: "/profil/postavke" },
       ],
       links: [
-        { title: "Početna" },
-        { title: "O nama" },
-        { title: "Politika privatnosti" },
+        { title: "Početna", to: "/" },
+        { title: "O nama" ,to: "/o-nama" },
+        { title: "Politika privatnosti", to: "/pravila" },
         { title: "Kontakt" },
       ],
     };
