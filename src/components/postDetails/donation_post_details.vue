@@ -142,7 +142,10 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn @click="sendMessage(new_data.post_name, new_data.user_email)" color="primary" variant="outlined"
+          <v-btn
+            @click="sendMessage(new_data.post_name, new_data.user_email)"
+            color="primary"
+            variant="outlined"
             >Pošalji</v-btn
           >
           <v-btn @click="contact_dialog = false" color="red" variant="flat"
@@ -238,31 +241,33 @@ export default {
       window.open(shareUrl, "_blank");
     },
     async sendMessage(post_name, owner_email) {
-      const postURL = window.location.href
+      const postURL = window.location.href;
 
       this.isMsgLoading = true;
       const param_object = {
         message: this.message,
         subject: post_name,
         email: owner_email,
-        post_url: postURL
-      }
-      await axios.post('http://localhost:8080/send-message', param_object, {withCredentials: true})
-      .then((response) =>{
-          console.log(response)
-          setTimeout(()=>{
+        post_url: postURL,
+      };
+      await axios
+        .post("http://localhost:8080/send-message", param_object, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          console.log(response);
+          setTimeout(() => {
             this.isMsgLoading = false;
             this.contact_dialog = false;
-          })
-      })
-      .catch((error)=>{
-        console.log("ERROR")
-        this.isMsgLoading = false
-      })
+          });
+        })
+        .catch((error) => {
+          console.log("ERROR");
+          this.isMsgLoading = false;
+        });
     },
     async fetch_post() {
       const postID = this.$route.params.id;
-
 
       if (postID === "") {
         window.location.replace("/");
@@ -292,8 +297,9 @@ export default {
             { title: "Lokacija", subtitle: this.new_data.location },
             {
               title: "Za životinju",
-              subtitle: this.new_data.animal_category.charAt(0).toUpperCase() +
-              this.new_data.animal_category.slice(1),
+              subtitle:
+                this.new_data.animal_category.charAt(0).toUpperCase() +
+                this.new_data.animal_category.slice(1),
             },
             {
               title: "Datum objave",

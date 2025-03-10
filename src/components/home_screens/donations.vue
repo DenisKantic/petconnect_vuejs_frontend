@@ -23,56 +23,60 @@
         max-width="300"
         type="image, article"
       ></v-skeleton-loader>
-      <router-link class="text-decoration-none" v-else :to="`/donacije/${post.id}`" >
-      <v-card>
-        <img
-          :src="
-            post.images.length > 0
-              ? `http://localhost:8080/${post.images[0]}`
-              : 'https://placehold.co/300x200'
-          "
-        />
-        <!-- Card content -->
-        <v-card-title>
-          <div class="text-h6 font-weight-regular">
-            {{ shorterPostName(post.post_name) }}
-          </div>
-        </v-card-title>
-        <v-card-subtitle>
-          <div>
-            <v-icon class="mr-1" color="primary">mdi-map-marker</v-icon
-            >{{ post.location }}
-          </div>
-          <div>
-            <div class="pt-1">
-              <v-icon class="mr-1" color="info">{{
-                post.animal_category === "macka"
-                  ? "mdi-cat"
-                  : post.animal_category === "pas"
-                    ? "mdi-dog"
-                    : "mdi-paw"
+      <router-link
+        class="text-decoration-none"
+        v-else
+        :to="`/donacije/${post.id}`"
+      >
+        <v-card>
+          <img
+            :src="
+              post.images.length > 0
+                ? `http://localhost:8080/${post.images[0]}`
+                : 'https://placehold.co/300x200'
+            "
+          />
+          <!-- Card content -->
+          <v-card-title>
+            <div class="text-h6 font-weight-regular">
+              {{ shorterPostName(post.post_name) }}
+            </div>
+          </v-card-title>
+          <v-card-subtitle>
+            <div>
+              <v-icon class="mr-1" color="primary">mdi-map-marker</v-icon
+              >{{ post.location }}
+            </div>
+            <div>
+              <div class="pt-1">
+                <v-icon class="mr-1" color="info">{{
+                  post.animal_category === "macka"
+                    ? "mdi-cat"
+                    : post.animal_category === "pas"
+                      ? "mdi-dog"
+                      : "mdi-paw"
+                }}</v-icon
+                >{{
+                  post.animal_category.charAt(0).toUpperCase() +
+                  post.animal_category.slice(1)
+                }}
+              </div>
+            </div>
+            <div>
+              <v-icon class="mr-1" color="primary">{{
+                post.post_category === "hrana"
+                  ? "mdi-food"
+                  : post.post_category === "lijek"
+                    ? "mdi-medical-bag"
+                    : "mdi-view-grid"
               }}</v-icon
               >{{
-                post.animal_category.charAt(0).toUpperCase() +
-                post.animal_category.slice(1)
+                post.post_category.charAt(0).toUpperCase() +
+                post.post_category.slice(1)
               }}
             </div>
-          </div>
-          <div>
-            <v-icon class="mr-1" color="primary">{{
-              post.post_category === "hrana"
-                ? "mdi-food"
-                : post.post_category === "lijek"
-                  ? "mdi-medical-bag"
-                  : "mdi-view-grid"
-            }}</v-icon
-            >{{
-              post.post_category.charAt(0).toUpperCase() +
-              post.post_category.slice(1)
-            }}
-          </div>
-        </v-card-subtitle>
-      </v-card>
+          </v-card-subtitle>
+        </v-card>
       </router-link>
     </v-col>
   </v-row>

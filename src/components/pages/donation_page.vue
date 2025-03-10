@@ -20,13 +20,13 @@
         <v-card-title class="text-center pb-5">Filteri</v-card-title>
 
         <v-select
-        title="Lokacija"
+          title="Lokacija"
           label="Lokacija"
           v-model="location"
           :items="locations"
           variant="outlined"
           clearable
-            color="primary"
+          color="primary"
           @click.stop
         ></v-select>
 
@@ -36,7 +36,7 @@
           v-model="selectedPostCategory"
           :items="postCategory"
           clearable
-            color="primary"
+          color="primary"
           @click.stop
         ></v-select>
 
@@ -46,20 +46,15 @@
           v-model="selectedAnimal"
           :items="animalList"
           clearable
-            color="primary"
+          color="primary"
           @click.stop
         ></v-select>
 
-
-
         <v-btn class="font-weight-regular" @click="FetchPost" color="primary"
-      >Pretraži</v-btn
-    >
+          >Pretraži</v-btn
+        >
       </v-card>
     </v-menu>
-
-
-
   </div>
 
   <p class="pt-4 pb-2 font-weight-regular">
@@ -91,7 +86,7 @@
         type="image, article"
       ></v-skeleton-loader>
       <router-link
-      class="text-decoration-none"
+        class="text-decoration-none"
         v-else
         :to="{ name: 'Donacije pregled', params: { id: post.id } }"
       >
@@ -123,12 +118,16 @@
                     : "mdi-paw"
               }}</v-icon
               >{{
-                post.animal_category.charAt(0).toUpperCase() + post.animal_category.slice(1)
+                post.animal_category.charAt(0).toUpperCase() +
+                post.animal_category.slice(1)
               }}
             </div>
             <div>
               <v-icon class="mr-1" color="primary">mdi-post</v-icon
-              >{{ post.post_category.charAt(0).toUpperCase() + post.post_category.slice(1) }}
+              >{{
+                post.post_category.charAt(0).toUpperCase() +
+                post.post_category.slice(1)
+              }}
             </div>
           </v-card-subtitle>
         </v-card>
@@ -260,10 +259,10 @@ export default {
         { title: "Mačka", value: "macka" },
         { title: "Ostalo", value: "ostalo" },
       ],
-      postCategory:[
-        {title: "Lijek", value: "lijek"},
-        {title: "Hrana", value: "hrana"},
-        {title: "Ostalo", value: "ostalo"}
+      postCategory: [
+        { title: "Lijek", value: "lijek" },
+        { title: "Hrana", value: "hrana" },
+        { title: "Ostalo", value: "ostalo" },
       ],
       selectedPostCategory: "",
       selectedLocation: "",
@@ -302,17 +301,17 @@ export default {
         page_size: this.page_size,
         location: this.location,
         animal_category: this.selectedAnimal,
-        post_category: this.selectedPostCategory
+        post_category: this.selectedPostCategory,
       };
 
-      console.log("PARAMS", params)
+      console.log("PARAMS", params);
       try {
         this.loading = true;
         const response = await this.$http.get(
           "http://localhost:8080/donation-post-per-page",
           { params },
         );
-        console.log("RESPONSE", response.data.posts)
+        console.log("RESPONSE", response.data.posts);
         this.post = response.data.posts;
         this.total_pages = response.data.total_count;
       } catch (error) {

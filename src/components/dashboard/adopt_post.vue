@@ -3,7 +3,7 @@
     <h1 class="pt-10">Oglasi udomljavanja</h1>
     <span class="text-body-1 text-blue">
       Dostupan broj oglasa:
-      {{ adoptPost?.length === 0 ? 0 : 3 - adoptPost.length }}
+      {{ adoptPost.length === 0 ? 0 : 3 - adoptPost.length }}
     </span>
     <v-row class="pt-5">
       <!-- Loop to create up to 3 cards -->
@@ -25,7 +25,9 @@
             ></v-img>
 
             <v-card-title>
-              <div class="text-h6">{{ shortPostName(adoptPost[index - 1].pet_name) }}</div>
+              <div class="text-h6">
+                {{ shortPostName(adoptPost[index - 1].pet_name) }}
+              </div>
             </v-card-title>
             <v-card-subtitle class="pb-2 text-body-1">
               <div>
@@ -111,11 +113,11 @@ export default {
     };
   },
   methods: {
-    shortPostName(name){
-      if(name.length > 10){
-        return `${name.substring(0,10)}...`
+    shortPostName(name) {
+      if (name.length > 10) {
+        return `${name.substring(0, 10)}...`;
       } else {
-        return name
+        return name;
       }
     },
     confirmDelete(postID) {
@@ -130,19 +132,21 @@ export default {
         .then((response) => {
           console.log(response.data);
           this.dialog = false;
-          console.log("FIRING FUNCTION");
           this.getAdoptPost();
-          console.log("EXITING FUNCTION");
         })
         .catch((error) => {
-          console.log("ERROR", error);
+          console.log("ERROR");
         });
     },
     async getAdoptPost() {
       await axios
         .get(`http://localhost:8080/my-adopt-post`, { withCredentials: true })
         .then((response) => {
-          this.adoptPost = response.data;
+          if (response.data.length > 0) {
+            this.adoptPost = response.data;
+          } else {
+            this.adoptPost = "";
+          }
         })
         .catch((error) => {
           console.log("ERROR");

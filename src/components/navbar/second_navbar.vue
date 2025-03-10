@@ -40,6 +40,6 @@
 
 .v-btn:hover {
   background-color: white;
-  color: #1D3A5F;
+  color: #1d3a5f;
 }
 </style>

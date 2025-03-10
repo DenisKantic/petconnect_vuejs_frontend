@@ -150,9 +150,9 @@ const routes = [
     path: "/pravila",
     name: "Pravila",
     meta: {
-      title: "Pravila i privatnost"
+      title: "Pravila i privatnost",
     },
-    component: () => import("@/views/policyRules/policy.vue")
+    component: () => import("@/views/policyRules/policy.vue"),
   },
   {
     path: "/:pathMatch(.*)*",
@@ -177,7 +177,6 @@ router.beforeEach(async (to, from, next) => {
       withCredentials: true,
     });
 
-    console.log("ROUTER RESPONSE", response)
     if (response.status === 200) {
       authStore.isAuthenticated = true;
     } else {

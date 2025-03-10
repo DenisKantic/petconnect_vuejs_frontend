@@ -142,10 +142,17 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn :loading="isMsgLoading"  @click="sendMessage(new_data.pet_name, new_data.user_email)" color="primary" variant="outlined"
+          <v-btn
+            :loading="isMsgLoading"
+            @click="sendMessage(new_data.pet_name, new_data.user_email)"
+            color="primary"
+            variant="outlined"
             >Pošalji</v-btn
           >
-          <v-btn @click="contact_dialog = false, message = ''" color="red" variant="flat"
+          <v-btn
+            @click="((contact_dialog = false), (message = ''))"
+            color="red"
+            variant="flat"
             >Odustani</v-btn
           >
         </v-card-actions>
@@ -236,28 +243,30 @@ export default {
       window.open(shareUrl, "_blank");
     },
     async sendMessage(post_name, owner_email) {
-      const postURL = window.location.href
+      const postURL = window.location.href;
 
       this.isMsgLoading = true;
       const param_object = {
         message: this.message,
         subject: post_name,
         email: owner_email,
-        post_url: postURL
-      }
-      await axios.post('http://localhost:8080/send-message', param_object, {withCredentials: true})
-      .then((response) =>{
-          console.log(response)
-          setTimeout(()=>{
+        post_url: postURL,
+      };
+      await axios
+        .post("http://localhost:8080/send-message", param_object, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          console.log(response);
+          setTimeout(() => {
             this.isMsgLoading = false;
             this.contact_dialog = false;
-          }, 2000)
-
-      })
-      .catch((error)=>{
-        console.log("ERROR", error)
-        this.isMsgLoading = true;
-      })
+          }, 2000);
+        })
+        .catch((error) => {
+          console.log("ERROR", error);
+          this.isMsgLoading = true;
+        });
     },
     async fetch_post() {
       const postID = this.$route.params.id;
@@ -270,7 +279,7 @@ export default {
         .then((response) => {
           this.new_data = response.data[0];
           this.is_loading = false;
-          console.log("RESP",response)
+          console.log("RESP", response);
 
           for (const key in this.new_data) {
             if (typeof this.new_data[key] === "boolean") {
@@ -290,7 +299,10 @@ export default {
               title: "Vrsta životinje",
               subtitle: this.format_animal_category(this.new_data.category),
             },
-            { title: "Spol", subtitle: this.format_gender_string(this.new_data.sex) },
+            {
+              title: "Spol",
+              subtitle: this.format_gender_string(this.new_data.sex),
+            },
             { title: "Vakcinisan", subtitle: this.new_data.vaccinated },
             { title: "Čipovan", subtitle: this.new_data.chipped },
             {
@@ -300,7 +312,6 @@ export default {
           ];
 
           this.subtitleCard = this.new_data.description;
-
         })
         .catch((error) => {
           console.log("error");
@@ -309,20 +320,20 @@ export default {
       this.is_loading = false;
     },
 
-    format_gender_string(gender){
-      if(gender === "muzjak"){
-        return "Mužjak"
+    format_gender_string(gender) {
+      if (gender === "muzjak") {
+        return "Mužjak";
       } else {
-        return "Ženka"
+        return "Ženka";
       }
     },
-    format_animal_category(animal){
-      if(animal === "pas"){
-        return "Pas"
-      } else if (animal === "macka"){
-        return "Mačka"
+    format_animal_category(animal) {
+      if (animal === "pas") {
+        return "Pas";
+      } else if (animal === "macka") {
+        return "Mačka";
       } else {
-        return "Ostalo"
+        return "Ostalo";
       }
     },
     format_date(dateString) {

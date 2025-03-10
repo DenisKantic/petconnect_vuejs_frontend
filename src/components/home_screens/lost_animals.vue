@@ -15,39 +15,43 @@
         max-width="300"
         type="image, article"
       ></v-skeleton-loader>
-      <router-link class="text-decoration-none" v-else :to="`/izgubljeni/${post.id}`" >
-      <v-card>
-        <img
-          :src="
-            post.images.length > 0
-              ? `http://localhost:8080/${post.images[0]}`
-              : 'https://placehold.co/300x200'
-          "
-        />
-        <!-- Card content -->
-        <v-card-title>
-          <div class="text-h6 font-weight-regular">
-            {{ shorterPostName(post.name) }}
-          </div>
-        </v-card-title>
-        <v-card-subtitle>
-          <div>
-            <v-icon class="mr-1" color="primary">mdi-map-marker</v-icon
-            >{{ post.location }}
-          </div>
-          <div>
-            <v-icon class="mr-1" color="primary">{{
-              post.category === "macka"
-                ? "mdi-cat"
-                : post.category === "pas"
-                  ? "mdi-dog"
-                  : "mdi-paw"
-            }}</v-icon
-            >{{ post.category }}
-          </div>
-          <div>{{ post.sex }}</div>
-        </v-card-subtitle>
-      </v-card>
+      <router-link
+        class="text-decoration-none"
+        v-else
+        :to="`/izgubljeni/${post.id}`"
+      >
+        <v-card>
+          <img
+            :src="
+              post.images.length > 0
+                ? `http://localhost:8080/${post.images[0]}`
+                : 'https://placehold.co/300x200'
+            "
+          />
+          <!-- Card content -->
+          <v-card-title>
+            <div class="text-h6 font-weight-regular">
+              {{ shorterPostName(post.name) }}
+            </div>
+          </v-card-title>
+          <v-card-subtitle>
+            <div>
+              <v-icon class="mr-1" color="primary">mdi-map-marker</v-icon
+              >{{ post.location }}
+            </div>
+            <div>
+              <v-icon class="mr-1" color="primary">{{
+                post.category === "macka"
+                  ? "mdi-cat"
+                  : post.category === "pas"
+                    ? "mdi-dog"
+                    : "mdi-paw"
+              }}</v-icon
+              >{{ post.category }}
+            </div>
+            <div>{{ post.sex }}</div>
+          </v-card-subtitle>
+        </v-card>
       </router-link>
     </v-col>
   </v-row>
