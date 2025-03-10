@@ -2,11 +2,12 @@
   <div>
     <Navbar />
     <SecondNavbar />
-    <v-main class="px-16 pt-10" style="background-color: #fafafa">
+    <v-main class="px-16 pt-10 pb-8" style="background-color: #fafafa">
       <AdoptAnimals />
       <LostAnimals />
       <Donations />
     </v-main>
+    <CustomFooter />
   </div>
 </template>
 
@@ -16,7 +17,7 @@ import SecondNavbar from "@/components/navbar/second_navbar.vue";
 import AdoptAnimals from "@/components/home_screens/adopt_animals.vue";
 import LostAnimals from "@/components/home_screens/lost_animals.vue";
 import Donations from "@/components/home_screens/donations.vue";
-
+import CustomFooter from "@/components/footer/custom_footer.vue";
 export default {
   components: {
     Navbar,
@@ -24,6 +25,7 @@ export default {
     AdoptAnimals,
     LostAnimals,
     Donations,
+    CustomFooter
   },
 };
 </script>

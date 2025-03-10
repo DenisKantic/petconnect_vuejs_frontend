@@ -147,6 +147,14 @@ const routes = [
     component: () => import("@/views/activateAccount/activate_account.vue"),
   },
   {
+    path: "/pravila",
+    name: "Pravila",
+    meta: {
+      title: "Pravila i privatnost"
+    },
+    component: () => import("@/views/policyRules/policy.vue")
+  },
+  {
     path: "/:pathMatch(.*)*",
     name: "not-found",
     component: () => import("@/views/not_found.vue"),
