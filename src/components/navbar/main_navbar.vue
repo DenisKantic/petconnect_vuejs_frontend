@@ -11,19 +11,32 @@
           <img src="@/assets/logo.svg" alt="Logo" />
         </v-avatar>
       </router-link>
-      <router-link  to="/">
-      <v-btn style="color: black" text class="ml-2" v-if="$vuetify.display.lgAndUp"
-        >PetConnect</v-btn
-      >
-    </router-link>
+      <router-link to="/">
+        <v-btn
+          style="color: black"
+          text
+          class="ml-2"
+          v-if="$vuetify.display.lgAndUp"
+          >PetConnect</v-btn
+        >
+      </router-link>
     </v-app-bar-title>
 
     <v-spacer></v-spacer>
 
     <template v-if="$vuetify.display.mdAndUp">
-      <router-link style="color: black" class="text-decoration-none"  to="/"><v-btn variant="tonal" color="primary" text class="ml-2">Početna</v-btn></router-link>
+      <router-link style="color: black" class="text-decoration-none" to="/"
+        ><v-btn variant="tonal" color="primary" text class="ml-2"
+          >Početna</v-btn
+        ></router-link
+      >
       <v-btn text class="ml-2">O nama</v-btn>
-      <router-link style="color: black" class="text-decoration-none" to="/pravila"><v-btn text class="ml-2">Politika privatnosti</v-btn></router-link>
+      <router-link
+        style="color: black"
+        class="text-decoration-none"
+        to="/pravila"
+        ><v-btn text class="ml-2">Politika privatnosti</v-btn></router-link
+      >
       <v-btn text class="ml-2">Kontakt</v-btn>
     </template>
 
@@ -66,7 +79,11 @@
     >
       <v-list id="first-list">
         <v-list-item v-for="(item, index) in links" :key="index">
-          <router-link class="text-decoration-none" :to="item.to"><v-list-item-title>{{ item.title }}</v-list-item-title></router-link>
+          <router-link class="text-decoration-none" :to="item.to"
+            ><v-list-item-title>{{
+              item.title
+            }}</v-list-item-title></router-link
+          >
         </v-list-item>
       </v-list>
 
@@ -122,7 +139,7 @@ export default {
       ],
       links: [
         { title: "Početna", to: "/" },
-        { title: "O nama" ,to: "/o-nama" },
+        { title: "O nama", to: "/o-nama" },
         { title: "Politika privatnosti", to: "/pravila" },
         { title: "Kontakt", to: "/" },
       ],

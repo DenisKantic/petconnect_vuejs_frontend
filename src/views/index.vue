@@ -25,7 +25,7 @@ export default {
     AdoptAnimals,
     LostAnimals,
     Donations,
-    CustomFooter
+    CustomFooter,
   },
 };
 </script>

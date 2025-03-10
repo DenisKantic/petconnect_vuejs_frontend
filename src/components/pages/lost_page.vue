@@ -19,13 +19,13 @@
         <v-card-title class="text-center pb-5">Filteri</v-card-title>
 
         <v-select
-        title="Lokacija"
+          title="Lokacija"
           label="Lokacija"
           v-model="location"
           :items="locations"
           variant="outlined"
           clearable
-            color="primary"
+          color="primary"
           @click.stop
         ></v-select>
 
@@ -35,21 +35,15 @@
           v-model="selectedAnimal"
           :items="animalList"
           clearable
-            color="primary"
+          color="primary"
           @click.stop
         ></v-select>
 
-
-
-
         <v-btn class="font-weight-regular" @click="FetchPost" color="primary"
-      >Pretraži</v-btn
-    >
+          >Pretraži</v-btn
+        >
       </v-card>
     </v-menu>
-
-
-
   </div>
 
   <p class="pt-4 pb-2 font-weight-regular">
@@ -81,7 +75,7 @@
         type="image, article"
       ></v-skeleton-loader>
       <router-link
-      class="text-decoration-none"
+        class="text-decoration-none"
         v-else
         :to="{ name: 'Izgubljeni ljubimac', params: { id: post.id } }"
       >
@@ -291,7 +285,7 @@ export default {
         page: this.page_number,
         page_size: this.page_size,
         location: this.location,
-        animal: this.selectedAnimal
+        animal: this.selectedAnimal,
       };
 
       try {
@@ -300,7 +294,7 @@ export default {
           "http://localhost:8080/lost-post-per-page",
           { params },
         );
-        console.log("RESPONSE", response.data)
+        console.log("RESPONSE", response.data);
         this.post = response.data.posts;
         this.total_pages = response.data.total_count;
       } catch (error) {

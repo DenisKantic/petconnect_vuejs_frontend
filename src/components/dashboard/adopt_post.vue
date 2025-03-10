@@ -25,7 +25,9 @@
             ></v-img>
 
             <v-card-title>
-              <div class="text-h6">{{ shortPostName(adoptPost[index - 1].pet_name) }}</div>
+              <div class="text-h6">
+                {{ shortPostName(adoptPost[index - 1].pet_name) }}
+              </div>
             </v-card-title>
             <v-card-subtitle class="pb-2 text-body-1">
               <div>
@@ -64,7 +66,6 @@
         <template v-else>
           <!-- Create Post Button in Empty Slot -->
           <v-card
-
             class="d-flex align-center justify-center flex-grow-1"
             height="100%"
             style="min-height: 20vh"
@@ -112,11 +113,11 @@ export default {
     };
   },
   methods: {
-    shortPostName(name){
-      if(name.length > 10){
-        return `${name.substring(0,10)}...`
+    shortPostName(name) {
+      if (name.length > 10) {
+        return `${name.substring(0, 10)}...`;
       } else {
-        return name
+        return name;
       }
     },
     confirmDelete(postID) {
@@ -141,10 +142,10 @@ export default {
       await axios
         .get(`http://localhost:8080/my-adopt-post`, { withCredentials: true })
         .then((response) => {
-          if(response.data.length > 0){
-          this.adoptPost = response.data;
+          if (response.data.length > 0) {
+            this.adoptPost = response.data;
           } else {
-            this.adoptPost = ""
+            this.adoptPost = "";
           }
         })
         .catch((error) => {

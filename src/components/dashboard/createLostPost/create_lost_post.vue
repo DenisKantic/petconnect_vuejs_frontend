@@ -81,7 +81,7 @@
         <v-window-item :value="2">
           <p class="text-h6 text-center font-weight-light my-4">
             Unesite fotografije <br />
-            (6 fotografija maksimalno)
+            (Maksimalno 100 MB memorije)
           </p>
           <v-card-text>
             <VFileUpload
@@ -424,36 +424,58 @@ export default {
     },
 
     handleFileUpload(files) {
+      if (!files || files.length === 0) {
+        // If no files, reset everything
+        this.uploadedImages = [];
+        this.imageURLs = [];
+        this.$emit("update:model-value", []);
+        return;
+      }
       const fileArray = Array.from(files);
-      const [validTypes] = ["image/png", "image/jpeg", "image/jpg"];
+      const validTypes = ["image/png", "image/jpeg", "image/jpg"];
+
+      // Filter valid image types
       const filteredFiles = fileArray.filter((file) =>
         validTypes.includes(file.type),
       );
 
-      if (fileArray.length > 6) {
-        this.showSnackbar("Ne možete objaviti više od 6 fotografija", "error");
-        this.uploadedImages = fileArray.slice(0, 6);
-        this.imageURLs = this.uploadedImages.map((file) =>
-          URL.createObjectURL(file),
-        );
-        console.log("FIRST ARRAY", this.uploadedImages);
-      } else if (filteredFiles.length === 0) {
+      let totalSize = 0; // Track total size in bytes
+      const maxSize = 100 * 1024 * 1024; // 100MB in bytes
+      const selectedImages = [];
+
+      for (const file of filteredFiles) {
+        if (totalSize + file.size <= maxSize) {
+          selectedImages.push(file);
+          totalSize += file.size;
+        } else {
+          this.showSnackbar(
+            "Ukupna veličina slika ne smije preći 100 MB",
+            "error",
+          );
+          break; // Stop adding files if the next one exceeds the limit
+        }
+      }
+
+      if (selectedImages.length === 0) {
         this.showSnackbar(
           "Molimo odaberite validne formate fotografija (PNG, JPG, JPEG)",
           "error",
         );
-        this.uploadedImages = [];
-        this.imageURLs = [];
-      } else {
-        this.uploadedImages = fileArray;
-        this.imageURLs = this.uploadedImages.map((file) =>
-          URL.createObjectURL(file),
-        );
-        console.log("URL IMGES", this.imageURLs);
+        return;
       }
 
+      // Update component state
+      this.uploadedImages = selectedImages;
+      this.imageURLs = this.uploadedImages.map((file) =>
+        URL.createObjectURL(file),
+      );
+
+      // Emit updated values
       this.$emit("update:model-value", this.uploadedImages);
       this.$emit("update:model-value", this.imageURLs);
+
+      console.log("Accepted Images:", this.uploadedImages);
+      console.log("Total Size (MB):", (totalSize / (1024 * 1024)).toFixed(2));
     },
     submitForm() {
       const formData = new FormData();

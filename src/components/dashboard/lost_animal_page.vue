@@ -25,7 +25,9 @@
             ></v-img>
 
             <v-card-title>
-              <div class="text-h6">{{ shortPostName(lostPost[index - 1].name) }}</div>
+              <div class="text-h6">
+                {{ shortPostName(lostPost[index - 1].name) }}
+              </div>
             </v-card-title>
             <v-card-subtitle class="pb-2 text-body-1">
               <div>
@@ -80,21 +82,21 @@ export default {
     };
   },
   methods: {
-    shortPostName(name){
-      if(name.length > 10){
-        return `${name.substring(0,10)}...`
+    shortPostName(name) {
+      if (name.length > 10) {
+        return `${name.substring(0, 10)}...`;
       } else {
-        return name
+        return name;
       }
     },
     async getlostPost() {
       await axios
         .get("http://localhost:8080/my-lost-post", { withCredentials: true })
         .then((response) => {
-          if(response.data.length > 0){
-          this.lostPost = response.data;
+          if (response.data.length > 0) {
+            this.lostPost = response.data;
           } else {
-            this.lostPost = ""
+            this.lostPost = "";
           }
         })
         .catch((error) => {

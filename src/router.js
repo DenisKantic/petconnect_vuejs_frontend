@@ -150,9 +150,9 @@ const routes = [
     path: "/pravila",
     name: "Pravila",
     meta: {
-      title: "Pravila i privatnost"
+      title: "Pravila i privatnost",
     },
-    component: () => import("@/views/policyRules/policy.vue")
+    component: () => import("@/views/policyRules/policy.vue"),
   },
   {
     path: "/:pathMatch(.*)*",

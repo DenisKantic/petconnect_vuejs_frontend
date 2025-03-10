@@ -25,7 +25,9 @@
             ></v-img>
 
             <v-card-title>
-              <div class="text-h6">{{ shortPostName(donationPost[index - 1].post_name) }}</div>
+              <div class="text-h6">
+                {{ shortPostName(donationPost[index - 1].post_name) }}
+              </div>
             </v-card-title>
             <v-card-subtitle class="pb-2 text-body-1">
               <div>
@@ -37,8 +39,7 @@
                 >{{ donationPost[index - 1].animal_category }}
               </div>
               <div>
-                <v-icon color="primary" class="mr-1"
-                  >mdi-post</v-icon
+                <v-icon color="primary" class="mr-1">mdi-post</v-icon
                 >{{ donationPost[index - 1].post_category }}
               </div>
             </v-card-subtitle>
@@ -85,21 +86,23 @@ export default {
     };
   },
   methods: {
-    shortPostName(name){
-      if(name.length > 10){
-        return `${name.substring(0,10)}...`
+    shortPostName(name) {
+      if (name.length > 10) {
+        return `${name.substring(0, 10)}...`;
       } else {
-        return name
+        return name;
       }
     },
     async getAdoptPost() {
       await axios
-        .get("http://localhost:8080/my-donation-post", { withCredentials: true })
+        .get("http://localhost:8080/my-donation-post", {
+          withCredentials: true,
+        })
         .then((response) => {
-          if(response.data.length > 0){
-          this.donationPost = response.data;
+          if (response.data.length > 0) {
+            this.donationPost = response.data;
           } else {
-            this.donationPost = ""
+            this.donationPost = "";
           }
         })
         .catch((error) => {

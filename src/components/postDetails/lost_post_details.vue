@@ -142,7 +142,11 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn :loading="isMsgLoading"  @click="sendMessage(new_data.name, new_data.user_email)" color="primary" variant="outlined"
+          <v-btn
+            :loading="isMsgLoading"
+            @click="sendMessage(new_data.name, new_data.user_email)"
+            color="primary"
+            variant="outlined"
             >Pošalji</v-btn
           >
           <v-btn @click="contact_dialog = false" color="red" variant="flat"
@@ -234,28 +238,30 @@ export default {
       window.open(shareUrl, "_blank");
     },
     async sendMessage(post_name, owner_email) {
-      const postURL = window.location.href
+      const postURL = window.location.href;
 
       this.isMsgLoading = true;
       const param_object = {
         message: this.message,
         subject: post_name,
         email: owner_email,
-        post_url: postURL
-      }
-      await axios.post('http://localhost:8080/send-message', param_object, {withCredentials: true})
-      .then((response) =>{
-          console.log(response)
-          setTimeout(()=>{
+        post_url: postURL,
+      };
+      await axios
+        .post("http://localhost:8080/send-message", param_object, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          console.log(response);
+          setTimeout(() => {
             this.isMsgLoading = false;
             this.contact_dialog = false;
-          }, 2000)
-
-      })
-      .catch((error)=>{
-        console.log("ERROR", error)
-        this.isMsgLoading = true;
-      })
+          }, 2000);
+        })
+        .catch((error) => {
+          console.log("ERROR", error);
+          this.isMsgLoading = true;
+        });
     },
     async fetch_post() {
       const postID = this.$route.params.id;
@@ -271,7 +277,6 @@ export default {
           this.new_data = response.data[0];
           console.log("NEW data", this.new_data);
           this.is_loading = false;
-
 
           this.cards = [
             {
@@ -292,7 +297,6 @@ export default {
           ];
 
           this.subtitleCard = this.new_data.description;
-
         })
         .catch((error) => {
           console.log("error", error);
@@ -301,13 +305,13 @@ export default {
       this.is_loading = false;
     },
 
-    format_animal_category(animal){
-      if(animal === "pas"){
-        return "Pas"
-      } else if (animal === "macka"){
-        return "Mačka"
+    format_animal_category(animal) {
+      if (animal === "pas") {
+        return "Pas";
+      } else if (animal === "macka") {
+        return "Mačka";
       } else {
-        return "Ostalo"
+        return "Ostalo";
       }
     },
     format_date(dateString) {

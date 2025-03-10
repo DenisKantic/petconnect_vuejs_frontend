@@ -23,50 +23,56 @@
         max-width="300"
         type="image, article"
       ></v-skeleton-loader>
-      <router-link :to="`/udomi/${post.id}`" v-else class="text-decoration-none">
-      <v-card >
-        <img
-          :src="
-            post.images.length > 0
-              ? `http://localhost:8080/${post.images[0]}`
-              : 'https://placehold.co/300x200'
-          "
-        />
-        <!-- Card content -->
-        <v-card-title>
-          <div class="text-h6 font-weight-regular">
-            {{ shorterPostName(post.pet_name) }}
-          </div>
-        </v-card-title>
-        <v-card-subtitle>
-          <div>
-            <v-icon class="mr-1" color="primary">mdi-map-marker</v-icon
-            >{{ post.location }}
-          </div>
-          <div class="pt-1">
-            <v-icon class="mr-1" color="info">{{
-              post.category === "macka"
-                ? "mdi-cat"
-                : post.category === "pas"
-                  ? "mdi-dog"
-                  : "mdi-paw"
-            }}</v-icon
-            >{{
-              post.category.charAt(0).toUpperCase() + post.category.slice(1)
-            }}
-          </div>
-          <div class="pt-1">
-            <v-icon
-              class="mr-1"
-              :color="post.sex === 'muzjak' ? 'primary' : 'red'"
-              >{{
-                post.sex === "muzjak" ? "mdi-gender-male" : "mdi-gender-female"
+      <router-link
+        :to="`/udomi/${post.id}`"
+        v-else
+        class="text-decoration-none"
+      >
+        <v-card>
+          <img
+            :src="
+              post.images.length > 0
+                ? `http://localhost:8080/${post.images[0]}`
+                : 'https://placehold.co/300x200'
+            "
+          />
+          <!-- Card content -->
+          <v-card-title>
+            <div class="text-h6 font-weight-regular">
+              {{ shorterPostName(post.pet_name) }}
+            </div>
+          </v-card-title>
+          <v-card-subtitle>
+            <div>
+              <v-icon class="mr-1" color="primary">mdi-map-marker</v-icon
+              >{{ post.location }}
+            </div>
+            <div class="pt-1">
+              <v-icon class="mr-1" color="info">{{
+                post.category === "macka"
+                  ? "mdi-cat"
+                  : post.category === "pas"
+                    ? "mdi-dog"
+                    : "mdi-paw"
               }}</v-icon
-            >{{ post.sex === "muzjak" ? "Mužjak" : "Ženka" }}
-          </div>
-        </v-card-subtitle>
-      </v-card>
-    </router-link>
+              >{{
+                post.category.charAt(0).toUpperCase() + post.category.slice(1)
+              }}
+            </div>
+            <div class="pt-1">
+              <v-icon
+                class="mr-1"
+                :color="post.sex === 'muzjak' ? 'primary' : 'red'"
+                >{{
+                  post.sex === "muzjak"
+                    ? "mdi-gender-male"
+                    : "mdi-gender-female"
+                }}</v-icon
+              >{{ post.sex === "muzjak" ? "Mužjak" : "Ženka" }}
+            </div>
+          </v-card-subtitle>
+        </v-card>
+      </router-link>
     </v-col>
   </v-row>
 </template>
