@@ -294,7 +294,6 @@ export default {
           "/petapi/lost-post-per-page",
           { params },
         );
-        console.log("RESPONSE", response.data);
         this.post = response.data.posts;
         this.total_pages = response.data.total_count;
       } catch (error) {
