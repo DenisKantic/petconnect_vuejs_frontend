@@ -107,7 +107,7 @@ const activateProfile = async () => {
     loading.value = true;
 
     const response = await axios.get(
-      `http://localhost:8080/activate-account?token=${token}`,
+      `/petapi/activate-account?token=${token}`,
     );
 
     setTimeout(() => {
