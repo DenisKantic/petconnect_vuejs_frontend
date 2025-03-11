@@ -275,7 +275,7 @@ export default {
         window.location.replace("/");
       }
 
-      await axios(`http://localhost:8080/one-adopt-post/${postID}`)
+      await axios(`/petapi/one-adopt-post/${postID}`)
         .then((response) => {
           this.new_data = response.data[0];
           this.is_loading = false;

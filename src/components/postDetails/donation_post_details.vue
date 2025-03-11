@@ -251,7 +251,7 @@ export default {
         post_url: postURL,
       };
       await axios
-        .post("http://localhost:8080/send-message", param_object, {
+        .post("/petapi/send-message", param_object, {
           withCredentials: true,
         })
         .then((response) => {
