@@ -20,7 +20,7 @@
           <!-- Existing Post Card -->
           <v-card>
             <v-img
-              :src="`http://localhost:8080/${donationPost[index - 1].images[0]}`"
+              :src="`/petapi/${donationPost[index - 1].images[0]}`"
               aspect-ratio="2"
             ></v-img>
 
