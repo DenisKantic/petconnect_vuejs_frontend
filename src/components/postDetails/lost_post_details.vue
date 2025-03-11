@@ -273,9 +273,7 @@ export default {
 
       await axios(`/petapi/one-lost-post/${postID}`)
         .then((response) => {
-          console.log("RESPONSE", response.data[0]);
           this.new_data = response.data[0];
-          console.log("NEW data", this.new_data);
           this.is_loading = false;
 
           this.cards = [

@@ -120,7 +120,6 @@ export default {
           withCredentials: true,
         })
         .then((response) => {
-          console.log(response.data);
           this.dialog = false;
           this.getAdoptPost();
         })
