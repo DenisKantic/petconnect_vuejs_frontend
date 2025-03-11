@@ -516,7 +516,7 @@ export default {
         formData.append("images", file); // Each file must be appended individually
       });
 
-      setTimeout(() => {
+
         this.$http
           .post("/petapi/create-adopt-post", formData, {
             withCredentials: true,
@@ -535,7 +535,7 @@ export default {
         this.isBtnDisabled = false;
         this.isBtnLoading = false;
         this.isNazadBtnDisabled = false;
-      }, 1500);
+
     },
     onBeforeUnmount() {
       this.imageURLs.forEach((url) => {

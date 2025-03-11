@@ -498,27 +498,24 @@ export default {
         formData.append("images", file); // Each file must be appended individually
       });
 
-      setTimeout(() => {
+
         this.$http
           .post("/petapi/create-lost-post", formData, {
             withCredentials: true,
           })
           .then((res) => {
             this.step = 4;
-            setTimeout(() => {
+
               window.location.replace("/profil");
-            }, 2500);
-            console.log(res.data);
           })
           .catch((err) => {
-            console.log("ERROR", err);
+            console.log("ERROR");
             this.showSnackbar("Desila se greška", "error");
           });
         this.isCardDisabled = false;
         this.isBtnDisabled = false;
         this.isBtnLoading = false;
         this.isNazadBtnDisabled = false;
-      }, 1500);
     },
     onBeforeUnmount() {
       this.imageURLs.forEach((url) => {
