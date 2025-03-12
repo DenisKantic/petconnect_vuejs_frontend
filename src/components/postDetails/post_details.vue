@@ -257,7 +257,6 @@ export default {
           withCredentials: true,
         })
         .then((response) => {
-          console.log(response);
           setTimeout(() => {
             this.isMsgLoading = false;
             this.contact_dialog = false;
@@ -279,7 +278,6 @@ export default {
         .then((response) => {
           this.new_data = response.data[0];
           this.is_loading = false;
-          console.log("RESP", response);
 
           for (const key in this.new_data) {
             if (typeof this.new_data[key] === "boolean") {
