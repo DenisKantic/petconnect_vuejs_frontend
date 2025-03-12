@@ -311,7 +311,6 @@ export default {
           "/petapi/donation-post-per-page",
           { params },
         );
-        console.log("RESPONSE", response.data.posts);
         this.post = response.data.posts;
         this.total_pages = response.data.total_count;
       } catch (error) {

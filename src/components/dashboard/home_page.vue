@@ -13,6 +13,7 @@
 import DonationPost from "./donation_post.vue";
 import AdoptPost from "./adopt_post.vue";
 import LostAnimalPage from "./lost_animal_page.vue";
+
 //import SosPost from "./sos_post.vue";
 
 export default {
