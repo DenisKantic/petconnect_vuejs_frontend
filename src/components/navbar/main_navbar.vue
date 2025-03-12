@@ -47,9 +47,9 @@
         </v-btn>
       </template>
       <v-list style="padding: 0">
-        <v-list-item v-for="(item, index) in items" :key="index">
+        <v-list-item v-for="(item, index) in items" :key="index"  class="text-decoration-none">
           <v-list-item-title
-            ><router-link :to="item.to" class="text-decoration-none">{{
+            ><router-link style="color: #1D3A5F"  class="text-decoration-none" :to="item.to" >{{
               item.title
             }}</router-link></v-list-item-title
           >
@@ -79,8 +79,8 @@
     >
       <v-list id="first-list">
         <v-list-item v-for="(item, index) in links" :key="index">
-          <router-link class="text-decoration-none" :to="item.to"
-            ><v-list-item-title>{{
+          <router-link style="color: #1D3A5F" class="text-decoration-none" :to="item.to"
+            ><v-list-item-title class="text-decoration-none" color="primary">{{
               item.title
             }}</v-list-item-title></router-link
           >
@@ -189,17 +189,20 @@ export default {
 
 #first-list .v-list-item-title {
   font-size: 1.2rem !important;
+  text-decoration: none;
 }
 
 #second-navbar .v-list-item .v-list-item-title {
   font-size: 1.3rem;
   font-weight: bolder;
   padding-top: 1rem;
+  text-decoration: none;
 }
 
 #second-navbar .v-list-item .v-list-item-title a {
   text-decoration: none;
   color: #1d3a5f !important;
+  text-decoration: none;
 }
 
 #categories {

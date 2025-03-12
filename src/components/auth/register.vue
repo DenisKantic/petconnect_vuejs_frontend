@@ -229,10 +229,8 @@ export default {
         .catch((error) => {
           this.showSnackbar(error.response.data.error, "error");
           this.error_msg = "";
-          this.$refs.form.reset();
         });
 
-      this.$refs.form.reset();
       this.is_submiting = false;
     },
   },
