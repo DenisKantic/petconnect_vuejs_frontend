@@ -107,6 +107,16 @@ export default {
       try {
         const response = await this.$http.get("/petapi/latest-donation-post");
         this.post = response.data;
+        // this.post = [
+        //   {
+        //     id: 2,
+        //     images: "test",
+        //     post_name: "test",
+        //     location: "test",
+        //     animal_category: "test",
+        //     post_category: "test"
+        //   }
+        // ]
       } catch (error) {
         console.log("error");
       } finally {

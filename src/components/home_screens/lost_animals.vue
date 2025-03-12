@@ -83,6 +83,16 @@ export default {
       try {
         const response = await this.$http.get("/petapi/latest-lost-post");
         this.post = response.data;
+        // this.post = [
+        //   {
+        //     id: 2,
+        //     images: "",
+        //     name: "test",
+        //     location: "test",
+        //     category: "pas",
+        //     sex: "test"
+        //   }
+        // ]
       } catch (error) {
         console.log("error");
       } finally {

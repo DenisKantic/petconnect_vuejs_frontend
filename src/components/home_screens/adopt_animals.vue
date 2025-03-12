@@ -99,6 +99,14 @@ export default {
         this.loading = true;
         const response = await this.$http.get("/petapi/latest-adopt-post");
         this.post = response.data;
+        // this.post = [
+        //   {id: 2,
+        //   images: "test",
+        //   pet_name: "test",
+        //   location: "test",
+        //   category: "macka",
+        //   sex: "musko",
+        // }]
       } catch (error) {
         console.log("error");
       } finally {
