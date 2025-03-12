@@ -133,6 +133,7 @@ export default {
         });
     },
     async getAdoptPost() {
+      try{
       await axios
         .get("/petapi/my-donation-post", {
           withCredentials: true,
@@ -144,9 +145,9 @@ export default {
             this.donationPost = "";
           }
         })
-        .catch((error) => {
-          console.log("ERROR");
-        });
+      }catch(error) {
+          // console.log("ERROR");
+        }
     },
   },
   mounted() {
