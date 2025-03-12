@@ -137,6 +137,7 @@ export default {
       await axios
         .get("/petapi/my-donation-post", {
           withCredentials: true,
+          validateStatus: ()=> true, // trying to prevent throwing errors for any status code
         })
         .then((response) => {
           if (response.data.length > 0) {
