@@ -6,6 +6,7 @@
       bottom: 0;
       left: 0;
       width: 100%;
+      color: white;
       background-color: #2f5382;
     "
     class="flex items-center justify-center"
