@@ -97,9 +97,7 @@ export default {
     async FetchPost() {
       try {
         this.loading = true;
-        const response = await this.$http.get(
-          "/petapi/latest-adopt-post",
-        );
+        const response = await this.$http.get("/petapi/latest-adopt-post");
         this.post = response.data;
       } catch (error) {
         console.log("error");

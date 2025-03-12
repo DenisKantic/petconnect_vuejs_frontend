@@ -1,7 +1,7 @@
 <template>
   <MainNavbar />
   <SecondNavbar />
-  <Policy class="mb-10"/>
+  <Policy class="mb-10" />
   <CustomFooter />
 </template>
 
@@ -11,13 +11,12 @@ import MainNavbar from "@/components/navbar/main_navbar.vue";
 import SecondNavbar from "@/components/navbar/second_navbar.vue";
 import CustomFooter from "@/components/footer/custom_footer.vue";
 
-
 export default {
   components: {
     Policy,
     MainNavbar,
     SecondNavbar,
-    CustomFooter
+    CustomFooter,
   },
 };
 </script>

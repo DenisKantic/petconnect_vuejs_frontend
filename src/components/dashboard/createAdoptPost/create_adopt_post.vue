@@ -516,26 +516,24 @@ export default {
         formData.append("images", file); // Each file must be appended individually
       });
 
-
-        this.$http
-          .post("/petapi/create-adopt-post", formData, {
-            withCredentials: true,
-          })
-          .then((res) => {
-            this.step = 4;
-            setTimeout(() => {
-              window.location.replace("/profil");
-            }, 2500);
-            console.log(res.data);
-          })
-          .catch((err) => {
-            console.log("ERROR", err);
-          });
-        this.isCardDisabled = false;
-        this.isBtnDisabled = false;
-        this.isBtnLoading = false;
-        this.isNazadBtnDisabled = false;
-
+      this.$http
+        .post("/petapi/create-adopt-post", formData, {
+          withCredentials: true,
+        })
+        .then((res) => {
+          this.step = 4;
+          setTimeout(() => {
+            window.location.replace("/profil");
+          }, 2500);
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log("ERROR", err);
+        });
+      this.isCardDisabled = false;
+      this.isBtnDisabled = false;
+      this.isBtnLoading = false;
+      this.isNazadBtnDisabled = false;
     },
     onBeforeUnmount() {
       this.imageURLs.forEach((url) => {

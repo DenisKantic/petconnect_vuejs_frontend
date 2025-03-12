@@ -102,9 +102,7 @@ export default {
     async FetchPost() {
       this.loading = true;
       try {
-        const response = await this.$http.get(
-          "/petapi/latest-donation-post",
-        );
+        const response = await this.$http.get("/petapi/latest-donation-post");
         this.post = response.data;
       } catch (error) {
         console.log("error");

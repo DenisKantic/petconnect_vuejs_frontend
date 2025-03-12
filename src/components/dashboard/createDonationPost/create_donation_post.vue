@@ -170,13 +170,13 @@
         <v-btn
           :disabled="isNazadBtnDisabled"
           v-if="step >= 1 && step < 4"
-              variant="outlined"
+          variant="outlined"
           color="primary"
           @click="prevStep"
         >
           Nazad
         </v-btn>
-        <v-btn  to="/profil" color="red" variant="outlined">Odustani</v-btn>
+        <v-btn to="/profil" color="red" variant="outlined">Odustani</v-btn>
 
         <v-spacer></v-spacer>
         <v-btn

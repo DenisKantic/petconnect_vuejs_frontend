@@ -9,11 +9,10 @@
 import Donation from "@/components/pages/donation_page.vue";
 import CustomFooter from "@/components/footer/custom_footer.vue";
 
-
 export default {
   components: {
     Donation,
-    CustomFooter
+    CustomFooter,
   },
 };
 </script>

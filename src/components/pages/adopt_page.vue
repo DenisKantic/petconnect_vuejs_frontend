@@ -346,10 +346,9 @@ export default {
 
       try {
         this.loading = true;
-        const response = await this.$http.get(
-          "/petapi/adopt-post-per-page",
-          { params },
-        );
+        const response = await this.$http.get("/petapi/adopt-post-per-page", {
+          params,
+        });
         this.post = response.data.posts;
         this.total_pages = response.data.total_count;
       } catch (error) {

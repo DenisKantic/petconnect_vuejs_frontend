@@ -305,7 +305,6 @@ export default {
           ];
 
           this.subtitleCard = this.new_data.description;
-
         })
         .catch((error) => {
           console.log("error");

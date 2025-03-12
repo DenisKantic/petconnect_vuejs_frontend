@@ -16,7 +16,7 @@ export default {
     MainNavbar,
     SecondNavbar,
     HomePage,
-    CustomFooter
+    CustomFooter,
   },
 };
 </script>

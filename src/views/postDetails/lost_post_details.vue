@@ -1,7 +1,7 @@
 <template>
   <MainNavbar />
   <SecondNavbar />
-  <LostPostDetails class="mb-10"/>
+  <LostPostDetails class="mb-10" />
   <CustomFooter />
 </template>
 
@@ -11,13 +11,12 @@ import SecondNavbar from "@/components/navbar/second_navbar.vue";
 import LostPostDetails from "@/components/postDetails/lost_post_details.vue";
 import CustomFooter from "@/components/footer/custom_footer.vue";
 
-
 export default {
   components: {
     MainNavbar,
     SecondNavbar,
     LostPostDetails,
-    CustomFooter
+    CustomFooter,
   },
 };
 </script>

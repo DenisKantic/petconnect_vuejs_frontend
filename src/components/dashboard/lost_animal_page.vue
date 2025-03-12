@@ -48,7 +48,12 @@
                 Podijeli <v-icon class="ml-1">mdi-facebook</v-icon>
               </v-btn>
               <v-btn color="primary" class="flex-grow-1">Uredi</v-btn>
-              <v-btn color="red" @click="confirmDelete(lostPost[index-1].id)" class="flex-grow-1">Obriši</v-btn>
+              <v-btn
+                color="red"
+                @click="confirmDelete(lostPost[index - 1].id)"
+                class="flex-grow-1"
+                >Obriši</v-btn
+              >
             </div>
           </v-card>
         </template>
@@ -58,7 +63,7 @@
           <v-card
             class="d-flex align-center justify-center flex-grow-1"
             height="100%"
-                style="min-height: 20vh"
+            style="min-height: 20vh"
           >
             <router-link to="/profil/kreirajoglas/izgubljeni"
               ><v-btn color="primary" size="large"> + Dodaj Oglas </v-btn>

@@ -163,13 +163,13 @@
         <v-btn
           :disabled="isNazadBtnDisabled"
           v-if="step >= 1 && step < 4"
-              variant="outlined"
+          variant="outlined"
           color="primary"
           @click="prevStep"
         >
           Nazad
         </v-btn>
-        <v-btn to="/profil"  color="red" variant="outlined">Odustani</v-btn>
+        <v-btn to="/profil" color="red" variant="outlined">Odustani</v-btn>
 
         <v-spacer></v-spacer>
         <v-btn
@@ -498,24 +498,23 @@ export default {
         formData.append("images", file); // Each file must be appended individually
       });
 
+      this.$http
+        .post("/petapi/create-lost-post", formData, {
+          withCredentials: true,
+        })
+        .then((res) => {
+          this.step = 4;
 
-        this.$http
-          .post("/petapi/create-lost-post", formData, {
-            withCredentials: true,
-          })
-          .then((res) => {
-            this.step = 4;
-
-              window.location.replace("/profil");
-          })
-          .catch((err) => {
-            console.log("ERROR");
-            this.showSnackbar("Desila se greška", "error");
-          });
-        this.isCardDisabled = false;
-        this.isBtnDisabled = false;
-        this.isBtnLoading = false;
-        this.isNazadBtnDisabled = false;
+          window.location.replace("/profil");
+        })
+        .catch((err) => {
+          console.log("ERROR");
+          this.showSnackbar("Desila se greška", "error");
+        });
+      this.isCardDisabled = false;
+      this.isBtnDisabled = false;
+      this.isBtnLoading = false;
+      this.isNazadBtnDisabled = false;
     },
     onBeforeUnmount() {
       this.imageURLs.forEach((url) => {
