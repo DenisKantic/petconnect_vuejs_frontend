@@ -107,20 +107,18 @@ const activateProfile = async () => {
     loading.value = true;
 
     const response = await axios.get(`/petapi/activate-account?token=${token}`);
-
-    setTimeout(() => {
-      if (response.status === 200) {
         console.log("USPJESNO");
         showSnackbar("Profil aktiviran", "success");
         loading.value = false;
         router.push("/prijava");
-      }
-    }, 3000);
+
+
   } catch (error) {
     console.log("error");
     setTimeout(() => {
       router.push("/");
     }, 3000);
+    showSnackbar("Profil nije aktiviran", "error");
     loading.value = false;
     isFailed.value = true;
   }
