@@ -306,7 +306,6 @@ export default {
 
           this.subtitleCard = this.new_data.description;
 
-          console.log("New loop data:", this.new_data);
         })
         .catch((error) => {
           console.log("error");
