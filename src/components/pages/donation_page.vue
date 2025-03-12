@@ -304,7 +304,6 @@ export default {
         post_category: this.selectedPostCategory,
       };
 
-      console.log("PARAMS", params);
       try {
         this.loading = true;
         const response = await this.$http.get(
