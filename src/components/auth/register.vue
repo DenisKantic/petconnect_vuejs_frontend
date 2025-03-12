@@ -32,6 +32,12 @@
         class="d-flex align-center flex-column justify-center"
         style="height: 100vh; background-color: white"
       >
+      <router-link to="/">
+      <v-avatar class="mb-10" color="surface-light" size="100">
+          <img src="@/assets/logo.svg" style="width: 100%;" alt="Logo" />
+
+        </v-avatar>
+      </router-link>
         <span id="title" class="text-start text-h4 py-5">Registruj se</span>
         <br />
 
@@ -98,7 +104,7 @@
           >
             <template v-slot:label>
               <span>Slažem se sa</span>
-              <a href="/uslovi-koristenja" target="_blank" class="ml-1"
+              <a href="/pravila" target="_blank" class="ml-1"
                 >uslovima korištenja</a
               >
             </template>
@@ -136,7 +142,7 @@
         src="@/assets/picture.svg"
         cover
         class="right-image"
-        style="width: 100%; height: 100vh; background-color: lightblue"
+        style="width: 100%; height: 100vh; background-color: #2f5382;"
       >
       </v-img>
     </div>

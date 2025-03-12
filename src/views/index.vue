@@ -2,7 +2,7 @@
   <div>
     <Navbar />
     <SecondNavbar />
-    <v-main class="px-16 pt-10 pb-8 mb-10" style="background-color: #fafafa">
+    <v-main class="px-16 pt-10 pb-8" style="background-color: #fafafa">
       <AdoptAnimals />
       <LostAnimals />
       <Donations />
@@ -31,6 +31,7 @@ export default {
 </script>
 
 <style scoped>
+
 div {
   display: flex;
   flex-direction: column;
@@ -39,6 +40,7 @@ div {
 v-app-bar {
   height: auto !important;
 }
+
 
 .v-btn {
   border-radius: 0.6rem !important;

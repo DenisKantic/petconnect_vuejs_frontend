@@ -32,7 +32,14 @@
         class="d-flex align-center justify-center flex-column"
         style="height: 100vh; background-color: white"
       >
+      <router-link to="/">
+      <v-avatar class="mb-10" color="surface-light" size="100">
+          <img src="@/assets/logo.svg" style="width: 100%;" alt="Logo" />
+
+        </v-avatar>
+      </router-link>
         <span class="text-start text-h4">Prijavi se</span> <br />
+
         <v-form ref="form" v-model="valid" lazy-validation style="width: 60%">
           <label>Email</label>
           <v-text-field
@@ -168,7 +175,6 @@
 </template>
 
 <script>
-import main_navbar from "../navbar/main_navbar.vue";
 export default {
   data() {
     return {
