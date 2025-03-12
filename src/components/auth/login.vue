@@ -29,11 +29,11 @@
       style="display: grid; grid-template-columns: 1fr 1fr; height: 100vh"
     >
       <v-container
-        class="d-flex align-center justify-center flex-column"
+        class="d-flex align-center justify-center flex-column pb-10 sm-pb-0"
         style="height: 100vh; background-color: white"
       >
-        <router-link to="/">
-          <v-avatar class="mb-10" color="surface-light" size="100">
+        <router-link to="/" class="mt-16">
+          <v-avatar class="mb-10 mb-sm-10" color="surface-light" size="100">
             <img src="@/assets/logo.svg" style="width: 100%" alt="Logo" />
           </v-avatar>
         </router-link>

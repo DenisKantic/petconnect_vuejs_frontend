@@ -2,10 +2,10 @@
   <div>
     <Navbar />
     <SecondNavbar />
-    <v-main class="px-16 pt-10 pb-8 mb-10" style="background-color: #fafafa">
+    <v-main class="px-6 px-md-16 pt-10" style="background-color: #fafafa">
       <AdoptAnimals />
       <LostAnimals />
-      <Donations />
+      <Donations class="mb-10" />
     </v-main>
     <CustomFooter />
   </div>

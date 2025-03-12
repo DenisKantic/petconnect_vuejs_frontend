@@ -1,6 +1,9 @@
 <template>
-  <div class="d-flex flex-row items-center justify-between pt-10">
-    <h1 class="font-weight-regular">Donacijski oglasi</h1>
+  <div
+    class="d-flex flex-row items-center justify-between pt-10"
+    style="gap: 0.5rem"
+  >
+    <h1 class="text-h5 text-md-h4 font-weight-regular">Donacijski oglasi</h1>
     <router-link to="donacije"
       ><v-btn variant="outlined" color="primary"
         >Prikaži sve</v-btn

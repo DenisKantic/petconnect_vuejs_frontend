@@ -1,6 +1,6 @@
 <template>
-  <div class="d-flex flex-row items-center justify-between">
-    <h1 class="font-weight-regular">Udomi ljubimca</h1>
+  <div class="d-flex flex-row items-center justify-between" style="gap: 0.5rem">
+    <h1 class="text-h5 text-md-h4 font-weight-regular">Udomi ljubimca</h1>
     <router-link to="/udomi"
       ><v-btn variant="outlined" color="primary"
         >Prikaži sve</v-btn

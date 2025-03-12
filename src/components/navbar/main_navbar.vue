@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app color="white" dark class="px-16">
+  <v-app-bar app color="white" dark class="px-6 px-md-16">
     <v-app-bar-nav-icon
       v-if="$vuetify.display.smAndDown"
       @click="drawer = !drawer"
@@ -74,7 +74,7 @@
       temporary
       right
       :class="{ 'drawer-open': drawer, 'drawer-closed': !drawer }"
-      class="px-16"
+      class="px-4"
       v-if="$vuetify.display.smAndDown"
     >
       <v-list id="first-list">

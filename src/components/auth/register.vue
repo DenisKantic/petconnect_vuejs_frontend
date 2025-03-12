@@ -32,12 +32,12 @@
         class="d-flex align-center flex-column justify-center"
         style="height: 100vh; background-color: white"
       >
-        <router-link to="/">
-          <v-avatar class="mb-10" color="surface-light" size="100">
+        <router-link to="/" class="mt-16">
+          <v-avatar class="mb-1 mb-sm-10" color="surface-light" size="100">
             <img src="@/assets/logo.svg" style="width: 100%" alt="Logo" />
           </v-avatar>
         </router-link>
-        <span id="title" class="text-start text-h4 py-5">Registruj se</span>
+        <span id="title" class="text-start text-h4 pb-5 pt-1">Registruj se</span>
         <br />
 
         <v-form ref="form" v-model="valid" lazy-validation style="width: 60%">

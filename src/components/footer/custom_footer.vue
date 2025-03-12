@@ -1,7 +1,7 @@
 <template>
   <v-footer
     style="
-      max-height: 3vh;
+      max-height: 2rem;
       position: absolute;
       bottom: 0;
       left: 0;

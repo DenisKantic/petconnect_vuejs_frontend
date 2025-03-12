@@ -3,7 +3,7 @@
     <h1 class="text-center">Politika privatnosti i pravila</h1>
 
     <h2 class="mt-10">Pravila korištenja aplikacije</h2>
-    <p>
+    <p class="text-justify">
       Da bi mogli koristiti našu aplikaciju (kreiranje oglasa, slanje poruka
       drugom korisniku), morate imati kreiran korisnički profil na našoj
       platformi. Za kreiranje vašeg korisničkog profila, potreban vam je samo
@@ -13,7 +13,7 @@
     </p>
     <br />
     Prilikom korištenja naše aplikacije, morate pratiti određena pravila:
-    <v-list>
+    <v-list class="text-justify">
       <v-list-item
         >- Vrijeđanje, omalovažavanje, govor mržnje ili bilo kakav oblik
         diskriminacije.</v-list-item
@@ -28,7 +28,7 @@
       >
     </v-list>
 
-    <p class="font-weight-bold">
+    <p class="text-justify text-break-all font-weight-bold">
       Svako kršenje ovih pravila može rezultirati upozorenjem, privremenom
       suspenzijom ili trajnim uklanjanjem profila.
     </p>
@@ -38,7 +38,7 @@
     <h2 class="mt-6 mb-4">
       Politika privatnosti (Zaštita korisničkih podataka)
     </h2>
-    <p>
+    <p class="text-justify">
       Vaša privatnost i sigurnost podataka su nam izuzetno važne. Svi podaci
       prikupljeni putem naše platforme obrađuju se u skladu s Općom uredbom o
       zaštiti podataka (GDPR) i standardom ISO/IEC 27001 za upravljanje
@@ -46,7 +46,7 @@
     </p>
 
     <p>Načela zaštite podataka</p>
-    <v-list>
+    <v-list class="text-justify">
       <v-list-item
         >-
         <span class="font-weight-bold">Minimalno prikupljanje podataka</span> –
@@ -69,7 +69,7 @@
     <v-divider></v-divider>
 
     <h2 class="mt-6">Sigurnosne mjere</h2>
-    <v-list>
+    <v-list class="text-justify">
       <v-list-item
         >- Podaci su šifrirani i pohranjeni na sigurnim serverima
       </v-list-item>
@@ -82,9 +82,14 @@
       >
     </v-list>
 
-    <p>
+    <p class="text-justify">
       Ako imate bilo kakvo drugo pitanje, slobodno nam se obratite na
-      <a href="#">petconnect@vortexdigitalsystems.com</a>
+      <a
+        href="mailto:petconnect@vortexdigitalsystems.com"
+        rel="noopener noreferrer"
+        target="_blank"
+        >petconnect@vortexdigitalsystems.com</a
+      >
     </p>
   </v-container>
 </template>
