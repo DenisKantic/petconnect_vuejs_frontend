@@ -255,7 +255,6 @@ export default {
           withCredentials: true,
         })
         .then((response) => {
-          console.log(response);
           setTimeout(() => {
             this.isMsgLoading = false;
             this.contact_dialog = false;
@@ -276,9 +275,7 @@ export default {
 
       await axios(`/petapi/one-donation-post/${postID}`)
         .then((response) => {
-          console.log("response donation", response.data[0]);
           this.new_data = response.data[0];
-          console.log("NEW data", this.new_data);
           this.is_loading = false;
 
           for (const key in this.new_data) {
@@ -312,7 +309,7 @@ export default {
           console.log("New loop data:", this.new_data);
         })
         .catch((error) => {
-          console.log("error", error);
+          console.log("error");
           this.is_loading = false;
         });
       this.is_loading = false;
