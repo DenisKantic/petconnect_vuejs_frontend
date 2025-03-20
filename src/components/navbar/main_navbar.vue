@@ -180,7 +180,6 @@ export default {
     },
   },
   mounted() {
-    console.log("NAVBAR AUTH TEST", this.isUserLoggedIn.isAuthenticated);
   },
 };
 </script>
