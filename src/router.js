@@ -173,7 +173,7 @@ router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore(); // accessing store for storing global state if user is logged in
   try {
     // Always check authentication status (even for public routes)
-    const response = await axios.get(`http://localhost:8080/validate-token`, {
+    const response = await axios.get(`https://petconnectbosnia.com/petapi/validate-token`, {
       withCredentials: true,
     });
     console.log("RROUTER RESPONSE", response.data);
