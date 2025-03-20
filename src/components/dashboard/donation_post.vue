@@ -3,7 +3,7 @@
     <h1 class="pt-10">Donacijski oglasi</h1>
     <span class="text-body-1 text-blue">
       Dostupan broj oglasa:
-      {{ donationPost?.length === 0 ? 0 : 3 - donationPost?.length }}
+      {{ Math.max(0, 3 - donationPost.length) }}
     </span>
     <v-row class="pt-5">
       <!-- Loop to create up to 3 cards -->
@@ -20,7 +20,7 @@
           <!-- Existing Post Card -->
           <v-card>
             <v-img
-              :src="`/petapi/${donationPost[index - 1].images[0]}`"
+              :src="`${this.apiUrl}/${donationPost[index - 1].images[0]}`"
               aspect-ratio="2"
             ></v-img>
 
@@ -125,7 +125,7 @@ export default {
     },
     deletePost(postID) {
       axios
-        .delete(`/petapi/delete-donation-post/${postID}`, {
+        .delete(`${this.apiUrl}/delete-donation-post/${postID}`, {
           withCredentials: true,
         })
         .then((response) => {
@@ -139,7 +139,7 @@ export default {
     },
     async getAdoptPost() {
       await axios
-        .get("/petapi/my-donation-post", {
+        .get(`${this.apiUrl}/my-donation-post`, {
           withCredentials: true,
         })
         .then((response) => {

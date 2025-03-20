@@ -106,13 +106,13 @@ const activateProfile = async () => {
   try {
     loading.value = true;
 
-    const response = await axios.get(`/petapi/activate-account?token=${token}`);
-        console.log("USPJESNO");
-        showSnackbar("Profil aktiviran", "success");
-        loading.value = false;
-        router.push("/prijava");
-
-
+    const response = await axios.get(
+      `${this.apiUrl}/activate-account?token=${token}`,
+    );
+    console.log("USPJESNO");
+    showSnackbar("Profil aktiviran", "success");
+    loading.value = false;
+    router.push("/prijava");
   } catch (error) {
     console.log("error");
     setTimeout(() => {

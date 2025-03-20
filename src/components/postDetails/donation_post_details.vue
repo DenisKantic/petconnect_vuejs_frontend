@@ -35,7 +35,7 @@
         >
           <v-sheet height="100%" class="d-flex items-center justify-center">
             <v-img
-              :src="`/petapi/${image}`"
+              :src="`${this.apiUrl}/${image}`"
               @click="openDialog(image)"
               aspect-ratio="1"
             >
@@ -105,7 +105,7 @@
           >
             <v-sheet height="80vh" class="d-flex items-center justify-center">
               <v-img
-                :src="`/petapi/${img}`"
+                :src="`${this.apiUrl}/${img}`"
                 aspect-ratio="1"
                 contain
                 max-height="100%"
@@ -251,7 +251,7 @@ export default {
         post_url: postURL,
       };
       await axios
-        .post("/petapi/send-message", param_object, {
+        .post(`${this.apiUrl}/send-message`, param_object, {
           withCredentials: true,
         })
         .then((response) => {
@@ -273,7 +273,7 @@ export default {
         console.log("NO ID FOUND");
       }
 
-      await axios(`/petapi/one-donation-post/${postID}`)
+      await axios(`${this.apiUrl}/one-donation-post/${postID}`)
         .then((response) => {
           this.new_data = response.data[0];
           this.is_loading = false;

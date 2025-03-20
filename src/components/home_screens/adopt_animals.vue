@@ -8,7 +8,25 @@
     >
   </div>
   <v-row>
+    <v-row v-if="loading">
+      <v-col
+        v-for="index in 6"
+        :key="index"
+        cols="12"
+        sm="6"
+        md="4"
+        lg="2"
+        xl="2"
+      >
+        <v-skeleton-loader
+          class="border"
+          max-width="300"
+          type="image, article"
+        ></v-skeleton-loader>
+      </v-col>
+    </v-row>
     <v-col
+      v-else
       v-for="post in post"
       :key="post.id"
       cols="12"
@@ -17,22 +35,12 @@
       lg="2"
       xl="2"
     >
-      <v-skeleton-loader
-        class="border"
-        v-if="loading"
-        max-width="300"
-        type="image, article"
-      ></v-skeleton-loader>
-      <router-link
-        :to="`/udomi/${post.id}`"
-        v-else
-        class="text-decoration-none"
-      >
+      <router-link :to="`/udomi/${post.id}`" class="text-decoration-none">
         <v-card>
           <img
             :src="
               post.images.length > 0
-                ? `/petapi/${post.images[0]}`
+                ? `${this.apiUrl}/${post.images[0]}`
                 : 'https://placehold.co/300x200'
             "
           />
@@ -97,7 +105,10 @@ export default {
     async FetchPost() {
       try {
         this.loading = true;
-        const response = await this.$http.get("/petapi/latest-adopt-post");
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        const response = await this.$http.get(
+          `${this.apiUrl}/latest-adopt-post`,
+        );
         this.post = response.data;
         // this.post = [
         //   {id: 2,
@@ -107,6 +118,8 @@ export default {
         //   category: "macka",
         //   sex: "musko",
         // }]
+
+        this.loading = false;
       } catch (error) {
         console.log("error");
       } finally {

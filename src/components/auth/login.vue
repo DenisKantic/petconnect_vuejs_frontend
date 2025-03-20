@@ -256,7 +256,7 @@ export default {
       };
 
       this.$http
-        .post("/petapi/password-reset", form_object)
+        .post(`${this.apiUrl}/password-reset`, form_object)
         .then((response) => {
           this.showSnackbar("Nova šifra kreirana", "success");
           console.log(response.data);
@@ -283,11 +283,11 @@ export default {
       };
 
       this.$http
-        .post("/petapi/login", form_object, {
+        .post(`${this.apiUrl}/login`, form_object, {
           withCredentials: true,
         })
         .then((response) => {
-          console.log(response.data);
+          console.log("USPJESNO", response.data);
           this.$router.push("/profil");
           this.showSnackbar("Prijava uspješna", "success");
           this.isActive.value = false;

@@ -47,11 +47,18 @@
         </v-btn>
       </template>
       <v-list style="padding: 0">
-        <v-list-item v-for="(item, index) in items" :key="index"  class="text-decoration-none">
+        <v-list-item
+          v-for="(item, index) in items"
+          :key="index"
+          class="text-decoration-none"
+        >
           <v-list-item-title
-            ><router-link style="color: #1D3A5F"  class="text-decoration-none" :to="item.to" >{{
-              item.title
-            }}</router-link></v-list-item-title
+            ><router-link
+              style="color: #1d3a5f"
+              class="text-decoration-none"
+              :to="item.to"
+              >{{ item.title }}</router-link
+            ></v-list-item-title
           >
         </v-list-item>
         <v-btn
@@ -79,7 +86,10 @@
     >
       <v-list id="first-list">
         <v-list-item v-for="(item, index) in links" :key="index">
-          <router-link style="color: #1D3A5F" class="text-decoration-none" :to="item.to"
+          <router-link
+            style="color: #1d3a5f"
+            class="text-decoration-none"
+            :to="item.to"
             ><v-list-item-title class="text-decoration-none" color="primary">{{
               item.title
             }}</v-list-item-title></router-link
@@ -160,7 +170,7 @@ export default {
 
       window.location.reload();
       axios.post(
-        `/petapi/logout?refresh=${new Date().getTime()}`,
+        `${this.apiUrl}/logout?refresh=${new Date().getTime()}`,
         {},
         { withCredentials: true },
       );
@@ -170,7 +180,7 @@ export default {
     },
   },
   mounted() {
-    // console.log("NAVBAR AUTH TEST", this.isUserLoggedIn.isAuthenticated);
+    console.log("NAVBAR AUTH TEST", this.isUserLoggedIn.isAuthenticated);
   },
 };
 </script>

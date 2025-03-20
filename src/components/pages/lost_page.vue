@@ -83,7 +83,7 @@
           <img
             :src="
               post.images.length > 0
-                ? `/petapi/${post.images[0]}`
+                ? `${this.apiUrl}/${post.images[0]}`
                 : 'https://placehold.co/300x200'
             "
           />
@@ -290,7 +290,7 @@ export default {
 
       try {
         this.loading = true;
-        const response = await this.$http.get("/petapi/lost-post-per-page", {
+        const response = await this.$http.get(`${this.apiUrl}/lost-post-per-page`, {
           params,
         });
         this.post = response.data.posts;

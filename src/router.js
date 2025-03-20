@@ -173,9 +173,10 @@ router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore(); // accessing store for storing global state if user is logged in
   try {
     // Always check authentication status (even for public routes)
-    const response = await axios.get(`/petapi/validate-token`, {
+    const response = await axios.get(`http://localhost:8080/validate-token`, {
       withCredentials: true,
     });
+    console.log("RROUTER RESPONSE", response.data);
 
     if (response.status === 200) {
       authStore.isAuthenticated = true;
@@ -184,7 +185,10 @@ router.beforeEach(async (to, from, next) => {
     }
   } catch (err) {
     authStore.isAuthenticated = false;
+    console.log("ERROR ROOUTER", err);
   }
+  console.log("middleware is used auth", authStore.isAuthenticated);
+  console.log("API TEST");
 
   // If the route requires authentication and user is not authenticated, redirect
   if (

@@ -37,7 +37,9 @@
             <img src="@/assets/logo.svg" style="width: 100%" alt="Logo" />
           </v-avatar>
         </router-link>
-        <span id="title" class="text-start text-h4 pb-5 pt-1">Registruj se</span>
+        <span id="title" class="text-start text-h4 pb-5 pt-1"
+          >Registruj se</span
+        >
         <br />
 
         <v-form ref="form" v-model="valid" lazy-validation style="width: 60%">
@@ -220,7 +222,7 @@ export default {
       };
 
       this.$http
-        .post("/petapi/register", form_object)
+        .post(`${this.apiUrl}/register`, form_object)
         .then((response) => {
           console.log("success", response.data);
           this.$router.push("/profil");

@@ -35,9 +35,10 @@
         >
           <v-sheet height="100%" class="d-flex items-center justify-center">
             <v-img
-              :src="`/petapi/${image}`"
+              :src="`${this.apiUrl}/${image}`"
               @click="openDialog(image)"
               aspect-ratio="1"
+              @load="is_loading = false"
             >
             </v-img>
           </v-sheet>
@@ -105,12 +106,13 @@
           >
             <v-sheet height="80vh" class="d-flex items-center justify-center">
               <v-img
-                :src="`/petapi/${img}`"
+                :src="`${this.apiUrl}/${img}`"
                 aspect-ratio="1"
                 contain
                 max-height="100%"
                 max-width="100%"
-              ></v-img>
+              >
+              </v-img>
             </v-sheet>
           </v-carousel-item>
         </v-carousel>
@@ -253,7 +255,7 @@ export default {
         post_url: postURL,
       };
       await axios
-        .post("/petapi/send-message", param_object, {
+        .post(`${this.apiUrl}/send-message`, param_object, {
           withCredentials: true,
         })
         .then((response) => {
@@ -274,10 +276,9 @@ export default {
         window.location.replace("/");
       }
 
-      await axios(`/petapi/one-adopt-post/${postID}`)
+      await axios(`${this.apiUrl}/one-adopt-post/${postID}`)
         .then((response) => {
           this.new_data = response.data[0];
-          this.is_loading = false;
 
           for (const key in this.new_data) {
             if (typeof this.new_data[key] === "boolean") {
@@ -310,6 +311,7 @@ export default {
           ];
 
           this.subtitleCard = this.new_data.description;
+          this.is_loading = false;
         })
         .catch((error) => {
           console.log("error");
