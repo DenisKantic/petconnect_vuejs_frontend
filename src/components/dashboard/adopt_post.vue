@@ -3,7 +3,7 @@
     <h1 class="pt-10">Oglasi udomljavanja</h1>
     <span class="text-body-1 text-blue">
       Dostupan broj oglasa:
-      {{ Math.max(0, 3 - adoptPost.length) }}
+      {{ 0 }}
     </span>
     <v-row class="pt-5">
       <!-- Loop to create up to 3 cards -->
