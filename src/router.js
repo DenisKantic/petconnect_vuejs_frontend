@@ -130,6 +130,16 @@ const routes = [
       import("@/views/dashboard/createDonationPost/create_donation_post.vue"),
   },
   {
+    path: "/profil/uredioglas/udomi",
+    name: "Uredi oglas",
+    meta: {
+      title: "Uredi oglas",
+      requiresAuth: true,
+    },
+    component: ()=>
+      import("@/components/dashboard/editAdoptPost/edit_adopt_post.vue")
+  },
+  {
     path: "/profil/postavke",
     name: "Postavke profila",
     meta: {
@@ -173,7 +183,7 @@ router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore(); // accessing store for storing global state if user is logged in
   try {
     // Always check authentication status (even for public routes)
-    const response = await axios.get(`/petapi/validate-token`, {
+    const response = await axios.get(`http://localhost:8080/validate-token`, {
       withCredentials: true,
     });
 

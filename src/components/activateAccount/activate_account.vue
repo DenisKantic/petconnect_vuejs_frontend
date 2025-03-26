@@ -106,11 +106,15 @@ const activateProfile = async () => {
   try {
     loading.value = true;
 
+    await new Promise((resolve)=> setTimeout(resolve,1500))
+
     const response = await axios.get(
       `${this.apiUrl}/activate-account?token=${token}`,
     );
     console.log("USPJESNO");
     showSnackbar("Profil aktiviran", "success");
+    await new Promise((resolve)=> setTimeout(resolve,1000))
+
     loading.value = false;
     router.push("/prijava");
   } catch (error) {

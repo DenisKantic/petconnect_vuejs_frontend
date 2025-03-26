@@ -3,11 +3,28 @@
     <h1 class="pt-10">Izgubljeni ljubimci</h1>
     <span class="text-body-1 text-blue">
       Dostupan broj oglasa:
-      {{ 0}}
     </span>
     <v-row class="pt-5">
+      <v-row v-if="loading">
+      <v-col
+        v-for="index in 3"
+        :key="index"
+        cols="12"
+        xs="4"
+        sm="6"
+        lg="4"
+        xl="4"
+      >
+        <v-skeleton-loader
+          class="border"
+          max-width="300"
+          type="image, article"
+        ></v-skeleton-loader>
+      </v-col>
+    </v-row>
       <!-- Loop to create up to 3 cards -->
       <v-col
+        v-else
         v-for="index in 3"
         :key="index"
         cols="12"
@@ -20,7 +37,7 @@
           <!-- Existing Post Card -->
           <v-card>
             <v-img
-              :src="`/petapi/${lostPost[index - 1].images[0]}`"
+              :src="`${this.apiUrl}/${lostPost[index - 1].images[0]}`"
               aspect-ratio="2"
             ></v-img>
 
@@ -73,15 +90,15 @@
       </v-col>
     </v-row>
 
-    <v-dialog v-model="dialog" hide-overlay>
-      <v-card max-width="500" class="mx-auto">
+    <v-dialog v-model="dialog" hide-overlay >
+      <v-card max-width="500" class="mx-auto" :loading="btnDelete">
         <v-card-title class="text-center">
           Da li ste sigurni da želite obrisati objavu?
         </v-card-title>
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red" variant="flat" @click="deletePost(post_to_delete)"
+          <v-btn color="red" variant="flat" :loading="btnDelete" @click="deletePost(post_to_delete)"
             >Obriši</v-btn
           >
           <v-btn color="primary" @click="dialog = false" variant="outlined"
@@ -102,8 +119,10 @@ export default {
       location: "Location",
       category: "Category",
       sex: "Male",
+      loading: true,
       lostPost: [],
       dialog: false,
+      btnDelete: false,
       post_to_delete: null,
     };
   },
@@ -119,31 +138,42 @@ export default {
       this.post_to_delete = postID;
       this.dialog = true;
     },
-    deletePost(postID) {
-      axios
-        .delete(`/petapi/delete-lost-post/${postID}`, {
+     async deletePost(postID) {
+      this.btnDelete = true;
+
+      await new Promise((resolve)=> setTimeout(resolve,1500))
+
+      await axios
+        .delete(`${this.apiUrl}/delete-lost-post/${postID}`, {
           withCredentials: true,
         })
         .then((response) => {
           this.dialog = false;
-          this.getAdoptPost();
+          this.btnDelete = false;
+          this.getlostPost();
         })
         .catch((error) => {
           console.log("ERROR");
+          this.btnDelete = false;
         });
     },
     async getlostPost() {
+      this.loading = true;
+
+      await new Promise((resolve)=> setTimeout(resolve, 1500))
       await axios
-        .get("/petapi/my-lost-post", { withCredentials: true })
+        .get(`${this.apiUrl}/my-lost-post`, { withCredentials: true })
         .then((response) => {
           if (response.data.length > 0) {
             this.lostPost = response.data;
           } else {
             this.lostPost = "";
           }
+          this.loading = false;
         })
         .catch((error) => {
           console.log("ERROR");
+          this.loading = false;
         });
     },
   },

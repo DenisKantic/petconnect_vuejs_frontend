@@ -90,7 +90,7 @@
 
   <v-row v-if="loading">
       <v-col
-        v-for="index in 6"
+        v-for="index in 20"
         :key="index"
         cols="12"
         sm="6"

@@ -69,6 +69,24 @@
   </p>
   <p v-if="post.length === 0">Nema pronađenih životinja</p>
 
+  <v-row v-if="loading">
+      <v-col
+        v-for="index in 20"
+        :key="index"
+        cols="12"
+        sm="6"
+        md="4"
+        lg="2"
+        xl="2"
+      >
+        <v-skeleton-loader
+          class="border"
+          max-width="300"
+          type="image, article"
+        ></v-skeleton-loader>
+      </v-col>
+    </v-row>
+
   <v-row v-else>
     <v-col
       v-for="post in post"
@@ -306,6 +324,9 @@ export default {
 
       try {
         this.loading = true;
+
+        await new Promise((resolve)=> setTimeout(resolve,1000))
+
         const response = await this.$http.get(
           `${this.apiUrl}/donation-post-per-page`,
           { params },

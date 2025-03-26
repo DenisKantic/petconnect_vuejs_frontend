@@ -23,6 +23,7 @@ declare module 'vue' {
     Donation_post: typeof import('./src/components/dashboard/donation_post.vue')['default']
     Donation_post_details: typeof import('./src/components/postDetails/donation_post_details.vue')['default']
     Donations: typeof import('./src/components/home_screens/donations.vue')['default']
+    Edit_adopt_post: typeof import('./src/components/dashboard/editAdoptPost/edit_adopt_post.vue')['default']
     Footer: typeof import('./src/components/footer/footer.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     Home_page: typeof import('./src/components/dashboard/home_page.vue')['default']

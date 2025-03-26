@@ -1,4 +1,5 @@
 <template>
+  <MainNavbar />
   <v-app id="container">
     <v-card :disabled="isCardDisabled">
       <v-stepper alt-labels v-show="step !== 4">
@@ -34,15 +35,15 @@
           </v-stepper-item>
         </v-stepper-header>
       </v-stepper>
+
       <v-window v-model="step">
         <v-window-item :value="1">
-          <v-card-title class="text-h6 py-5 text-center font-weight-regular">
+          <v-card-title class="text-h6 pz-5 text-center font-weight-regular">
             <span>{{ currentTitle }}</span>
           </v-card-title>
           <v-card-text>
             <v-text-field
               counter
-              :rules="name_rules"
               v-model="petName"
               label="Ime ljubimca"
               placeholder="Unesite ime ljubimca"
@@ -58,6 +59,18 @@
             <v-radio-group v-model="animalGender">
               <v-radio label="Mužjak" color="primary" value="muzjak"></v-radio>
               <v-radio label="Ženka" color="error" value="zenka"></v-radio>
+            </v-radio-group>
+
+            <p>Da li je životinja vakcinisana?</p>
+            <v-radio-group v-model="vaccinated">
+              <v-radio label="Da" color="primary" value="da"></v-radio>
+              <v-radio label="Ne" color="error" value="ne"></v-radio>
+            </v-radio-group>
+
+            <p>Da li je životinja čipovana?</p>
+            <v-radio-group v-model="chipped">
+              <v-radio label="Da" color="primary" value="da"></v-radio>
+              <v-radio label="Ne" color="error" value="ne"></v-radio>
             </v-radio-group>
 
             <v-select
@@ -130,11 +143,19 @@
               Spol: <br />
               <span class="font-weight-light">{{ animalGender }}</span>
             </p>
-            <p class="font-weight-bold">
+            <p class="pb-2 font-weight-bold">
+              Da li je životinja vakcinisana: <br />
+              <span class="font-weight-light">{{ vaccinated }}</span>
+            </p>
+            <p class="pb-2 font-weight-bold">
+              Da li je životinja čipovana: <br />
+              <span class="font-weight-light">{{ chipped }}</span>
+            </p>
+            <p class="pb-2 font-weight-bold">
               Lokacija: <br />
               <span class="font-weight-light">{{ location }}</span>
             </p>
-            <p class="font-weight-bold text-center">Fotografije:</p>
+            <p class="pt-2 text-center font-weight-bold">Fotografije:</p>
             <div class="image-preview">
               <v-img
                 v-for="(url, index) in imageURLs"
@@ -143,6 +164,7 @@
                 :src="url"
                 :lazy-src="url"
                 aspect-ratio="1"
+                class="mt-0"
               >
                 <!--  -->
                 <template v-slot:placeholder>
@@ -156,7 +178,7 @@
           </div>
         </v-window-item>
 
-        <v-window-item :value="4"> </v-window-item>
+        <v-window-item id="fourth-container" :value="4"> </v-window-item>
       </v-window>
 
       <v-card-actions v-show="step != 4">
@@ -170,7 +192,6 @@
           Nazad
         </v-btn>
         <v-btn to="/profil" color="red" variant="outlined">Odustani</v-btn>
-
         <v-spacer></v-spacer>
         <v-btn
           v-if="step === 3"
@@ -186,7 +207,6 @@
         </v-btn>
       </v-card-actions>
     </v-card>
-
     <v-sheet
       :value="4"
       v-show="step === 4"
@@ -232,10 +252,12 @@
 
 <script>
 import { VFileUpload } from "vuetify/labs/VFileUpload";
+import MainNavbar from "@/components/navbar/main_navbar.vue";
 
 export default {
   components: {
     VFileUpload,
+    MainNavbar
   },
   data() {
     return {
@@ -246,7 +268,6 @@ export default {
         color: "success",
       },
       rules: [(v) => v.length <= 1500 || "Maksimalno 1500 karaktera"],
-      name_rules: [(v) => v.length <= 30 || "Maksimalno 30 karaktera"],
       locations: [
         "Banja Luka",
         "Bihać",
@@ -366,7 +387,7 @@ export default {
     currentTitle() {
       switch (this.step) {
         case 1:
-          return "Oglas za izgubljenog ljubimca";
+          return "Uredi oglas";
         case 2:
           return "Postavite fotografije";
         default:
@@ -391,21 +412,19 @@ export default {
     },
     nextStep() {
       if (this.step === 1) {
-        if (this.description.length > 1500 || this.petName.length > 30) {
-          this.showSnackbar("Niste ispravno popunili polja", "error");
-          return;
-        }
         if (
           this.location &&
           this.petName &&
           this.animalCategory &&
           this.animalGender &&
+          this.vaccinated &&
+          this.chipped &&
           this.description
         ) {
           this.step++;
           window.scrollTo({ top: 0, behavior: "smooth" });
         } else {
-          this.showSnackbar("Niste ispunili sva polja", "error");
+          this.showSnackbar("Niste popunili sva polja.", "error");
         }
       }
 
@@ -480,7 +499,7 @@ export default {
       console.log("Accepted Images:", this.uploadedImages);
       console.log("Total Size (MB):", (totalSize / (1024 * 1024)).toFixed(2));
     },
-    async submitForm() {
+    submitForm() {
       const formData = new FormData();
       this.isCardDisabled = true;
       this.isBtnDisabled = true;
@@ -488,9 +507,11 @@ export default {
       this.isNazadBtnDisabled = true;
 
       formData.append("category", this.animalCategory);
-      formData.append("name", this.petName);
+      formData.append("petName", this.petName);
       formData.append("description", this.description);
       formData.append("sex", this.animalGender);
+      formData.append("vaccinated", this.vaccinated === "da"); // Convert string to boolean
+      formData.append("chipped", this.chipped === "da"); // Convert string to boolean
       formData.append("location", this.location);
 
       // Append images correctly
@@ -498,20 +519,19 @@ export default {
         formData.append("images", file); // Each file must be appended individually
       });
 
-
-      await this.$http
-        .post(`${this.apiUrl}/create-lost-post`, formData, {
+      this.$http
+        .post("/petapi/create-adopt-post", formData, {
           withCredentials: true,
         })
-        .then(async (res) => {
-
+        .then((res) => {
           this.step = 4;
-          await new Promise((resolve)=> setTimeout(resolve,2000))
-          window.location.replace("/profil");
+          setTimeout(() => {
+            window.location.replace("/profil");
+          }, 2500);
+          console.log(res.data);
         })
         .catch((err) => {
-          console.log("ERROR");
-          this.showSnackbar("Desila se greška", "error");
+          console.log("ERROR", err);
         });
       this.isCardDisabled = false;
       this.isBtnDisabled = false;
@@ -561,14 +581,34 @@ export default {
   width: 50%;
 }
 
+/* #fourth-container {
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+} */
+
+/* #fourth-container .v-icon {
+  padding: 2rem;
+  display: flex;
+} */
+
 #delete-btn {
   padding: 2rem;
 }
 
 /* responsive media*/
-@media (min-width: 200px) and (max-width: 550px) {
+@media (min-width: 200px) and (max-width: 599px) {
   .v-card {
     width: 90%;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 1000px) {
+  .v-card {
+    width: 80%;
   }
 }
 </style>
