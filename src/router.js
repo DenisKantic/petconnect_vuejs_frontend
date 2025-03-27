@@ -130,7 +130,7 @@ const routes = [
       import("@/views/dashboard/createDonationPost/create_donation_post.vue"),
   },
   {
-    path: "/profil/uredioglas/udomi",
+    path: "/profil/uredioglas/udomi/:id",
     name: "Uredi oglas",
     meta: {
       title: "Uredi oglas",

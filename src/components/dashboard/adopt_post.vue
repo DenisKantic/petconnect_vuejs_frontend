@@ -71,7 +71,8 @@
               <v-btn color="primary" class="flex-grow-1" variant="outlined">
                 Podijeli <v-icon class="ml-1">mdi-facebook</v-icon>
               </v-btn>
-              <v-btn color="primary" class="flex-grow-1">Uredi</v-btn>
+
+              <router-link :to="`/profil/uredioglas/udomi/${adoptPost[0].id}`" class="flex-grow-1"><v-btn color="primary" >Uredi</v-btn></router-link>
               <v-btn
                 color="red"
                 class="flex-grow-1"

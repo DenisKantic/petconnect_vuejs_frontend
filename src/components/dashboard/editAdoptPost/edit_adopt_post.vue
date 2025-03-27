@@ -254,6 +254,7 @@
 import { VFileUpload } from "vuetify/labs/VFileUpload";
 import MainNavbar from "@/components/navbar/main_navbar.vue";
 
+
 export default {
   components: {
     VFileUpload,
@@ -377,6 +378,7 @@ export default {
       uploadedImages: [],
       imageURLs: [],
       step: 1,
+      new_data: [],
       isCardDisabled: false,
       isBtnDisabled: false,
       isBtnLoading: false,
@@ -389,7 +391,7 @@ export default {
         case 1:
           return "Uredi oglas";
         case 2:
-          return "Postavite fotografije";
+          return "Uredite fotografije";
         default:
           return "";
       }
@@ -499,6 +501,45 @@ export default {
       console.log("Accepted Images:", this.uploadedImages);
       console.log("Total Size (MB):", (totalSize / (1024 * 1024)).toFixed(2));
     },
+    async fetch_post() {
+      const postID = this.$route.params.id;
+      console.log("PARAM", postID)
+
+      if (postID === "") {
+        window.location.replace("/");
+      }
+
+      await this.$http.get(`${this.apiUrl}/one-adopt-post/${postID}`)
+        .then((response) => {
+          this.new_data = response.data[0];
+          console.log("RESPONSE", response.data)
+
+          for (const key in this.new_data) {
+            if (typeof this.new_data[key] === "boolean") {
+              this.new_data[key] = this.new_data[key] ? "da" : "ne";
+            }
+          }
+          console.log("RESPONSE", this.new_data)
+
+         this.petName = this.new_data.pet_name || ""
+         this.animalCategory = this.new_data.category || ""
+         this.description = this.new_data.description || ""
+         this.animalGender = this.new_data.sex || ""
+         this.vaccinated = this.new_data.vaccinated || ""
+         this.chipped = this.new_data.chipped || ""
+         this.location = this.new_data.location || ""
+
+
+
+          this.subtitleCard = this.new_data.description;
+          this.is_loading = false;
+        })
+        .catch((error) => {
+          console.log("error", error);
+          this.is_loading = false;
+        });
+      this.is_loading = false;
+    },
     submitForm() {
       const formData = new FormData();
       this.isCardDisabled = true;
@@ -544,6 +585,10 @@ export default {
       });
     },
   },
+  mounted(){
+      console.log("MOunted call")
+      this.fetch_post();
+    }
 };
 </script>
 

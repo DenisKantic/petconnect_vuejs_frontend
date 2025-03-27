@@ -517,7 +517,7 @@ export default {
       });
 
       this.$http
-        .post("/petapi/create-adopt-post", formData, {
+        .post(`${this.apiUrl}/create-adopt-post`, formData, {
           withCredentials: true,
         })
         .then((res) => {
