@@ -136,8 +136,8 @@ const routes = [
       title: "Uredi oglas",
       requiresAuth: true,
     },
-    component: ()=>
-      import("@/components/dashboard/editAdoptPost/edit_adopt_post.vue")
+    component: () =>
+      import("@/components/dashboard/editAdoptPost/edit_adopt_post.vue"),
   },
   {
     path: "/profil/postavke",

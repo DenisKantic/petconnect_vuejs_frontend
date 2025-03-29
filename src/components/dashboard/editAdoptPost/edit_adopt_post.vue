@@ -124,7 +124,20 @@
               </template>
             </VFileUpload>
           </v-card-text>
-        </v-window-item>
+
+          <v-row>
+  <v-col v-for="(image, index) in new_data.images" :key="index" cols="12" md="4" class="d-flex justify-center position-relative">
+    <v-img :src="`${apiUrl}/${image}`" aspect-ratio="1" contain class="position-relative">
+      <v-btn
+        icon
+        @click="delete_uploaded_image(index)"
+        class="position-absolute top-0 right-0 ma-2"
+      >
+        <v-icon>mdi-delete</v-icon>
+      </v-btn>
+    </v-img>
+  </v-col>
+</v-row>   </v-window-item>
 
         <v-window-item style="width: 100%" :value="3">
           <h3 class="text-h6 text-center font-weight-light my-4">
@@ -377,7 +390,7 @@ export default {
       description: "",
       uploadedImages: [],
       imageURLs: [],
-      step: 1,
+      step: 2,
       new_data: [],
       isCardDisabled: false,
       isBtnDisabled: false,
@@ -446,6 +459,10 @@ export default {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     },
+    delete_uploaded_image(index){
+        this.new_data.images.splice(index,1)
+        this.imageURLs = [...this.new_data.images]
+    },
 
     handleFileUpload(files) {
       if (!files || files.length === 0) {
@@ -490,10 +507,11 @@ export default {
 
       // Update component state
       this.uploadedImages = selectedImages;
-      this.imageURLs = this.uploadedImages.map((file) =>
-        URL.createObjectURL(file),
-      );
+      const newImageUrls = this.uploadedImages.map((file)=>{
+        URL.createObjectURL(file)
+      })
 
+      this.imageURLs = [...this.imageURLs, ...newImageUrls]
       // Emit updated values
       this.$emit("update:model-value", this.uploadedImages);
       this.$emit("update:model-value", this.imageURLs);
@@ -510,7 +528,7 @@ export default {
       }
 
       await this.$http.get(`${this.apiUrl}/one-adopt-post/${postID}`)
-        .then((response) => {
+        .then(async (response) => {
           this.new_data = response.data[0];
           console.log("RESPONSE", response.data)
 
@@ -528,10 +546,10 @@ export default {
          this.vaccinated = this.new_data.vaccinated || ""
          this.chipped = this.new_data.chipped || ""
          this.location = this.new_data.location || ""
-
-
+          this.imageURLs = [...this.new_data.images]
 
           this.subtitleCard = this.new_data.description;
+
           this.is_loading = false;
         })
         .catch((error) => {
@@ -579,11 +597,12 @@ export default {
       this.isBtnLoading = false;
       this.isNazadBtnDisabled = false;
     },
-    onBeforeUnmount() {
-      this.imageURLs.forEach((url) => {
-        URL.revokeObjectURL(url);
-      });
-    },
+
+    // onBeforeUnmount() {
+    //   this.imageURLs.forEach((url) => {
+    //     URL.revokeObjectURL(url);
+    //   });
+    // },
   },
   mounted(){
       console.log("MOunted call")

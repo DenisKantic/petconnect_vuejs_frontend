@@ -1,27 +1,25 @@
 <template>
   <v-container class="px-0 px-lg-16 mx-auto">
     <h1 class="pt-10">Izgubljeni ljubimci</h1>
-    <span class="text-body-1 text-blue">
-      Dostupan broj oglasa:
-    </span>
+    <span class="text-body-1 text-blue"> Dostupan broj oglasa: </span>
     <v-row class="pt-5">
       <v-row v-if="loading">
-      <v-col
-        v-for="index in 3"
-        :key="index"
-        cols="12"
-        xs="4"
-        sm="6"
-        lg="4"
-        xl="4"
-      >
-        <v-skeleton-loader
-          class="border"
-          max-width="300"
-          type="image, article"
-        ></v-skeleton-loader>
-      </v-col>
-    </v-row>
+        <v-col
+          v-for="index in 3"
+          :key="index"
+          cols="12"
+          xs="4"
+          sm="6"
+          lg="4"
+          xl="4"
+        >
+          <v-skeleton-loader
+            class="border"
+            max-width="300"
+            type="image, article"
+          ></v-skeleton-loader>
+        </v-col>
+      </v-row>
       <!-- Loop to create up to 3 cards -->
       <v-col
         v-else
@@ -90,7 +88,7 @@
       </v-col>
     </v-row>
 
-    <v-dialog v-model="dialog" hide-overlay >
+    <v-dialog v-model="dialog" hide-overlay>
       <v-card max-width="500" class="mx-auto" :loading="btnDelete">
         <v-card-title class="text-center">
           Da li ste sigurni da želite obrisati objavu?
@@ -98,7 +96,11 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red" variant="flat" :loading="btnDelete" @click="deletePost(post_to_delete)"
+          <v-btn
+            color="red"
+            variant="flat"
+            :loading="btnDelete"
+            @click="deletePost(post_to_delete)"
             >Obriši</v-btn
           >
           <v-btn color="primary" @click="dialog = false" variant="outlined"
@@ -138,10 +140,10 @@ export default {
       this.post_to_delete = postID;
       this.dialog = true;
     },
-     async deletePost(postID) {
+    async deletePost(postID) {
       this.btnDelete = true;
 
-      await new Promise((resolve)=> setTimeout(resolve,1500))
+      await new Promise((resolve) => setTimeout(resolve, 1500));
 
       await axios
         .delete(`${this.apiUrl}/delete-lost-post/${postID}`, {
@@ -160,7 +162,7 @@ export default {
     async getlostPost() {
       this.loading = true;
 
-      await new Promise((resolve)=> setTimeout(resolve, 1500))
+      await new Promise((resolve) => setTimeout(resolve, 1500));
       await axios
         .get(`${this.apiUrl}/my-lost-post`, { withCredentials: true })
         .then((response) => {

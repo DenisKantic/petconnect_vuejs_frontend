@@ -8,24 +8,25 @@
 
     <v-row class="pt-5">
       <v-row v-if="loading">
-      <v-col
-        v-for="index in 3"
-        :key="index"
-        cols="12"
-        xs="4"
-        sm="6"
-        lg="4"
-        xl="4"
-      >
-        <v-skeleton-loader
-          class="border"
-          max-width="300"
-          type="image, article"
-        ></v-skeleton-loader>
-      </v-col>
-    </v-row>
+        <v-col
+          v-for="index in 3"
+          :key="index"
+          cols="12"
+          xs="4"
+          sm="6"
+          lg="4"
+          xl="4"
+        >
+          <v-skeleton-loader
+            class="border"
+            max-width="300"
+            type="image, article"
+          ></v-skeleton-loader>
+        </v-col>
+      </v-row>
       <!-- Loop to create up to 3 cards -->
-      <v-col v-else
+      <v-col
+        v-else
         v-for="index in 3"
         :key="index"
         cols="12"
@@ -34,7 +35,6 @@
         md="4"
         xl="4"
       >
-
         <template v-if="index <= adoptPost.length">
           <!-- Existing Post Card -->
           <v-card>
@@ -72,7 +72,11 @@
                 Podijeli <v-icon class="ml-1">mdi-facebook</v-icon>
               </v-btn>
 
-              <router-link :to="`/profil/uredioglas/udomi/${adoptPost[0].id}`" class="flex-grow-1"><v-btn color="primary" >Uredi</v-btn></router-link>
+              <router-link
+                :to="`/profil/uredioglas/udomi/${adoptPost[0].id}`"
+                class="flex-grow-1"
+                ><v-btn color="primary">Uredi</v-btn></router-link
+              >
               <v-btn
                 color="red"
                 class="flex-grow-1"
@@ -160,14 +164,14 @@ export default {
         });
     },
     async getAdoptPost() {
-
       this.loading = true;
-      await new Promise((resolve)=> setTimeout(resolve,1500))
+      await new Promise((resolve) => setTimeout(resolve, 1500));
 
       await axios
         .get(`${this.apiUrl}/my-adopt-post`, { withCredentials: true })
         .then((response) => {
           if (response.data.length > 0) {
+            console.log("RESPONSE FROM DASH", response.data)
             this.adoptPost = response.data;
           } else {
             this.adoptPost = "";

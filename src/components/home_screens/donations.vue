@@ -29,7 +29,7 @@
       </v-col>
     </v-row>
     <v-col
-    v-else
+      v-else
       v-for="post in post"
       :key="post.id"
       cols="12"
@@ -38,10 +38,7 @@
       lg="2"
       xl="2"
     >
-      <router-link
-        class="text-decoration-none"
-        :to="`/donacije/${post.id}`"
-      >
+      <router-link class="text-decoration-none" :to="`/donacije/${post.id}`">
         <v-card>
           <img
             :src="

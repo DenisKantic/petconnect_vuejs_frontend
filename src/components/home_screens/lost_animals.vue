@@ -28,23 +28,19 @@
         ></v-skeleton-loader>
       </v-col>
     </v-row>
-      <v-col
+    <v-col
       v-else
-        v-for="index in 6"
-        :key="index"
-        cols="12"
-        sm="6"
-        md="4"
-        lg="2"
-        xl="2"
-      >
-      </v-col>
+      v-for="index in 6"
+      :key="index"
+      cols="12"
+      sm="6"
+      md="4"
+      lg="2"
+      xl="2"
+    >
+    </v-col>
     <v-col v-for="post in post" :key="post.id" cols="12" sm="6" md="4" xl="2">
-
-      <router-link
-        class="text-decoration-none"
-        :to="`/izgubljeni/${post.id}`"
-      >
+      <router-link class="text-decoration-none" :to="`/izgubljeni/${post.id}`">
         <v-card>
           <img
             :src="
@@ -106,7 +102,9 @@ export default {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       try {
-        const response = await this.$http.get(`${this.apiUrl}/latest-lost-post`);
+        const response = await this.$http.get(
+          `${this.apiUrl}/latest-lost-post`,
+        );
         this.post = response.data;
         // this.post = [
         //   {

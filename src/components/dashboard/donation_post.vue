@@ -7,25 +7,25 @@
     </span>
     <v-row class="pt-5">
       <v-row v-if="loading">
-      <v-col
-        v-for="index in 3"
-        :key="index"
-        cols="12"
-        xs="4"
-        sm="6"
-        lg="4"
-        xl="4"
-      >
-        <v-skeleton-loader
-          class="border"
-          max-width="300"
-          type="image, article"
-        ></v-skeleton-loader>
-      </v-col>
-    </v-row>
+        <v-col
+          v-for="index in 3"
+          :key="index"
+          cols="12"
+          xs="4"
+          sm="6"
+          lg="4"
+          xl="4"
+        >
+          <v-skeleton-loader
+            class="border"
+            max-width="300"
+            type="image, article"
+          ></v-skeleton-loader>
+        </v-col>
+      </v-row>
       <!-- Loop to create up to 3 cards -->
       <v-col
-      v-else
+        v-else
         v-for="index in 3"
         :key="index"
         cols="12"
@@ -157,9 +157,8 @@ export default {
         });
     },
     async getAdoptPost() {
-
       this.loading = true;
-      await new Promise((resolve)=> setTimeout(resolve,1500))
+      await new Promise((resolve) => setTimeout(resolve, 1500));
 
       await axios
         .get(`${this.apiUrl}/my-donation-post`, {

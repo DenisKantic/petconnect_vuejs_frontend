@@ -498,15 +498,13 @@ export default {
         formData.append("images", file); // Each file must be appended individually
       });
 
-
       await this.$http
         .post(`${this.apiUrl}/create-lost-post`, formData, {
           withCredentials: true,
         })
         .then(async (res) => {
-
           this.step = 4;
-          await new Promise((resolve)=> setTimeout(resolve,2000))
+          await new Promise((resolve) => setTimeout(resolve, 2000));
           window.location.replace("/profil");
         })
         .catch((err) => {

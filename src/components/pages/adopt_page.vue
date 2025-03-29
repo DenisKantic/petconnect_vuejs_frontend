@@ -89,22 +89,22 @@
   <p v-if="post.length === 0">Nema pronađenih životinja</p>
 
   <v-row v-if="loading">
-      <v-col
-        v-for="index in 20"
-        :key="index"
-        cols="12"
-        sm="6"
-        md="4"
-        lg="2"
-        xl="2"
-      >
-        <v-skeleton-loader
-          class="border"
-          max-width="300"
-          type="image, article"
-        ></v-skeleton-loader>
-      </v-col>
-    </v-row>
+    <v-col
+      v-for="index in 20"
+      :key="index"
+      cols="12"
+      sm="6"
+      md="4"
+      lg="2"
+      xl="2"
+    >
+      <v-skeleton-loader
+        class="border"
+        max-width="300"
+        type="image, article"
+      ></v-skeleton-loader>
+    </v-col>
+  </v-row>
 
   <v-row v-else>
     <v-col
@@ -116,7 +116,6 @@
       lg="3"
       xl="2"
     >
-
       <router-link
         class="text-decoration-none"
         :to="{ name: 'Detaljan pregled', params: { id: post.id } }"
@@ -359,13 +358,16 @@ export default {
       try {
         this.loading = true;
 
-        await new Promise((resolve)=> setTimeout(resolve,1000))
-        const response = await this.$http.get(`${this.apiUrl}/adopt-post-per-page`, {
-          params,
-        });
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        const response = await this.$http.get(
+          `${this.apiUrl}/adopt-post-per-page`,
+          {
+            params,
+          },
+        );
         this.post = response.data.posts;
         this.total_pages = response.data.total_count;
-        this.loading = false
+        this.loading = false;
       } catch (error) {
         console.log("error");
       } finally {
