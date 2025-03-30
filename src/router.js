@@ -171,6 +171,8 @@ const routes = [
   },
 ];
 
+const apiUrl = "/petapi"
+
 const router = createRouter({
   history: createWebHistory(),
   routes,
@@ -183,7 +185,7 @@ router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore(); // accessing store for storing global state if user is logged in
   try {
     // Always check authentication status (even for public routes)
-    const response = await axios.get(`http://localhost:8080/validate-token`, {
+    const response = await axios.get(`${apiUrl}/validate-token`, {
       withCredentials: true,
     });
 
