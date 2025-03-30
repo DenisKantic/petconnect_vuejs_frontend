@@ -26,13 +26,13 @@
     <div
       v-else
       id="container"
-      style="display: grid; grid-template-columns: 1fr 1fr; height: 100vh"
+      style="display: grid; grid-template-columns: 1fr 1fr; height: 100%"
     >
       <v-container
         class="d-flex align-center flex-column justify-center"
-        style="height: 100vh; background-color: white"
+        style="height: 100%; background-color: white"
       >
-        <router-link to="/" class="mt-16">
+      <router-link to="/" class="mt-16">
           <v-avatar class="mb-1 mb-sm-10" color="surface-light" size="100">
             <img src="@/assets/logo.svg" style="width: 100%" alt="Logo" />
           </v-avatar>
@@ -42,7 +42,9 @@
         >
         <br />
 
+
         <v-form ref="form" v-model="valid" lazy-validation style="width: 60%">
+
           <label>Email</label>
           <v-text-field
             :disabled="is_submiting"
@@ -143,7 +145,7 @@
         src="@/assets/picture.svg"
         cover
         class="right-image"
-        style="width: 100%; height: 100vh; background-color: #2f5382"
+        style="width: 100%; height: 100%; background-color: #2f5382"
       >
       </v-img>
     </div>

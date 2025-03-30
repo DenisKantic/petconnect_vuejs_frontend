@@ -30,7 +30,7 @@
     >
       <v-container
         class="d-flex align-center justify-center flex-column pb-10 sm-pb-0"
-        style="height: 100vh; background-color: white"
+        style="height: 100%; background-color: white"
       >
         <router-link to="/" class="mt-16">
           <v-avatar class="mb-10 mb-sm-10" color="surface-light" size="100">
