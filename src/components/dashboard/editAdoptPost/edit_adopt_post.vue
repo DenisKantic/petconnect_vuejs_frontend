@@ -184,7 +184,8 @@
                   <v-skeleton-loader
                     type="image"
                   ></v-skeleton-loader> </template
-              ></v-img>
+              >
+            </v-img>
             </div>
 
             <br />
@@ -390,7 +391,7 @@ export default {
       description: "",
       uploadedImages: [],
       imageURLs: [],
-      step: 2,
+      step: 1,
       new_data: [],
       isCardDisabled: false,
       isBtnDisabled: false,
@@ -507,11 +508,10 @@ export default {
 
       // Update component state
       this.uploadedImages = selectedImages;
-      const newImageUrls = this.uploadedImages.map((file)=>{
-        URL.createObjectURL(file)
-      })
+      this.imageURLs = this.uploadedImages.map((file)=>
+       URL.createObjectURL(file)
+      )
 
-      this.imageURLs = [...this.imageURLs, ...newImageUrls]
       // Emit updated values
       this.$emit("update:model-value", this.uploadedImages);
       this.$emit("update:model-value", this.imageURLs);
@@ -546,7 +546,7 @@ export default {
          this.vaccinated = this.new_data.vaccinated || ""
          this.chipped = this.new_data.chipped || ""
          this.location = this.new_data.location || ""
-          this.imageURLs = [...this.new_data.images]
+
 
           this.subtitleCard = this.new_data.description;
 
@@ -597,14 +597,29 @@ export default {
       this.isBtnLoading = false;
       this.isNazadBtnDisabled = false;
     },
+    async urlToBlobFile(imageUrl, fileName = "image.jpg") {
+  const response = await fetch(imageUrl);
+  const blob = await response.blob(); // Convert response to Blob
 
-    // onBeforeUnmount() {
-    //   this.imageURLs.forEach((url) => {
-    //     URL.revokeObjectURL(url);
-    //   });
-    // },
+  // Convert Blob to File (optional)
+  const file = new File([blob], fileName, { type: blob.type });
+
+  return file; // Returns a File object
+},
+
+    onBeforeUnmount() {
+      this.imageURLs.forEach((url) => {
+        URL.revokeObjectURL(url);
+      });
+    },
   },
   mounted(){
+    const imageLogo = '@/assets/logo.svg'
+    // Example Usage
+const imageUrl = "https://example.com/image.jpg";
+this.urlToBlobFile(imageLogo).then((file) => {
+  console.log("Converted Blob File:", file);
+});
       console.log("MOunted call")
       this.fetch_post();
     }

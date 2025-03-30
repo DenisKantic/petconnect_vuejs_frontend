@@ -75,7 +75,7 @@
               <router-link
                 :to="`/profil/uredioglas/udomi/${adoptPost[0].id}`"
                 class="flex-grow-1"
-                ><v-btn color="primary">Uredi</v-btn></router-link
+                ><v-btn class="w-100" color="primary">Uredi</v-btn></router-link
               >
               <v-btn
                 color="red"
