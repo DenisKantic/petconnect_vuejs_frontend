@@ -30,16 +30,14 @@
     </v-row>
     <v-col
       v-else
-      v-for="index in 6"
-      :key="index"
+      v-for="post in post"
+      :key="post.id"
       cols="12"
       sm="6"
       md="4"
       lg="2"
       xl="2"
     >
-    </v-col>
-    <v-col v-for="post in post" :key="post.id" cols="12" sm="6" md="4" xl="2">
       <router-link class="text-decoration-none" :to="`/izgubljeni/${post.id}`">
         <v-card>
           <img
