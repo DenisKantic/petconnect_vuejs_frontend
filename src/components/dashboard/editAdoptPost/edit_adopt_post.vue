@@ -2,7 +2,7 @@
   <MainNavbar />
   <v-app id="container">
     <v-card :disabled="isCardDisabled">
-      <v-stepper alt-labels v-show="step !== 4">
+      <v-stepper alt-labels v-show="step !== 3">
         <v-stepper-header>
           <v-stepper-item :value="!step === 1 ? 1 : 1" :complete="step >= 2">
             <template v-slot:title
@@ -12,15 +12,8 @@
 
           <v-divider></v-divider>
 
+
           <v-stepper-item :value="!step === 2 ? 2 : 2" :complete="step >= 3">
-            <template v-slot:title
-              ><span class="d-none d-sm-block">Fotografije</span>
-            </template>
-          </v-stepper-item>
-
-          <v-divider></v-divider>
-
-          <v-stepper-item :value="!step === 3 ? 3 : 3" :complete="step >= 4">
             <template v-slot:title>
               <span class="d-none d-sm-block">Pregled objave</span>
             </template>
@@ -28,7 +21,7 @@
 
           <v-divider></v-divider>
 
-          <v-stepper-item :value="!step === 4 ? 4 : 4" :complete="step === 4">
+          <v-stepper-item :value="!step === 3 ? 3 : 3" :complete="step === 3">
             <template v-slot:title>
               <span class="d-none d-sm-block">Objava</span>
             </template>
@@ -38,9 +31,9 @@
 
       <v-window v-model="step">
         <v-window-item :value="1">
-          <v-card-title class="text-h6 pz-5 text-center font-weight-regular">
-            <span>{{ currentTitle }}</span>
-          </v-card-title>
+          <h3 class="text-h6 text-center font-weight-light my-4">
+            Pregled informacija
+          </h3>
           <v-card-text>
             <v-text-field
               counter
@@ -91,67 +84,8 @@
           </v-card-text>
         </v-window-item>
 
-        <v-window-item :value="2">
-          <p class="text-h6 text-center font-weight-light my-4">
-            Unesite fotografije <br />
-            (Maksimalno 100 MB memorije)
-          </p>
-          <v-card-text>
-            <VFileUpload
-              class="upload"
-              density="compact"
-              show-size
-              accept="image/png, image/jpg, image/jpeg"
-              scrim="primary"
-              clearable
-              multiple
-              @update:model-value="handleFileUpload"
-              :model-value="uploadedImages"
-              title="Kliknite ovdje ili prenesite fotografije"
-              label="Upload Images"
-              prepend-outer-icon="mdi-file"
-            >
-              <template v-slot:prepend>
-                <v-avatar size="150" rounded></v-avatar>
-              </template>
-              <template v-slot:clear="{ props: clearProps }">
-                <v-btn
-                  size="large"
-                  variant="text"
-                  color="red"
-                  v-bind="clearProps"
-                ></v-btn>
-              </template>
-            </VFileUpload>
-          </v-card-text>
 
-          <v-row>
-            <v-col
-              v-for="(image, index) in new_data.images"
-              :key="index"
-              cols="12"
-              md="4"
-              class="d-flex justify-center position-relative"
-            >
-              <v-img
-                :src="`${apiUrl}/${image}`"
-                aspect-ratio="1"
-                contain
-                class="position-relative"
-              >
-                <v-btn
-                  icon
-                  @click="delete_uploaded_image(index)"
-                  class="position-absolute top-0 right-0 ma-2"
-                >
-                  <v-icon>mdi-delete</v-icon>
-                </v-btn>
-              </v-img>
-            </v-col>
-          </v-row>
-        </v-window-item>
-
-        <v-window-item style="width: 100%" :value="3">
+        <v-window-item style="width: 100%" :value="2">
           <h3 class="text-h6 text-center font-weight-light my-4">
             Pregled oglasa prije objave!
           </h3>
@@ -180,35 +114,16 @@
               Lokacija: <br />
               <span class="font-weight-light">{{ location }}</span>
             </p>
-            <p class="pt-2 text-center font-weight-bold">Fotografije:</p>
-            <div class="image-preview">
-              <v-img
-                v-for="(url, index) in imageURLs"
-                :key="index"
-                :model-value="imageURLs"
-                :src="url"
-                :lazy-src="url"
-                aspect-ratio="1"
-                class="mt-0"
-              >
-                <!--  -->
-                <template v-slot:placeholder>
-                  <v-skeleton-loader type="image"></v-skeleton-loader>
-                </template>
-              </v-img>
-            </div>
-
-            <br />
           </div>
         </v-window-item>
 
-        <v-window-item id="fourth-container" :value="4"> </v-window-item>
+        <v-window-item id="third-container" :value="3"> </v-window-item>
       </v-window>
 
-      <v-card-actions v-show="step != 4">
+      <v-card-actions v-show="step != 3">
         <v-btn
           :disabled="isNazadBtnDisabled"
-          v-if="step >= 1 && step < 4"
+          v-if="step >= 1 && step < 3"
           variant="outlined"
           color="primary"
           @click="prevStep"
@@ -218,22 +133,22 @@
         <v-btn to="/profil" color="red" variant="outlined">Odustani</v-btn>
         <v-spacer></v-spacer>
         <v-btn
-          v-if="step === 3"
+          v-if="step === 2"
           :loading="isBtnLoading"
           :disabled="isBtnDisabled"
           @click="submitForm"
           color="primary"
           variant="flat"
-          >KREIRAJ OBJAVU</v-btn
+          >Uredi objavu</v-btn
         >
-        <v-btn v-if="step < 3" color="primary" variant="flat" @click="nextStep">
+        <v-btn v-if="step < 2" color="primary" variant="flat" @click="nextStep">
           Dalje
         </v-btn>
       </v-card-actions>
     </v-card>
     <v-sheet
-      :value="4"
-      v-show="step === 4"
+      :value="3"
+      v-show="step === 3"
       class="pa-4 text-center mx-auto"
       elevation="12"
       max-width="600"
@@ -275,12 +190,10 @@
 </template>
 
 <script>
-import { VFileUpload } from "vuetify/labs/VFileUpload";
 import MainNavbar from "@/components/navbar/main_navbar.vue";
 
 export default {
   components: {
-    VFileUpload,
     MainNavbar,
   },
   data() {
@@ -398,8 +311,6 @@ export default {
       vaccinated: "",
       chipped: "",
       description: "",
-      uploadedImages: [],
-      imageURLs: [],
       step: 1,
       new_data: [],
       isCardDisabled: false,
@@ -408,22 +319,8 @@ export default {
       isNazadBtnDisabled: false,
     };
   },
-  computed: {
-    currentTitle() {
-      switch (this.step) {
-        case 1:
-          return "Uredi oglas";
-        case 2:
-          return "Uredite fotografije";
-        default:
-          return "";
-      }
-    },
-  },
   methods: {
-    //   setLoaded(index) {
-    //   this.imageLoadStates[index] = false; // Set specific image as loaded
-    // },
+
     showSnackbar(message, color) {
       this.snackbar.visible = true;
       this.snackbar.message = message;
@@ -451,83 +348,10 @@ export default {
         } else {
           this.showSnackbar("Niste popunili sva polja.", "error");
         }
-      }
-
-      // check for second page for images
-      else if (this.step === 2) {
-        // Ensure at least one image has been uploaded
-        if (this.uploadedImages.length > 0) {
-          this.step++;
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        } else {
-          this.showSnackbar("Niste dodali fotografije", "error");
-        }
       } else if (this.step === 3) {
         window.scrollTo({ top: 0, behavior: "smooth" });
-      } else if (this.step === 4) {
-        console.log("FUNCTION FIRED UP");
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-    },
-    delete_uploaded_image(index) {
-      this.new_data.images.splice(index, 1);
-      this.imageURLs = [...this.new_data.images];
-    },
-
-    handleFileUpload(files) {
-      if (!files || files.length === 0) {
-        // If no files, reset everything
-        this.uploadedImages = [];
-        this.imageURLs = [];
-        this.$emit("update:model-value", []);
-        return;
-      }
-      const fileArray = Array.from(files);
-      const validTypes = ["image/png", "image/jpeg", "image/jpg"];
-
-      // Filter valid image types
-      const filteredFiles = fileArray.filter((file) =>
-        validTypes.includes(file.type),
-      );
-
-      let totalSize = 0; // Track total size in bytes
-      const maxSize = 100 * 1024 * 1024; // 100MB in bytes
-      const selectedImages = [];
-
-      for (const file of filteredFiles) {
-        if (totalSize + file.size <= maxSize) {
-          selectedImages.push(file);
-          totalSize += file.size;
-        } else {
-          this.showSnackbar(
-            "Ukupna veličina slika ne smije preći 100 MB",
-            "error",
-          );
-          break; // Stop adding files if the next one exceeds the limit
-        }
-      }
-
-      if (selectedImages.length === 0) {
-        this.showSnackbar(
-          "Molimo odaberite validne formate fotografija (PNG, JPG, JPEG)",
-          "error",
-        );
-        return;
-      }
-
-      // Update component state
-      this.uploadedImages = selectedImages;
-      this.imageURLs = this.uploadedImages.map((file) =>
-        URL.createObjectURL(file),
-      );
-
-      // Emit updated values
-      this.$emit("update:model-value", this.uploadedImages);
-      this.$emit("update:model-value", this.imageURLs);
-
-      console.log("Accepted Images:", this.uploadedImages);
-      console.log("Total Size (MB):", (totalSize / (1024 * 1024)).toFixed(2));
-    },
+    }
+  },
     async fetch_post() {
       const postID = this.$route.params.id;
       console.log("PARAM", postID);
@@ -582,17 +406,12 @@ export default {
       formData.append("chipped", this.chipped === "da"); // Convert string to boolean
       formData.append("location", this.location);
 
-      // Append images correctly
-      this.uploadedImages.forEach((file) => {
-        formData.append("images", file); // Each file must be appended individually
-      });
-
       this.$http
-        .post("/petapi/create-adopt-post", formData, {
+        .post(`${this.apiUrl}/create-adopt-post`, formData, {
           withCredentials: true,
         })
         .then((res) => {
-          this.step = 4;
+          this.step = 3;
           setTimeout(() => {
             window.location.replace("/profil");
           }, 2500);
@@ -606,58 +425,15 @@ export default {
       this.isBtnLoading = false;
       this.isNazadBtnDisabled = false;
     },
-    async urlToBlobFile(imageUrl, fileName = "image.jpg") {
-      const response = await fetch(imageUrl);
-      const blob = await response.blob(); // Convert response to Blob
-
-      // Convert Blob to File (optional)
-      const file = new File([blob], fileName, { type: blob.type });
-
-      return file; // Returns a File object
-    },
-
-    onBeforeUnmount() {
-      this.imageURLs.forEach((url) => {
-        URL.revokeObjectURL(url);
-      });
-    },
   },
   mounted() {
-    const imageLogo = "@/assets/logo.svg";
-    // Example Usage
-    const imageUrl = "https://example.com/image.jpg";
-    this.urlToBlobFile(imageLogo).then((file) => {
-      console.log("Converted Blob File:", file);
-    });
-    console.log("MOunted call");
     this.fetch_post();
   },
 };
 </script>
 
 <style scoped>
-.image-preview {
-  display: grid;
-  justify-content: center;
-  align-items: center;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin: 1rem auto;
-}
 
-@media (max-width: 600px) {
-  .image-preview {
-    grid-template-columns: repeat(1, 1fr);
-    margin: auto;
-    width: 100%;
-  }
-}
-
-.image-preview .v-img {
-  margin: 0.5rem;
-  border-radius: 4px;
-  box-shadow: 0 1rem 5rem rgba(0, 0, 0, 0.1);
-}
 #container {
   width: 100%;
   background-color: #e5e5e5;
@@ -669,23 +445,6 @@ export default {
   width: 50%;
 }
 
-/* #fourth-container {
-  width: 100%;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-} */
-
-/* #fourth-container .v-icon {
-  padding: 2rem;
-  display: flex;
-} */
-
-#delete-btn {
-  padding: 2rem;
-}
 
 /* responsive media*/
 @media (min-width: 200px) and (max-width: 599px) {
