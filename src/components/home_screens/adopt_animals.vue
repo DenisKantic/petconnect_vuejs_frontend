@@ -7,11 +7,11 @@
       ></router-link
     >
   </div>
-  <div class="d-flex flex-column align-center" v-show="showError">
-  <p class="text-center">Desila se greška</p>
-  <v-img src="/src/assets/not_found.svg" width="200"></v-img>
+  <div v-show="showError" class="mx-auto text-center">
+  <v-icon color="red" size="50">mdi-alert</v-icon>
+  <p class="text-h5 pt-4">Desila se greška</p>
 </div>
- <v-row>
+  <v-row>
     <v-row v-if="loading">
       <v-col
         v-for="index in 6"
@@ -112,7 +112,7 @@ export default {
         this.loading = true;
         await new Promise((resolve) => setTimeout(resolve, 1000));
         const response = await this.$http.get(
-          `${this.apiUrl}/latst-adopt-post`,
+          `${this.apiUrl}/latest-adopt-post`,
         );
         this.post = response.data;
         // this.post = [

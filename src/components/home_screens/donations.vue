@@ -10,6 +10,10 @@
       ></router-link
     >
   </div>
+  <div v-show="showError" class="mx-auto text-center">
+  <v-icon color="red" size="50">mdi-alert</v-icon>
+  <p class="text-h5 pt-4">Desila se greška</p>
+</div>
   <v-row class="pt-5">
     <v-row v-if="loading">
       <v-col
@@ -99,6 +103,8 @@ export default {
     return {
       post: [],
       loading: true,
+      showError: false,
+
     };
   },
   mounted() {
@@ -133,6 +139,7 @@ export default {
         this.loading = false;
       } catch (error) {
         console.log("error");
+        this.showError = true;
       } finally {
         this.loading = false;
       }
