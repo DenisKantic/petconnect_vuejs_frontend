@@ -5,13 +5,13 @@
         <v-stepper-header>
           <v-stepper-item :value="!step === 1 ? 1 : 1" :complete="step >= 2">
             <template v-slot:title
-              ><span class="d-none d-sm-block">Informacije</span>
+              ><span class="d-none d-md-block">Informacije</span>
             </template>
           </v-stepper-item>
           <v-divider></v-divider>
           <v-stepper-item :value="!step === 2 ? 2 : 2" :complete="step >= 3">
             <template v-slot:title
-              ><span class="d-none d-sm-block">Fotografije</span>
+              ><span class="d-none d-md-block">Fotografije</span>
             </template>
           </v-stepper-item>
 
@@ -19,7 +19,7 @@
 
           <v-stepper-item :value="!step === 3 ? 3 : 3" :complete="step >= 4">
             <template v-slot:title>
-              <span class="d-none d-sm-block">Pregled objave</span>
+              <span class="d-none d-md-block">Pregled objave</span>
             </template>
           </v-stepper-item>
 
@@ -27,7 +27,7 @@
 
           <v-stepper-item :value="!step === 4 ? 4 : 4" :complete="step === 4">
             <template v-slot:title>
-              <span class="d-none d-sm-block">Objava</span>
+              <span class="d-none d-md-block">Objava</span>
             </template>
           </v-stepper-item>
         </v-stepper-header>
@@ -79,7 +79,7 @@
         <v-window-item :value="2">
           <p class="text-h6 text-center font-weight-light my-4">
             Unesite fotografije <br />
-            (Maksimalno 100 MB memorije)
+            (Maksimalno 6 fotografija ukupno 35 MB memorije)
           </p>
           <v-card-text>
             <VFileUpload
@@ -92,7 +92,7 @@
               multiple
               @update:model-value="handleFileUpload"
               :model-value="uploadedImages"
-              title="Kliknite ovdje ili prenesite fotografije"
+              title="Kliknite ovdje za fotografije"
               label="Upload Images"
               prepend-outer-icon="mdi-file"
             >
@@ -432,57 +432,40 @@ export default {
     },
     handleFileUpload(files) {
       if (!files || files.length === 0) {
-        // If no files, reset everything
         this.uploadedImages = [];
         this.imageURLs = [];
         this.$emit("update:model-value", []);
         return;
       }
-      const fileArray = Array.from(files);
-      const validTypes = ["image/png", "image/jpeg", "image/jpg"];
 
-      // Filter valid image types
-      const filteredFiles = fileArray.filter((file) =>
-        validTypes.includes(file.type),
+      const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
+      const filteredFiles = files.filter((file) =>
+        allowedTypes.includes(file.type),
       );
 
-      let totalSize = 0; // Track total size in bytes
-      const maxSize = 100 * 1024 * 1024; // 100MB in bytes
-      const selectedImages = [];
-
-      for (const file of filteredFiles) {
-        if (totalSize + file.size <= maxSize) {
-          selectedImages.push(file);
-          totalSize += file.size;
-        } else {
-          this.showSnackbar(
-            "Ukupna veličina slika ne smije preći 100 MB",
-            "error",
-          );
-          break; // Stop adding files if the next one exceeds the limit
-        }
-      }
-
-      if (selectedImages.length === 0) {
+      if (filteredFiles.length !== files.length) {
         this.showSnackbar(
-          "Molimo odaberite validne formate fotografija (PNG, JPG, JPEG)",
+          "Dozvoljene su samo slike (png, jpg, jpeg).",
           "error",
         );
+      }
+
+      // Limit to 6 images max
+      const trimmedFiles = files.slice(0, 6);
+
+      // Calculate total size in MB
+      const totalSizeMB =
+        trimmedFiles.reduce((acc, file) => acc + file.size, 0) / (1024 * 1024);
+
+      if (totalSizeMB > 40) {
+        this.showSnackbar("Ukupna veličina slika prelazi 40 MB!", "error");
         return;
       }
 
-      // Update component state
-      this.uploadedImages = selectedImages;
-      this.imageURLs = this.uploadedImages.map((file) =>
-        URL.createObjectURL(file),
-      );
-
-      // Emit updated values
-      this.$emit("update:model-value", this.uploadedImages);
-      this.$emit("update:model-value", this.imageURLs);
-
-      console.log("Accepted Images:", this.uploadedImages);
-      console.log("Total Size (MB):", (totalSize / (1024 * 1024)).toFixed(2));
+      // If valid, update state
+      this.uploadedImages = trimmedFiles;
+      this.imageURLs = trimmedFiles.map((file) => URL.createObjectURL(file));
+      this.$emit("update:model-value", trimmedFiles);
     },
     submitForm() {
       const formData = new FormData();
@@ -504,7 +487,7 @@ export default {
 
       setTimeout(() => {
         this.$http
-          .post("/petapi/create-donation-post", formData, {
+          .post(`${this.apiUrl}/create-donation-post`, formData, {
             withCredentials: true,
           })
           .then((res) => {

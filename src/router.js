@@ -171,7 +171,7 @@ const routes = [
   },
 ];
 
-const apiUrl = "/petapi"
+const apiUrl = "http://localhost:8080";
 
 const router = createRouter({
   history: createWebHistory(),

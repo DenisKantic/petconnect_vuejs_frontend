@@ -297,7 +297,8 @@ export default {
           this.subtitleCard = this.new_data.description;
         })
         .catch((error) => {
-          console.log("error", error);
+          console.log("error");
+          window.location.replace("/error");
           this.is_loading = false;
         });
       this.is_loading = false;

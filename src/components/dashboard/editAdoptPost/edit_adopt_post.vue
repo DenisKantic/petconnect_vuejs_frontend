@@ -126,18 +126,30 @@
           </v-card-text>
 
           <v-row>
-  <v-col v-for="(image, index) in new_data.images" :key="index" cols="12" md="4" class="d-flex justify-center position-relative">
-    <v-img :src="`${apiUrl}/${image}`" aspect-ratio="1" contain class="position-relative">
-      <v-btn
-        icon
-        @click="delete_uploaded_image(index)"
-        class="position-absolute top-0 right-0 ma-2"
-      >
-        <v-icon>mdi-delete</v-icon>
-      </v-btn>
-    </v-img>
-  </v-col>
-</v-row>   </v-window-item>
+            <v-col
+              v-for="(image, index) in new_data.images"
+              :key="index"
+              cols="12"
+              md="4"
+              class="d-flex justify-center position-relative"
+            >
+              <v-img
+                :src="`${apiUrl}/${image}`"
+                aspect-ratio="1"
+                contain
+                class="position-relative"
+              >
+                <v-btn
+                  icon
+                  @click="delete_uploaded_image(index)"
+                  class="position-absolute top-0 right-0 ma-2"
+                >
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </v-img>
+            </v-col>
+          </v-row>
+        </v-window-item>
 
         <v-window-item style="width: 100%" :value="3">
           <h3 class="text-h6 text-center font-weight-light my-4">
@@ -181,11 +193,9 @@
               >
                 <!--  -->
                 <template v-slot:placeholder>
-                  <v-skeleton-loader
-                    type="image"
-                  ></v-skeleton-loader> </template
-              >
-            </v-img>
+                  <v-skeleton-loader type="image"></v-skeleton-loader>
+                </template>
+              </v-img>
             </div>
 
             <br />
@@ -268,11 +278,10 @@
 import { VFileUpload } from "vuetify/labs/VFileUpload";
 import MainNavbar from "@/components/navbar/main_navbar.vue";
 
-
 export default {
   components: {
     VFileUpload,
-    MainNavbar
+    MainNavbar,
   },
   data() {
     return {
@@ -460,9 +469,9 @@ export default {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     },
-    delete_uploaded_image(index){
-        this.new_data.images.splice(index,1)
-        this.imageURLs = [...this.new_data.images]
+    delete_uploaded_image(index) {
+      this.new_data.images.splice(index, 1);
+      this.imageURLs = [...this.new_data.images];
     },
 
     handleFileUpload(files) {
@@ -508,9 +517,9 @@ export default {
 
       // Update component state
       this.uploadedImages = selectedImages;
-      this.imageURLs = this.uploadedImages.map((file)=>
-       URL.createObjectURL(file)
-      )
+      this.imageURLs = this.uploadedImages.map((file) =>
+        URL.createObjectURL(file),
+      );
 
       // Emit updated values
       this.$emit("update:model-value", this.uploadedImages);
@@ -521,32 +530,32 @@ export default {
     },
     async fetch_post() {
       const postID = this.$route.params.id;
-      console.log("PARAM", postID)
+      console.log("PARAM", postID);
 
       if (postID === "") {
         window.location.replace("/");
       }
 
-      await this.$http.get(`${this.apiUrl}/one-adopt-post/${postID}`)
+      await this.$http
+        .get(`${this.apiUrl}/one-adopt-post/${postID}`)
         .then(async (response) => {
           this.new_data = response.data[0];
-          console.log("RESPONSE", response.data)
+          console.log("RESPONSE", response.data);
 
           for (const key in this.new_data) {
             if (typeof this.new_data[key] === "boolean") {
               this.new_data[key] = this.new_data[key] ? "da" : "ne";
             }
           }
-          console.log("RESPONSE", this.new_data)
+          console.log("RESPONSE", this.new_data);
 
-         this.petName = this.new_data.pet_name || ""
-         this.animalCategory = this.new_data.category || ""
-         this.description = this.new_data.description || ""
-         this.animalGender = this.new_data.sex || ""
-         this.vaccinated = this.new_data.vaccinated || ""
-         this.chipped = this.new_data.chipped || ""
-         this.location = this.new_data.location || ""
-
+          this.petName = this.new_data.pet_name || "";
+          this.animalCategory = this.new_data.category || "";
+          this.description = this.new_data.description || "";
+          this.animalGender = this.new_data.sex || "";
+          this.vaccinated = this.new_data.vaccinated || "";
+          this.chipped = this.new_data.chipped || "";
+          this.location = this.new_data.location || "";
 
           this.subtitleCard = this.new_data.description;
 
@@ -598,14 +607,14 @@ export default {
       this.isNazadBtnDisabled = false;
     },
     async urlToBlobFile(imageUrl, fileName = "image.jpg") {
-  const response = await fetch(imageUrl);
-  const blob = await response.blob(); // Convert response to Blob
+      const response = await fetch(imageUrl);
+      const blob = await response.blob(); // Convert response to Blob
 
-  // Convert Blob to File (optional)
-  const file = new File([blob], fileName, { type: blob.type });
+      // Convert Blob to File (optional)
+      const file = new File([blob], fileName, { type: blob.type });
 
-  return file; // Returns a File object
-},
+      return file; // Returns a File object
+    },
 
     onBeforeUnmount() {
       this.imageURLs.forEach((url) => {
@@ -613,16 +622,16 @@ export default {
       });
     },
   },
-  mounted(){
-    const imageLogo = '@/assets/logo.svg'
+  mounted() {
+    const imageLogo = "@/assets/logo.svg";
     // Example Usage
-const imageUrl = "https://example.com/image.jpg";
-this.urlToBlobFile(imageLogo).then((file) => {
-  console.log("Converted Blob File:", file);
-});
-      console.log("MOunted call")
-      this.fetch_post();
-    }
+    const imageUrl = "https://example.com/image.jpg";
+    this.urlToBlobFile(imageLogo).then((file) => {
+      console.log("Converted Blob File:", file);
+    });
+    console.log("MOunted call");
+    this.fetch_post();
+  },
 };
 </script>
 

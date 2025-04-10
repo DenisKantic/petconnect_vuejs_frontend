@@ -32,7 +32,7 @@
         class="d-flex align-center flex-column justify-center"
         style="height: 100%; background-color: white"
       >
-      <router-link to="/" class="mt-16">
+        <router-link to="/" class="mt-16">
           <v-avatar class="mb-1 mb-sm-10" color="surface-light" size="100">
             <img src="@/assets/logo.svg" style="width: 100%" alt="Logo" />
           </v-avatar>
@@ -42,9 +42,7 @@
         >
         <br />
 
-
         <v-form ref="form" v-model="valid" lazy-validation style="width: 60%">
-
           <label>Email</label>
           <v-text-field
             :disabled="is_submiting"

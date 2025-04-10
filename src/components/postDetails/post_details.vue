@@ -265,7 +265,7 @@ export default {
           }, 2000);
         })
         .catch((error) => {
-          console.log("ERROR", error);
+          console.log("ERROR");
           this.isMsgLoading = true;
         });
     },
@@ -315,6 +315,7 @@ export default {
         })
         .catch((error) => {
           console.log("error");
+          window.location.replace("/error");
           this.is_loading = false;
         });
       this.is_loading = false;

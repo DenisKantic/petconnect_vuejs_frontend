@@ -171,7 +171,7 @@ export default {
         .get(`${this.apiUrl}/my-adopt-post`, { withCredentials: true })
         .then((response) => {
           if (response.data.length > 0) {
-            console.log("RESPONSE FROM DASH", response.data)
+            console.log("RESPONSE FROM DASH", response.data);
             this.adoptPost = response.data;
           } else {
             this.adoptPost = "";
